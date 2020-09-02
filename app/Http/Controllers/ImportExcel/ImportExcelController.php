@@ -99,7 +99,6 @@ class ImportExcelController extends Controller
     */
    public function edit($id)
    {
-       $data=User::find($id);
        $data=reg_std::find($id);
        return view('STD.edit',compact(['data']));
    }
@@ -121,18 +120,16 @@ class ImportExcelController extends Controller
            'password',
            'type'
        ]);
-       User::find($id)->update($request->all());
        reg_std::find($id)->update($request->all());
        
        return redirect('/STD');
    }
    public function destroy(Request $request,$id)
    {
-    if ($request->user()->can('delete-tasks')) {
-        User::find($id)->delete();
+    
         reg_std::find($id)->delete();
         return redirect('/STD');
-      }
+      
        
    }
 
