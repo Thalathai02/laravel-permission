@@ -28,11 +28,7 @@
         </div>
         <div class="form-group col-6">
         {!! Form::label('email','อีเมล')!!}
-        {!! Form::text('email',$data->email,["class"=>"form-control"]) !!}
-        </div>
-        <div class="form-group col-6">
-        {!! Form::label('password')!!}
-        {!! Form::text('password',$data->password,["class"=>"form-control"]) !!}
+        {!! Form::email('email',$data->email,["class"=>"form-control"]) !!}
         </div>
 
     </div>

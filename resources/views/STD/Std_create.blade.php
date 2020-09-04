@@ -28,11 +28,11 @@
         </div>
         <div class="form-group col-6">
         {!! Form::label('email')!!}
-        {!! Form::text('email',null,["class"=>"form-control"]) !!}
+        {!! Form::email('email',null,["class"=>"form-control"]) !!}
         </div>
         <div class="form-group col">
         {!! Form::label('password')!!}
-        {!! Form::text('password',null,["class"=>"form-control"]) !!}
+        {!! Form::password('password',null,["class"=>"form-control"]) !!}
         </div>
 
     </div>

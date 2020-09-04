@@ -1,5 +1,6 @@
 <?php
 
+use App\Role;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,8 +39,9 @@ Route::group(['middleware' => 'role:Admin'], function () {
         return 'Welcome Admin';
     });
 });
-  Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
+    Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
     Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
     Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
     Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
     Route::post('/User/edit', 'UserController@edit')->middleware('auth');
+    Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');

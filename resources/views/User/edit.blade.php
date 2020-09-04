@@ -13,31 +13,37 @@
 {!! Form::open(['action' => ['UserController@update',$data->id],'method'=>'PUT']) !!}
     <div class="row">
         <div class="form-group col-4">
-        {!! Form::label('std_code','Username')!!}
-        {!! Form::text('std_code',$data->username,["class"=>"form-control"]) !!}
+        {!! Form::label('Username','Username')!!}
+        {!! Form::text('username',$data->username,["class"=>"form-control"]) !!}
         </div>
     </div>
+    
+    @if (Auth::user()->hasRole('Admin'))
     <div class="row">
         <div class="form-group col-6">
             {!! Form::label('name','ชื่อ')!!}
             {!! Form::text('name',$data->name,["class"=>"form-control"]) !!}
         </div>
-    </div><div class="row">
-        <div class="form-group col-6">
-        {!! Form::label('email')!!}
-        {!! Form::text('password',$data->email,["class"=>"form-control"]) !!}
-        </div>
     </div>
     <div class="row">
         <div class="form-group col-6">
+        {!! Form::label('email')!!}
+        {!! Form::email('email',$data->email,["class"=>"form-control"]) !!}
+        </div>
+    </div>
+    @endif
+    
+
+    <div class="row">
+        <div class="form-group col-6">
         {!! Form::label('password')!!}
-        {!! Form::text('password',$data->password,["class"=>"form-control"]) !!}
+        {!! Form::password('password',null,["class"=>"form-control"]) !!}
         </div>
     </div>
     <div class="row">
         <div class="form-group col-6">
             {!! Form::label('Confirm Password')!!}
-            {!! Form::text('Confirm Password',null,["class"=>"form-control"]) !!}
+            {!! Form::password('ConfirmPassword',null,["class"=>"form-control"]) !!}
         </div>
     </div>
     <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
