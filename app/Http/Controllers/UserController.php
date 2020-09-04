@@ -17,7 +17,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $data = User::orderBy('id', 'ASC')->get();
+        return view('User.index', compact('data'));
     }
 
     /**
@@ -83,7 +84,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-       
         $id_user = Auth::user()->id;
         $user = $request->user();
        
@@ -91,39 +91,61 @@ class UserController extends Controller
             $request->validate([
                 
                 'username',
-                'password' => 'min:6',
-                'ConfirmPassword' => 'same:password|min:6'
+                'password' =>'required',
+                'Newpassword',
+                'ConfirmPassword' => 'same:Newpassword'
         ]);
             $data = $request->all();
-            if ($data['ConfirmPassword'] == $request->password) {
-                User::find($id)->update([
-                    'username'=>$request->username,
-                    'password' => bcrypt($request->password),
-                ]);
-                return redirect('/home');
-            } else {
+            $user_user = User::find(auth()->user()->id);
+            if (!Hash::check($data['password'], $user_user->password)) {
                 return back()->with('error', 'The specified password does not match the database password');
+            } else {
+                // write code to update password
+                if ($data['ConfirmPassword']==null) {
+                    User::find($id)->update([
+                        'username' => $request->username,
+                    ]);
+                    return redirect(route('home'));
+                } else {
+                    User::find($id)->update([
+                    'username' => $request->username,
+                    'password' => bcrypt($request->Newpassword),
+                ]);
+                    return redirect(route('home'));
+                }
             }
         }
         if ($user->hasRole('Admin')) {
             $request->validate([
-                'name' => 'required|min:3',
-                'email' => 'email',
+                
                 'username',
-                'password' => 'min:6',
-                'ConfirmPassword' => 'same:password|min:6'
+                'email',
+                'password' =>'required',
+                'Newpassword',
+                'ConfirmPassword' => 'same:Newpassword'
         ]);
             $data = $request->all();
-            if ($data['ConfirmPassword'] == $request->password) {
-                User::find($id)->update([
-                    'username'=>$request->username,
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                ]);
-                return redirect('/home');
-            } else {
+            $user_user = User::find(auth()->user()->id);
+            if (!Hash::check($data['password'], $user_user->password)) {
                 return back()->with('error', 'The specified password does not match the database password');
+            } else {
+                // write code to update password
+                if ($data['ConfirmPassword']==null) {
+                    User::find($id)->update([
+                        'username' => $request->username,
+                        'email' => $request->email,
+                        'name'=> $request->name,
+                    ]);
+                    return redirect(route('home'));
+                } else {
+                    User::find($id)->update([
+                        'username' => $request->username,
+                        'email' => $request->email,
+                        'name'=> $request->name,
+                        'password' => bcrypt($request->Newpassword),
+                ]);
+                    return redirect(route('home'));
+                }
             }
         } else {
             abort(404);
@@ -138,6 +160,23 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect('/User');
+    }
+    public function Search(Request $request)
+    {
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+            $Search =$request->get(
+                'Search'
+            );
+            $data =User::query()
+        ->where('name', 'LIKE', "%{$Search}%")
+        ->orWhere('username', 'LIKE', "%{$Search}%")
+        ->get();
+            return view('User.index', compact('data'));
+        } else {
+            abort(404);
+        }
     }
 }

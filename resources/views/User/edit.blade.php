@@ -32,12 +32,17 @@
         </div>
     </div>
     @endif
-    
-
     <div class="row">
         <div class="form-group col-6">
         {!! Form::label('password')!!}
         {!! Form::password('password',null,["class"=>"form-control"]) !!}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-6">
+        {!! Form::label('New password')!!}
+        {!! Form::password('Newpassword',null,["class"=>"form-control"]) !!}
         </div>
     </div>
     <div class="row">

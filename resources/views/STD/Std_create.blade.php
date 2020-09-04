@@ -30,10 +30,6 @@
         {!! Form::label('email')!!}
         {!! Form::email('email',null,["class"=>"form-control"]) !!}
         </div>
-        <div class="form-group col">
-        {!! Form::label('password')!!}
-        {!! Form::password('password',null,["class"=>"form-control"]) !!}
-        </div>
 
     </div>
     <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
