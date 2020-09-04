@@ -8,7 +8,6 @@ class reg_std extends Model
 {
     use HasPermissionsTrait;
     protected $fillable = [
-        'id',
         'std_code',
         'name',
         'nick_name',
@@ -21,12 +20,11 @@ class reg_std extends Model
         'parent_phone',
         'username',
         'password',
-        'type',
         
 ];
 public function user()
 {
-    return $this->belongsToMany(User::class,'user_regStd','user_id','reg_std_id');
+    return $this->belongsToMany(User::class,'reg_stds','user_id');
 }
 
 }

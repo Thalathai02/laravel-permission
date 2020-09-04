@@ -37,7 +37,15 @@
 
     </div>
     <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
+        
+        @if (Auth::user()->hasRole('Admin'))
         <a href="/STD" class="btn btn-success row-2">กลับ</a>
+        <a href="{{route('User.edit',$data->user_id)}}" class="btn btn-warning">แก้ไขผู้ใช้งาน</a>
+        @endif
+        @if (Auth::user()->hasRole('Std'))
+        <a href="/home" class="btn btn-success row-2">กลับ</a>
+        @endif
+       
 {!! Form::close() !!}
 </div>
 @endsection

@@ -14,6 +14,7 @@ use App\Permission;
 use App\Role;
 
 
+
 class ImportStd implements ToModel
 {
     use RegistersUsers;
@@ -27,6 +28,7 @@ class ImportStd implements ToModel
 
          $std_role = Role::where('slug','std')->first();
          $std_perm = Permission::where('slug','edit')->first();
+         $reg = new reg_std();
         // $student = new User();
         // $student = User::all();
         // $student->roles()->attach($std_role);
@@ -35,13 +37,14 @@ class ImportStd implements ToModel
 		$student->name = $row[2];
         $student->email = $row[6];
         $student->username = 'MJU'. $row[1];
-		$student->password =  bcrypt($row[1]);
+        $student->password =  bcrypt($row[1]);
 		$student->save();
 		$student->roles()->attach($std_role);
 		$student->permissions()->attach($std_perm);
         
+       
 
-        $reg = new reg_std();
+        
         $reg->std_code = $row[1];
         $reg->name   = $row[2];
         $reg->nick_name  = $row[3];
@@ -54,7 +57,11 @@ class ImportStd implements ToModel
         $reg->parent_phone = $row[10];
         $reg->username  = 'MJU'. $row[1];
         $reg->password  = Hash::make($row[1]);
+        $reg->user_id  = $student->id;
         $reg->save();
+        $student->reg_std_id  =  $reg->id;
+		$student->save();
+        // $reg->user()->attach($std_reg);
 
         // return new reg_std([
         //     'std_code'   => $row[1],

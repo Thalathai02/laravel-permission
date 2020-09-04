@@ -27,7 +27,8 @@ class CreateRegStdsTable extends Migration
             $table->string('parent_phone')->nullable();
             $table->string('username')->nullable();
             $table->string('password')->nullable();
-            $table->string('type')->nullable()->default('std');
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

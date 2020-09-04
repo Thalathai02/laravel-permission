@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Permission;
 use App\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\Else_;
 
 class ImportExcelController extends Controller
 {
@@ -20,10 +23,15 @@ class ImportExcelController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-   function index()
+   function index(Request $request)
    {
-    $data = reg_std::orderBy('id', 'ASC')->get();
-    return view('STD.index', compact('data'));
+    $user = $request->user();
+    if ($user->hasRole('Admin')) {
+        $data = reg_std::orderBy('id', 'ASC')->get();
+        return view('STD.index', compact('data'));
+    }else{
+        abort(404);
+    }
    }
 /**
     * Display a listing of the resource.
@@ -33,22 +41,32 @@ class ImportExcelController extends Controller
     */
    function import(Request $request)
    {
-       $request->validate([
+       $user = $request->user();
+    if ($user->hasRole('Admin')) {
+        $request->validate([
            'import_file' => 'required|mimes:xls,xlsx'
        ]);
        
-       Excel::import(new ImportStd, request()->file('import_file'));
-       return back()->with('success', 'Contacts imported successfully.');
+        Excel::import(new ImportStd, request()->file('import_file'));
+        return back()->with('success', 'Contacts imported successfully.');
+    }else{
+        abort(404);
+    }
+    
    }
    /**
     * Show the form for creating a new resource.
     *
     * @return \Illuminate\Http\Response
     */
-   public function create()
+   public function create(Request $request)
    {
-       return view('STD.Std_create');
-   
+    $user = $request->user();
+    if ($user->hasRole('Admin')) {
+        return view('STD.Std_create');
+    }else{
+        abort(404);
+    }
    }
     /**
     * Store a newly created resource in storage.
@@ -71,8 +89,7 @@ class ImportExcelController extends Controller
            'parent_phone',
            'username',
            'password',
-           'IDedit',
-           'type'=>'std'
+
            
        ]);
         reg_std::create($request->all());
@@ -97,14 +114,26 @@ class ImportExcelController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-   public function edit($id)
-   {
-       $data=reg_std::find($id);
-       return view('STD.edit',compact(['data']));
+   public function edit(Request $request,$id)
+   { 
+       $id_user = Auth::user()->reg_std_id;
+        $user = $request->user();
+        if ($id_user == $id) {
+            $data=reg_std::find($id);
+            return view('STD.edit', compact(['data']));
+        }if($user->hasRole('Admin')){ 
+            $data=reg_std::find($id);
+            return view('STD.edit', compact(['data']));
+        } else{
+            abort(404);
+        }
    }
 
    public function update(Request $request, $id)
    {
+    $id_user = Auth::user()->reg_std_id;
+    $user = $request->user();
+    if ($id_user == $id) {
        $request->validate([
            'std_code'=>['required'],
            'name',
@@ -118,19 +147,39 @@ class ImportExcelController extends Controller
            'parent_phone',
            'username',
            'password',
-           'type'
        ]);
        reg_std::find($id)->update($request->all());
-       
-       return redirect('/STD');
+       return redirect('/home');
+    }if($user->hasRole('Admin')){ 
+        $request->validate([
+            'std_code'=>['required'],
+            'name',
+            'nick_name',
+            'phone',
+            'lineId',
+            'email'=>['required','email'],
+            'facebook',
+            'address',
+            'parent_name',
+            'parent_phone',
+            'username',
+            'password',
+        ]);
+        reg_std::find($id)->update($request->all());
+        return redirect('/STD');
+    } else{
+        abort(404);
+    }
+
    }
    public function destroy(Request $request,$id)
-   {
-    
+   { 
         reg_std::find($id)->delete();
+       
         return redirect('/STD');
       
        
    }
+
 
 }

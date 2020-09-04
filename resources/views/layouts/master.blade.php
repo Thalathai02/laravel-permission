@@ -8,9 +8,7 @@
         <div class="sidebar">
             <a class="nav-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
             @if (Auth::user()->hasRole('Admin'))
-            <li class="nav-item">
                 <a class="nav-link" href="/STD">{{ __('Student information') }}</a>
-            </li>
             @endif
           </div>
         @show

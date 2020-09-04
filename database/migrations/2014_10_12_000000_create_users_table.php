@@ -20,7 +20,8 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('type')->nullable();
+            $table->unsignedInteger('reg_std_id')->nullable();
+            $table->foreign('reg_std_id')->references('id')->on('reg_stds')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

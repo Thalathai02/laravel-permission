@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/nameStd',function(){
+Route::get('/nameStd', function () {
     return view('STD');
 });
 
@@ -20,25 +21,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Auth::routes();
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::resource('/STD','ImportExcel\ImportExcelController')->middleware('auth');
-
+Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
+Route::resource('/User', 'UserController')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
-Route::group(['middleware' => 'role:Admin'], function() {
-    Route::resource('/STD','ImportExcel\ImportExcelController')->middleware('auth');
+Route::group(['middleware' => 'role:Admin'], function () {
+    Route::get('/admin', function () {
+        return 'Welcome Admin';
+    });
+});
+  Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
     Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
     Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
     Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
-    Route::get('/admin', function() {
-       return 'Welcome Admin';
-       
-    });
- 
- });
-
-
+    Route::post('/User/edit', 'UserController@edit')->middleware('auth');
