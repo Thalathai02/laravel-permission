@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->unsignedInteger('reg_std_id')->nullable();
             $table->foreign('reg_std_id')->references('id')->on('reg_stds')->onDelete('cascade');
+            $table->unsignedInteger('reg_tea_id')->nullable();
+            $table->foreign('reg_tea_id')->references('id')->on('reg_tea')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

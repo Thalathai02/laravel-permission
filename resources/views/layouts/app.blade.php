@@ -70,6 +70,14 @@
                                         {{ __('จัดการข้อมูลการติดต่อ') }}
                                     </a>
                                     @endif
+                                    @if (Auth::user()->hasRole('Tea'))
+                                    <a class="dropdown-item" href="{{route('User.edit', Auth::user()->id)}}">
+                                        {{ __('จัดการผู้ใช้') }}
+                                    </a>
+                                    <a class="dropdown-item" href="{{route('Teacher.edit', Auth::user()->reg_tea_id)}}">
+                                        {{ __('จัดการข้อมูลการติดต่อ') }}
+                                    </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -12,7 +12,7 @@ class PermissionController extends Controller
     public function Permission()
     {   
     	$admin_permission = Permission::where('slug','create')->first();
-		$manager_permission = Permission::where('slug', 'edit')->first();
+		$manager_permission = Permission::where('slug', 'Tea')->first();
 		$RegStd_permission = Permission::where('slug', 'edit')->first();
 
 		//RoleTableSeeder.php
@@ -23,8 +23,8 @@ class PermissionController extends Controller
 		$admin_role->permissions()->attach($admin_permission);
 
 		$manager_role = new Role();
-		$manager_role->slug = 'manager';
-		$manager_role->name = 'Assistant Manager';
+		$manager_role->slug = 'Tea';
+		$manager_role->name = 'Teacher';
 		$manager_role->save();
 		$manager_role->permissions()->attach($manager_permission);
 
@@ -36,7 +36,7 @@ class PermissionController extends Controller
 
 
 		$admin_role = Role::where('slug','Admin')->first();
-		$manager_role = Role::where('slug', 'manager')->first();
+		$manager_role = Role::where('slug', 'Tea')->first();
 		$std_role = Role::where('slug', 'Std')->first();
 
 		$createTasks = new Permission();
@@ -53,7 +53,7 @@ class PermissionController extends Controller
 		$editUsers->roles()->attach($std_role);
 
 		$admin_role = Role::where('slug','Admin')->first();
-		$manager_role = Role::where('slug', 'manager')->first();
+		$manager_role = Role::where('slug', 'Tea')->first();
 		$admin_perm = Permission::where('slug','create-tasks')->first();
 		$manager_perm = Permission::where('slug','edit')->first();
 

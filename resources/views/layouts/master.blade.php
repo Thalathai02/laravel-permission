@@ -10,6 +10,8 @@
             @if (Auth::user()->hasRole('Admin'))
                 <a class="nav-link" href="/STD">{{ __('Student information') }}</a>
                 <a class="nav-link" href="/User">{{ __('User information') }}</a>
+                <a class="nav-link" href="/Teacher">{{ __('Teacher information') }}</a>
+                <a class="nav-link" href="/system">{{ __('ระบบ') }}</a>
             @endif
           </div>
         @show

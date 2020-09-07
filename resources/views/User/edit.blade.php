@@ -56,8 +56,11 @@
         @if (Auth::user()->hasRole('Std'))
         <a href="/home" class="btn btn-success row-2">กลับ</a>
         @endif
+        @if (Auth::user()->hasRole('Tea'))
+        <a href="/home" class="btn btn-success row-2">กลับ</a>
+        @endif
         @if (Auth::user()->hasRole('Admin'))
-        <a href="/STD" class="btn btn-success row-2">กลับ</a>
+        <a href="/User" class="btn btn-success row-2">กลับ</a>
         @endif
 {!! Form::close() !!}
 </div>

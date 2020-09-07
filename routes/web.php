@@ -32,7 +32,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
 Route::resource('/User', 'UserController')->middleware('auth');
-
+Route::resource('/Teacher', 'TeacherController')->middleware('auth');
+Route::resource('/system','systemController')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
     Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
@@ -45,3 +46,5 @@ Route::get('/roles', 'PermissionController@Permission');
     Route::post('/User/edit', 'UserController@edit')->middleware('auth');
     Route::post('/User/Search', 'UserController@Search')->middleware('auth');
     
+    Route::post('/Teacher/create', 'TeacherController@store')->middleware('auth');
+    Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');

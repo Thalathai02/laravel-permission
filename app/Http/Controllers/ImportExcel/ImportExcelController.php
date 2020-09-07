@@ -46,7 +46,6 @@ class ImportExcelController extends Controller
             $request->validate([
            'import_file' => 'required|mimes:xls,xlsx'
        ]);
-       
             Excel::import(new ImportStd, request()->file('import_file'));
             return back()->with('success', 'Contacts imported successfully.');
         } else {
