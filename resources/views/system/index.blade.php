@@ -36,15 +36,33 @@
           </tr>
         </thead>
         <tbody>
-           
           <tr>
             <th>1</th>
-            <td>เสนอหัวข้อ</td>
+            <td>ระบบเสนอหัวข้อ</td>
           <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
             <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
             <td><a href="" class="btn btn-success">ยืนยัน</a></td>
           </tr>
-     
+                <tr>
+                <th>2</th>
+                <td>ระบบการตัดสินประเมินตอนนำเสนอ</td>
+                <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
+                <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
+                <td><a href="" class="btn btn-success">ยืนยัน</a></td>
+                </tr>
+                <tr>
+                        <th>3</th>
+                        <td>ระบบแสดงความคิดเห็นอาจารย์/ประเมิน</td>
+                        <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
+                        <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
+                        <td><a href="" class="btn btn-success">ยืนยัน</a></td>
+                        </tr>
+                        <th>4</th>
+                        <td> </td>
+                        <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
+                        <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
+                        <td><a href="" class="btn btn-success">ยืนยัน</a></td>
+                        </tr>
         </tbody>
       </table>
     

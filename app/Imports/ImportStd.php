@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Permission;
 use App\Role;
+use App\subject_student;
 
 
 
@@ -29,6 +30,8 @@ class ImportStd implements ToModel
          $std_role = Role::where('slug','std')->first();
          $std_perm = Permission::where('slug','edit')->first();
          $reg = new reg_std();
+         $subject = new subject_student();
+         
         // $student = new User();
         // $student = User::all();
         // $student->roles()->attach($std_role);
@@ -60,7 +63,8 @@ class ImportStd implements ToModel
         $reg->user_id  = $student->id;
         $reg->save();
         $student->reg_std_id  =  $reg->id;
-		$student->save();
+        $student->save();
+        
         // $reg->user()->attach($std_reg);
 
         // return new reg_std([

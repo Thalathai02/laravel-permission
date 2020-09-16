@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
     $('.deleteForm').click(function(evt){
         var name = $(this).data('name');

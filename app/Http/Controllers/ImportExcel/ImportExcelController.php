@@ -15,6 +15,8 @@ use App\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\Else_;
+use App\subject;
+use App\subject_student;
 
 class ImportExcelController extends Controller
 {
@@ -27,8 +29,9 @@ class ImportExcelController extends Controller
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
+            $term = subject::pluck('year_term', 'id');
             $data = reg_std::orderBy('id', 'ASC')->get();
-            return view('STD.index', compact('data'));
+            return view('STD.index', compact('data','term'));
         } else {
             abort(404);
         }
@@ -44,8 +47,10 @@ class ImportExcelController extends Controller
         $user = $request->user();
         if ($user->hasRole('Admin')) {
             $request->validate([
-           'import_file' => 'required|mimes:xls,xlsx'
+           'import_file' => 'required|mimes:xls,xlsx',
+           'item_id'
        ]);
+        $subject = new subject_student();
             Excel::import(new ImportStd, request()->file('import_file'));
             return back()->with('success', 'Contacts imported successfully.');
         } else {

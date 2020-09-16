@@ -1,6 +1,7 @@
 <?php
 
 use App\Role;
+use App\subject;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +35,7 @@ Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth')
 Route::resource('/User', 'UserController')->middleware('auth');
 Route::resource('/Teacher', 'TeacherController')->middleware('auth');
 Route::resource('/system','systemController')->middleware('auth');
+Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
     Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');

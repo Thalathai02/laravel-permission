@@ -33,16 +33,22 @@
     <input type="submit" value="ค้นหา" class="btn btn-primary  " name="" id="">
     </div>
     {!! Form::close() !!}
-
+   
    {!! Form::open(['action' => 'ImportExcel\ImportExcelController@import','method'=>'POST','enctype'=>"multipart/form-data"]) !!}
    {{ csrf_field() }}
+   <div class="form-group">
+    {!! Form::Label('item', 'ปีการศึกษา:') !!}
+    {!! Form::select('item_id', $term, null, ['class' => 'form-control']) !!}
+</div>
     <div class="col-md-6" align="center">
         <div class="form-group" >
         {!! Form::file($name ?? 'import_file', $attributes = [])!!}
         <input type="submit" value="อัพโหลด" class="btn btn-primary col-2 " name="" id="">
         <span>----- Or -----</span>
         <a href="/STD/create" class="btn btn-primary my-2" align="left">เพิ่มข้อมูล</a>
+        
         </div>
+        <a href="/STD/term/create" class="btn btn-primary my-2" align="left">เพิ่มปีการศึกษา</a>
     </div>
 {!! Form::close() !!}
    
@@ -54,6 +60,7 @@
       <th scope="col">ชื่อ</th>
       <th scope="col">อีเมล</th>
       <th scope="col">เบอร์โทร</th>
+      <th scope="col">ปีการศึกษา</th>
       <th scope="col">แก้ไข</th>
       <th scope="col">ลบ</th>
     </tr>
@@ -65,6 +72,7 @@
       <td>{{$row->name}}</td>
       <td>{{$row->email}}</td>
       <td>{{$row->phone}}</td>
+    <td>{{$term}}</td>
       <td><a href="{{route('STD.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
       <td>
           <form action="{{route('STD.destroy',$row->id)}}" method="POST">
