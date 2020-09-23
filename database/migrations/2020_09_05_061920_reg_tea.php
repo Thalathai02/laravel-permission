@@ -33,6 +33,6 @@ class RegTea extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reg_tea');
+        Schema::dropIfExists('teachers');
     }
 }

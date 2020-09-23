@@ -13,41 +13,41 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Permission;
 use App\Role;
 use App\subject_student;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 
 class ImportStd implements ToModel
 {
     use RegistersUsers;
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
 
-         $std_role = Role::where('slug','std')->first();
-         $std_perm = Permission::where('slug','edit')->first();
-         $reg = new reg_std();
-         $subject = new subject_student();
-         
+        $std_role = Role::where('slug', 'std')->first();
+        $std_perm = Permission::where('slug', 'edit')->first();
+        $reg = new reg_std();
+        $subject = new subject_student();
+
+
         // $student = new User();
         // $student = User::all();
         // $student->roles()->attach($std_role);
         // $student->permissions()->attach($std_perm);
         $student = new User();
-		$student->name = $row[2];
+        $student->name = $row[2];
         $student->email = $row[6];
-        $student->username = 'MJU'. $row[1];
+        $student->username = 'MJU' . $row[1];
         $student->password =  bcrypt($row[1]);
-		$student->save();
-		$student->roles()->attach($std_role);
-		$student->permissions()->attach($std_perm);
-        
-       
+        $student->save();
+        $student->roles()->attach($std_role);
+        $student->permissions()->attach($std_perm);
 
-        
+
         $reg->std_code = $row[1];
         $reg->name   = $row[2];
         $reg->nick_name  = $row[3];
@@ -58,13 +58,21 @@ class ImportStd implements ToModel
         $reg->address  = $row[8];
         $reg->parent_name  = $row[9];
         $reg->parent_phone = $row[10];
-        $reg->username  = 'MJU'. $row[1];
+        $reg->username  = 'MJU' . $row[1];
         $reg->password  = Hash::make($row[1]);
         $reg->user_id  = $student->id;
         $reg->save();
         $student->reg_std_id  =  $reg->id;
         $student->save();
+        $subject->student_id = $student->id;
+        $subject->subject_id = Session::get('subject_id');
         
+        $subject->save();
+
+        
+       
+
+
         // $reg->user()->attach($std_reg);
 
         // return new reg_std([
@@ -80,7 +88,7 @@ class ImportStd implements ToModel
         //     'parent_phone'  => $row[10],
         //     'username'  => 'MJU'. $row[1],
         //     'password'  => Hash::make($row[1]),
-            
+
         // ]);
     }
 }

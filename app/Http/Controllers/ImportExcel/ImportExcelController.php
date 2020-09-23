@@ -17,41 +17,49 @@ use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Stmt\Else_;
 use App\subject;
 use App\subject_student;
+use Illuminate\Support\Facades\Session;
+
+
 
 class ImportExcelController extends Controller
 {
     /**
-    * Display a listing of the resource.
-    *
-    * @return \Illuminate\Http\Response
-    */
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
+
         $user = $request->user();
         if ($user->hasRole('Admin')) {
-            $term = subject::pluck('year_term', 'id');
             $data = reg_std::orderBy('id', 'ASC')->get();
-            return view('STD.index', compact('data','term'));
+            $term = subject::pluck('year_term', 'id');
+            $data_subject = subject_student::orderBy('id', 'ASC')->get();
+            $subject = subject::find($data_subject);
+            return view('STD.index', compact('data', 'term', 'data_subject'));
         } else {
             abort(404);
         }
     }
     /**
-        * Display a listing of the resource.
-        *
-        * @param  \Illuminate\Http\Request  $request
-        * @return \Illuminate\Http\Response
-        */
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function import(Request $request)
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
             $request->validate([
-           'import_file' => 'required|mimes:xls,xlsx',
-           'item_id'
-       ]);
-        $subject = new subject_student();
+                'import_file' => 'required|mimes:xls,xlsx',
+                'subject'
+            ]);
+            $data = $request['subject'];
+            $request->session()->flash('subject_id', $data);
             Excel::import(new ImportStd, request()->file('import_file'));
+            // $request->session()->fluslh();
             return back()->with('success', 'Contacts imported successfully.');
         } else {
             abort(404);
@@ -66,19 +74,21 @@ class ImportExcelController extends Controller
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
-            return view('STD.Std_create');
+            $term = subject::pluck('year_term', 'id');
+            return view('STD.Std_create', compact('term'));
         } else {
             abort(404);
         }
     }
     /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    * @return \Illuminate\Http\Response
-    */
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
+        $subject = new subject_student();
         $std_role = Role::where('slug', 'std')->first();
         $std_perm = Permission::where('slug', 'edit')->first();
         $student = new User();
@@ -90,7 +100,7 @@ class ImportExcelController extends Controller
         $student->save();
         $student->roles()->attach($std_role);
         $student->permissions()->attach($std_perm);
-    
+
         $reg->std_code = $request['std_code'];
         $reg->name   = $request['name'];
         $reg->nick_name  = $request['nick_name'];
@@ -101,31 +111,35 @@ class ImportExcelController extends Controller
         $reg->address  = $request['address'];
         $reg->parent_name  = $request['parent_name'];
         $reg->parent_phone = $request['parent_phone'];
-        $reg->username  = 'MJU'. $request['username'];
+        $reg->username  = 'MJU' . $request['username'];
         $reg->password  = Hash::make($request['password']);
         $reg->user_id  = $student->id;
         $reg->save();
         $student->reg_std_id  =  $reg->id;
+        $subject->student_id = $student->id;
+        $subject->subject_id = $request['subject_id'];
+        $subject->save();
+
         $student->save();
-        
+
         return redirect('/STD');
     }
     /**
-      * Show the form for editing the specified resource.
-      *
-      * @param  int  $id
-      * @return \Illuminate\Http\Response
-      */
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit(Request $request, $id)
     {
         $id_user = Auth::user()->reg_std_id;
         $user = $request->user();
         if ($id_user == $id) {
-            $data=reg_std::find($id);
+            $data = reg_std::find($id);
             return view('STD.edit', compact(['data']));
         }
         if ($user->hasRole('Admin')) {
-            $data=reg_std::find($id);
+            $data = reg_std::find($id);
             return view('STD.edit', compact(['data']));
         } else {
             abort(404);
@@ -138,37 +152,37 @@ class ImportExcelController extends Controller
         $user = $request->user();
         if ($id_user == $id) {
             $request->validate([
-           'std_code'=>['required'],
-           'name',
-           'nick_name',
-           'phone',
-           'lineId',
-           'email'=>['required','email'],
-           'facebook',
-           'address',
-           'parent_name',
-           'parent_phone',
-           'username',
-           'password',
-       ]);
+                'std_code' => ['required'],
+                'name',
+                'nick_name',
+                'phone',
+                'lineId',
+                'email' => ['required', 'email'],
+                'facebook',
+                'address',
+                'parent_name',
+                'parent_phone',
+                'username',
+                'password',
+            ]);
             reg_std::find($id)->update($request->all());
             return redirect('/home');
         }
         if ($user->hasRole('Admin')) {
             $request->validate([
-            'std_code'=>['required'],
-            'name',
-            'nick_name',
-            'phone',
-            'lineId',
-            'email'=>['required','email'],
-            'facebook',
-            'address',
-            'parent_name',
-            'parent_phone',
-            'username',
-            'password',
-        ]);
+                'std_code' => ['required'],
+                'name',
+                'nick_name',
+                'phone',
+                'lineId',
+                'email' => ['required', 'email'],
+                'facebook',
+                'address',
+                'parent_name',
+                'parent_phone',
+                'username',
+                'password',
+            ]);
             reg_std::find($id)->update($request->all());
             return redirect('/STD');
         } else {
@@ -178,21 +192,22 @@ class ImportExcelController extends Controller
     public function destroy(Request $request, $id)
     {
         reg_std::find($id)->delete();
-       
+
         return redirect('/STD');
     }
     public function Search(Request $request)
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
-            $Search =$request->get(
+            $Search = $request->get(
                 'Search'
             );
-            $data =reg_std::query()
-        ->where('name', 'LIKE', "%{$Search}%")
-        ->orWhere('std_code', 'LIKE', "%{$Search}%")
-        ->get();
-            return view('STD.index', compact('data'));
+            $term = subject::pluck('year_term', 'id');
+            $data = reg_std::query()
+                ->where('name', 'LIKE', "%{$Search}%")
+                ->orWhere('std_code', 'LIKE', "%{$Search}%")
+                ->get();
+            return view('STD.index', compact('data', 'term'));
         } else {
             abort(404);
         }

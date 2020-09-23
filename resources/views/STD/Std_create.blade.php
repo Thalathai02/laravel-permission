@@ -15,6 +15,8 @@
         <div class="form-group col-4">
         {!! Form::label('std_code')!!}
         {!! Form::text('std_code',null,["class"=>"form-control"]) !!}
+        {!! Form::Label('subject_id','ปีการศึกษา:') !!}
+        {!! Form::select('subject_id', $term,["class"=>"form-group2 col-6"] ) !!}
         </div>
         <div class="form-group col">
         {!! Form::label('Username')!!}
