@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\subject;
+use App\system;
 class systemController extends Controller
 {
     /**
@@ -16,7 +17,8 @@ class systemController extends Controller
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
-            return view('system.index');
+            $term = subject::pluck('year_term', 'id');
+            return view('system.pageinto' ,compact('term'));
          
         } else {
             abort(404);
@@ -51,9 +53,18 @@ class systemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+            $data_subject = $request->get(
+                'subject'
+            );
+            $data = system::query()->where('subject_id', 'LIKE', "%{$data_subject}%")->get();
+            return view('system.index',compact('data'));
+        } else {
+            abort(404);
+        }
     }
 
     /**

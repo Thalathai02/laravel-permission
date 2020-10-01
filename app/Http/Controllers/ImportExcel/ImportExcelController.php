@@ -116,7 +116,7 @@ class ImportExcelController extends Controller
         $reg->user_id  = $student->id;
         $reg->save();
         $student->reg_std_id  =  $reg->id;
-        $subject->student_id = $student->id;
+        $subject->student_id = $reg->id;
         $subject->subject_id = $request['subject_id'];
         $subject->save();
 

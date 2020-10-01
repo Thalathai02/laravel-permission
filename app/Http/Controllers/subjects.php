@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\subject;
 use App\reg_std;
 use App\subject_student;
+use App\system;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -50,12 +51,38 @@ class subjects extends Controller
         $student = new reg_std();
         $reg = new subject();
         $subject = new subject_student();
+        $system = new system ;
 
         $reg->name   = 'CS498';
         $reg->year  = $request['year'];
         $reg->term  = $request['term'];
         $reg->year_term  = $request['year'].'/'.$request['term'];
         $reg->save();
+        $system->name = 'ระบบเสนอหัวข้อ';
+        $system->subject_id = $reg->id;
+        $system->dateTime =\Carbon\Carbon::now();
+        $system->dateOut =\Carbon\Carbon::tomorrow();
+        $system->save();
+
+        $system = new system ;
+        $system->name = 'ระบบการตัดสินประเมินตอนนำเสนอ';
+        $system->subject_id = $reg->id;
+        $system->dateTime = \Carbon\Carbon::now();
+        $system->dateOut =\Carbon\Carbon::tomorrow();
+        $system->save();
+
+        $system = new system ;
+        $system->name = 'ระบบแสดงความคิดเห็นอาจารย์/ประเมิน';
+        $system->subject_id = $reg->id;
+        $system->dateTime = \Carbon\Carbon::now();
+        $system->dateOut =\Carbon\Carbon::tomorrow();
+        $system->save();
+
+        // $system = new system ;
+        // $system->name = '';
+        // $system->subject_id = $reg->id;
+        // $system->save();
+        
         return redirect('/STD');
     }
 

@@ -35,18 +35,21 @@ Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth')
 Route::resource('/User', 'UserController')->middleware('auth');
 Route::resource('/Teacher', 'TeacherController')->middleware('auth');
 Route::resource('/system','systemController')->middleware('auth');
+
 Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
     Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
     Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
     Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
-    Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
-    Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');
+Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
+Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');
 
 
-    Route::post('/User/edit', 'UserController@edit')->middleware('auth');
-    Route::post('/User/Search', 'UserController@Search')->middleware('auth');
+Route::post('/User/edit', 'UserController@edit')->middleware('auth');
+Route::post('/User/Search', 'UserController@Search')->middleware('auth');
     
-    Route::post('/Teacher/create', 'TeacherController@store')->middleware('auth');
-    Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
+Route::post('/Teacher/create', 'TeacherController@store')->middleware('auth');
+Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
+
+Route::post('/system/index','systemController@show')->middleware('auth');

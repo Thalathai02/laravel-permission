@@ -79,9 +79,9 @@
       <td>{{$row->name}}</td>
       <td>{{$row->email}}</td>
       <td>{{$row->phone}}</td>
-      @foreach ($data_subject as $data)
-  <td>{{$data}}</td>
-  @endforeach
+      {{-- @foreach ($data_subject as $data) --}}
+  {{-- <td>{{$data}}</td> --}}
+  {{-- @endforeach --}}
       <td><a href="{{route('STD.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
       <td>
           <form action="{{route('STD.destroy',$row->id)}}" method="POST">

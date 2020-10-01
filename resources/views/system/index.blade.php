@@ -26,43 +26,28 @@
    </div>
    @endif
    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ลำดับ</th>
-            <th scope="col">ชื่อระบบ</th>
-            <th scope="col">กำหนดวันปิดระบบ</th>
-            <th scope="col">เปิด/ปิดระบบ</th>
-            <th scope="col">ยืนยัน</th>
-          </tr>
-        </thead>
+    <thead>
+      <tr>
+        <th scope="col">ชื่อ</th>
+        <th scope="col">เวลาเปิดระบบ</th>
+        <th scope="col">เวลาปิดระบบ</th>
+        <th scope="col">ระบบเปิด/ปิด</th>
+        <th scope="col">ยืนยัน</th>
+
+      </tr>
+    </thead>
+    
         <tbody>
+          @foreach ($data as $row )
           <tr>
-            <th>1</th>
-            <td>ระบบเสนอหัวข้อ</td>
-          <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
-            <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
-            <td><a href="" class="btn btn-success">ยืนยัน</a></td>
+            <td>{{ $row->name }}</td>
+            <td>{!! Form::date('date',\Carbon\Carbon::parse($row->dateTime),['class' => 'form-control']) !!}</td>
+            <td>{!! Form::date('date',\Carbon\Carbon::parse($row->dateOut),['class' => 'form-control']) !!}</td>
+            <td>{!! Form::select('openform' ,['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
+            <td><a class="btn btn-success">ยืนยัน</a></td>
+           
           </tr>
-                <tr>
-                <th>2</th>
-                <td>ระบบการตัดสินประเมินตอนนำเสนอ</td>
-                <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
-                <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
-                <td><a href="" class="btn btn-success">ยืนยัน</a></td>
-                </tr>
-                <tr>
-                        <th>3</th>
-                        <td>ระบบแสดงความคิดเห็นอาจารย์/ประเมิน</td>
-                        <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
-                        <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
-                        <td><a href="" class="btn btn-success">ยืนยัน</a></td>
-                        </tr>
-                        <th>4</th>
-                        <td> </td>
-                        <td>{!! Form::date('dataopen', \Carbon\Carbon::now()) !!}</td>
-                        <td>{!! Form::select('openform', ['0' => 'ปิด', '1' => 'เปิด']) !!}</td>
-                        <td><a href="" class="btn btn-success">ยืนยัน</a></td>
-                        </tr>
+          @endforeach
         </tbody>
       </table>
     
