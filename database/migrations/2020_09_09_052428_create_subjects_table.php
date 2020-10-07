@@ -19,6 +19,23 @@ class CreateSubjectsTable extends Migration
             $table->text('year');
             $table->text('term');
             $table->text('year_term');
+            $table->text('DatePropose');
+            $table->text('OutPropose');
+            $table->text('Datedecide');
+            $table->text('Outdecide');
+            $table->text('DateComment');
+            $table->text('OutComment');
+            $table->text('DateSubmitProject');
+            $table->text('OutSubmitProject');
+            $table->text('DateDue50');
+            $table->text('OutDue50');
+            $table->text('DateDue100');
+            $table->text('OutDue100');
+
+            $table->text('DateComment50');
+            $table->text('OutComment50');
+            $table->text('DateComment100');
+            $table->text('OutComment100');
             $table->timestamps();
         });
     }

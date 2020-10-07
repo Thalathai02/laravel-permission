@@ -60,7 +60,7 @@ class systemController extends Controller
             $data_subject = $request->get(
                 'subject'
             );
-            $data = system::query()->where('subject_id', 'LIKE', "%{$data_subject}%")->get();
+            $data = subject::query()->where('id', 'LIKE', "%{$data_subject}%")->get();
             return view('system.index',compact('data'));
         } else {
             abort(404);
@@ -87,7 +87,33 @@ class systemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = $request->user();
+        
+        if ($user->hasRole('Admin')) {
+            // $data2 = subject::query()->where('datePropose', 'LIKE', "%{$id}%")->get();
+            $request->validate([
+               'DatePropose',
+               'OutPropose',
+               'Datedecide',
+               'Outdecide',
+               'Datedecide',
+               'Outdecide',
+               'Datesend',
+               'Outdecide',
+               'DateComment',
+               'OutComment',
+               'DateSubmitProject',
+               'OutSubmitProject',
+               'DateDue50',
+               'OutDue50',
+               'DateDue100',
+               'OutDue100'
+            ]);
+            subject::find($id)->update($request->all());
+            return redirect('/system');
+        }else {
+            abort(404);
+        }
     }
 
     /**

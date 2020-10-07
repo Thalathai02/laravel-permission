@@ -57,32 +57,28 @@ class subjects extends Controller
         $reg->year  = $request['year'];
         $reg->term  = $request['term'];
         $reg->year_term  = $request['year'].'/'.$request['term'];
+     
+
+
+        $reg->DatePropose =  \Carbon\Carbon::now()->format('d-m-Y');
+        $reg->OutPropose =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->Datedecide =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->Outdecide =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateComment =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutComment =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateSubmitProject =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutSubmitProject =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateDue50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutDue50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateDue100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutDue100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateComment50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutComment50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        $reg->DateComment100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        $reg->OutComment100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+
+       
         $reg->save();
-        $system->name = 'ระบบเสนอหัวข้อ';
-        $system->subject_id = $reg->id;
-        $system->dateTime =\Carbon\Carbon::now();
-        $system->dateOut =\Carbon\Carbon::tomorrow();
-        $system->save();
-
-        $system = new system ;
-        $system->name = 'ระบบการตัดสินประเมินตอนนำเสนอ';
-        $system->subject_id = $reg->id;
-        $system->dateTime = \Carbon\Carbon::now();
-        $system->dateOut =\Carbon\Carbon::tomorrow();
-        $system->save();
-
-        $system = new system ;
-        $system->name = 'ระบบแสดงความคิดเห็นอาจารย์/ประเมิน';
-        $system->subject_id = $reg->id;
-        $system->dateTime = \Carbon\Carbon::now();
-        $system->dateOut =\Carbon\Carbon::tomorrow();
-        $system->save();
-
-        // $system = new system ;
-        // $system->name = '';
-        // $system->subject_id = $reg->id;
-        // $system->save();
-        
         return redirect('/STD');
     }
 

@@ -16,4 +16,20 @@ $(document).ready(function(){
             }
         });
     });
+    $('.UpdateForm').click(function(evt){
+        var name = $(this).data('name');
+        var form =$(this).closest("form");
+        evt.preventDefault();
+        swal({
+            title:`คุณต้องการยืนยันการทำรายการ ${name} หรือไม่ ?`,
+            icon:"info",
+            buttons:true,
+            dangerMode:true
+        }).then((willUpdate)=>{
+            if(willUpdate){
+                form.submit();
+            }
+        });
+    });
 });
+   
