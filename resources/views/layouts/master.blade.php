@@ -11,8 +11,9 @@
                 <a class="nav-link" href="/STD">{{ __('Student information') }}</a>
                 <a class="nav-link" href="/User">{{ __('User information') }}</a>
                 <a class="nav-link" href="/Teacher">{{ __('Teacher information') }}</a>
-                <a class="nav-link" href="/system">{{ __('ระบบ') }}</a>
+                <a class="nav-link" href="/system">{{ __('system') }}</a>
             @endif
+            <a href="/project">{{ __('Projects') }}</a>
           </div>
         @show
         <div class="content py-4">

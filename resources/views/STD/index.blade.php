@@ -70,7 +70,7 @@
     </tr>
   </thead>
   <tbody>
-    
+    {{-- {{ $data_subject }} --}}
       @foreach($data as $row)
      
     <tr>
@@ -78,7 +78,7 @@
       <th scope="row">{{$row->std_code}}</th>
       <td>{{$row->name}}</td>
       <td>{{$row->email}}</td>
-      <td>{{$row->phone}}</td>
+      <td>{{$row->subject_id}}</td>
       {{-- @foreach ($data_subject as $data) --}}
   {{-- <td>{{$data}}</td> --}}
   {{-- @endforeach --}}

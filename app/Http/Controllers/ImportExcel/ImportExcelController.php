@@ -37,7 +37,9 @@ class ImportExcelController extends Controller
             $term = subject::pluck('year_term', 'id');
             $data_subject = subject_student::orderBy('id', 'ASC')->get();
             $subject = subject::find($data_subject);
-            return view('STD.index', compact('data', 'term', 'data_subject'));
+            // $subject =  DB::table('reg_stds')->rightJoin('subject_students', 'reg_stds.id', '=', 'subject_students.id')->get();
+            // $subject =  DB::table('reg_stds')->rightJoin('subjects', 'reg_stds.id', '=', 'subjects.id')->get();
+            return view('STD.index', compact('data', 'term', 'data_subject','subject'));
         } else {
             abort(404);
         }
