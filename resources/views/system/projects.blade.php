@@ -21,7 +21,7 @@
    <table class="table table-striped">
       <thead>
         <tr>
-           <th scope="col">ลำดับโครงงานว้าาาาาำดไำดไำาาา</th>
+           <th scope="col">ลำดับโครงงาน</th>
            <th scope="col">รหัสนักศึกษา</th>
            <th scope="col">ชื่อ-สกุล</th>
           <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
