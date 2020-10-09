@@ -27,7 +27,7 @@
           <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
           <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
           <th scope="col">ประธาน</th>
-          <th scope="col">กรรมการ</th>
+          <th scope="col">กรรมการ vbvbbv</th>
           <th scope="col">ที่ปรึกษาพิเศษ</th>
           <th scope="col">หมายเหตุ</th>
         </tr>
