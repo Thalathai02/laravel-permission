@@ -21,7 +21,7 @@
    <table class="table table-striped">
       <thead>
         <tr>
-           <th scope="col">ลำดับโครงงาน</th>
+           <th scope="col">ลำดับโครงงานว้าาาาาำดไำดไำาาา</th>
            <th scope="col">รหัสนักศึกษา</th>
            <th scope="col">ชื่อ-สกุล</th>
           <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
@@ -35,7 +35,7 @@
       <tbody>
          <tr>
             <th>1</th>
-            <td>6004101342 <hr> 6004101342   ดเไำาเไสา่เ้ำาไ่้เำยวาไ๊็ฌ</td>
+            <td>6004101342 <hr> 6004101342</td>
          </tr>
          
       </tbody>
