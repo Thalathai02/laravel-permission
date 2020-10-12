@@ -17,7 +17,8 @@
      </ul>
     </div>
    @endif
-   <a href="" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
+   <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
+   <a href="" class="btn btn-success my-2" align="left">แก้ไข</a>
    <table class="table table-striped">
       <thead>
         <tr>
@@ -30,6 +31,7 @@
           <th scope="col">กรรมการ</th>
           <th scope="col">ที่ปรึกษาพิเศษ</th>
           <th scope="col">หมายเหตุ</th>
+          <th>แก้ไข</th>
         </tr>
       </thead>
       <tbody>
@@ -37,7 +39,8 @@
             <th>1</th>
             <td>6004101342 <hr> 6004101342</td>
             <td>thalathai</td>
-            <td>test01</td>
+            <td>ทดสอบ</td>
+            <td>test</td>
          </tr>
          
       </tbody>

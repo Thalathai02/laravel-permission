@@ -17,12 +17,18 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->text('name_th');
             $table->text('name_en');
-            $table->unsignedInteger('id_regStd1');
-            $table->unsignedInteger('id_regStd2');
-            $table->unsignedInteger('id_regStd3');
-            $table->unsignedInteger('id_director1');
-            $table->unsignedInteger('id_director2');
-            $table->unsignedInteger('id_president');
+            $table->unsignedInteger('id_regStd1')->nullable();;
+            $table->foreign('id_regStd1')->references('id')->on('reg_stds')->onDelete('cascade');
+            $table->unsignedInteger('id_regStd2')->nullable();;
+            $table->foreign('id_regStd2')->references('id')->on('reg_stds')->onDelete('cascade');
+            $table->unsignedInteger('id_regStd3')->nullable();;
+            $table->foreign('id_regStd3')->references('id')->on('reg_stds')->onDelete('cascade');
+            $table->unsignedInteger('id_director1')->nullable();;
+            $table->foreign('id_director1')->references('id')->on('teachers')->onDelete('cascade');
+            $table->unsignedInteger('id_director2')->nullable();;
+            $table->foreign('id_director2')->references('id')->on('teachers')->onDelete('cascade');
+            $table->unsignedInteger('id_president')->nullable();;
+            $table->foreign('id_president')->references('id')->on('teachers')->onDelete('cascade');
             $table->text('name_mentor');
 
             $table->unsignedInteger('subject_id');

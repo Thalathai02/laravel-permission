@@ -55,4 +55,5 @@ Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
 
 Route::post('/system/index','systemController@show')->middleware('auth');
 
-// Route::post('/project','projectControllers');
+Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
+Route::get('/projects/list_name','projectControllers@listname')->middleware('auth');
