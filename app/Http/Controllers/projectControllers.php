@@ -13,7 +13,7 @@ class projectControllers extends Controller
      */
     public function index()
     {
-        return view('system.projects');
+        return view('projects.projects');
     }
 
     /**
@@ -21,9 +21,16 @@ class projectControllers extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+           
+            return view('projects.into_project');
+
+        } else {
+            abort(404);
+        }
     }
 
     /**
@@ -81,4 +88,16 @@ class projectControllers extends Controller
     {
         //
     }
+    public function listname(Request $request)
+    {
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+           
+            return view('projects.list_name');
+
+        } else {
+            abort(404);
+        }
+    }
+
 }
