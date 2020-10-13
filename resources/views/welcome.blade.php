@@ -86,12 +86,10 @@
 
         <div class="content">
             <div class="title m-b-md">
-                Laravel
+                Project
             </div>
-
             <div id="app">
                 <example-component ></example-component>
-
             </div>
             <script src="js/app.js"></script>
         </div>
