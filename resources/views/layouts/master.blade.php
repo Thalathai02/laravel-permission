@@ -3,6 +3,7 @@
         <title>App Name - @yield('title')</title>
     </head>
     <body>
+    
         @if ( Auth::user())
         @section('sidebar')
         <div class="sidebar">
