@@ -83,6 +83,7 @@
                     Laravel
                 </div>
                 <div id="app">
+                    <h1>Test</h1>
                     <example-component></example-component>
                 </div>
             </div>
