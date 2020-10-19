@@ -110,8 +110,8 @@ class projectControllers extends Controller
         if ($user->hasRole('Admin')) {
             $data = $request['Project_name_thai'];
             $data2 = $request['Project_name_eg'];
-            $request->session()->flash('name_th', $data);
-            $request->session()->flash('name_eg', $data2);
+            $request->session()->put('name_th', $data);
+            $request->session()->put('name_eg', $data2);
             return view('/projects/list_name');
 
         } else {

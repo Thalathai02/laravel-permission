@@ -27,7 +27,6 @@
          {!! Form::text('reg_std1',null,["class"=>"form-control col-3"]) !!}
          <input type="submit" value="ค้นหา" class="btn btn-success row-1 " name="" id="">
          {!! Form::label('reg_std','ชื่อ-นามสกุล')!!} 
-       
         
       </div>
       {!! Form::close() !!}
