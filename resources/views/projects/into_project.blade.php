@@ -20,7 +20,7 @@
       @endif
       {!! Form::open(['action' => 'projectControllers@createNameProject','method'=>'POST']) !!}
       <div class="my-2">
-         {!! Form::label('name_1','ชื่อโปรเจค(ภาษาไทย)')!!}
+         {!! Form::label('name_th','ชื่อโปรเจค(ภาษาไทย)')!!}
          {!! Form::text('Project_name_thai',null,["class"=>"form-control"]) !!}
       </div>
       <div class="my-4">

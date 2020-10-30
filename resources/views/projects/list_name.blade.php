@@ -18,37 +18,40 @@
          </ul>
       </div>
       @endif
-      <P>ชื่อโปรเจค(ภาษาไทย) : {{ Session::get('name_th') }}</P>
-      <p>ชื่อโปรเจค(ภาษาอังกฤษ) :{{ Session::get('name_eg') }} </p>
-
-      {!! Form::open(['action' => 'projectControllers@Searchreg1','method'=>'POST']) !!}
+      <form action="{{route('project.update',$data_nameProject->id)}}" method="POST">
+         @csrf @method('PUT')
+      <P>ชื่อโปรเจค(ภาษาไทย) : {{ $data_nameProject->name_th}}</P>
+      <p>ชื่อโปรเจค(ภาษาอังกฤษ) :{{$data_nameProject->name_en}} </p>
       <div class="my-2">
-         {!! Form::label('reg_std1','รหัสนักศึกษา')!!}
+         {!! Form::label('reg_std1','รหัสนักศึกษาคนที่ 1')!!}
          {!! Form::text('reg_std1',null,["class"=>"form-control col-3"]) !!}
-         <input type="submit" value="ค้นหา" class="btn btn-success row-1 " name="" id="">
-         {!! Form::label('reg_std','ชื่อ-นามสกุล')!!} 
-        
       </div>
-      {!! Form::close() !!}
-      {{$data ?? ''}}
-     
+
      
       <div class="my-4">
-         {!! Form::label('reg_std2','รหัสนักศึกษา2')!!}
+         {!! Form::label('reg_std2','รหัสนักศึกษาคนที่ 2 (หากไม่มีให้ใช้  "-")')!!}
          {!! Form::text('reg_std2',null,["class"=>"form-control col-3"]) !!}
-         <input type="submit" value="ค้นหา" class="btn btn-success row-1 " name="" id="">
-         {!! Form::label('reg_std1','ชื่อ-นามสกุล')!!}
       </div>
 
       <div class="my-4">
-         {!! Form::label('reg_std3','รหัสนักศึกษา3')!!}
+         {!! Form::label('reg_std3','รหัสนักศึกษาคนที่ 3 (หากไม่มีให้ใช้  "-")')!!}
          {!! Form::text('reg_std3',null,["class"=>"form-control col-3"]) !!}
-         <input type="submit" value="ค้นหา" class="btn btn-success row-1 " name="" id="">
-         {!! Form::label('reg_std1','ชื่อ-นามสกุล')!!}
       </div>
-
-      <input type="submit" value="บันทึก" class="btn btn-primary " name="" id="">
-
+      <div class="my-4">
+         {!! Form::label('name_president','ชื่อประธาน')!!}
+         {!! Form::text('name_president',null,["class"=>"form-control col-5"]) !!}
+      </div>
+      <div class="my-4">
+         {!! Form::label('name_director1','ชื่อกรรมการคนที่ 1')!!}
+         {!! Form::text('name_director1',null,["class"=>"form-control col-5"]) !!}
+      </div>
+      <div class="my-4">
+         {!! Form::label('name_director2','ชื่อกรรมการคนที่ 2')!!}
+         {!! Form::text('name_director2',null,["class"=>"form-control col-5"]) !!}
+      </div>
+         {{-- <input type="submit" value="ยืนยัน" data-name=reg_std1 class="btn btn-danger updateProject"> --}}
+         {!!Form::submit('ยืนยัน',["class"=>"btn btn-danger updateProject"]); !!}
+     </form>
    </div>
 </body>
 

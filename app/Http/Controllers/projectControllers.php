@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use App\reg_std;
+use App\Teacher;
 class projectControllers extends Controller
 {
     /**
@@ -77,7 +79,51 @@ class projectControllers extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'data_nameProject'
+        ]);
+        $data_project = "Test";
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+            $Search = $request->get('reg_std1');
+            $data= reg_std::query()->where('std_code', 'LIKE', "{$Search}")->get();
+            if(!empty($request->get('reg_std2'))){
+                $Search2 = $request->get('reg_std2');
+            $data2= reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
+            }else{
+                $data2 = null;
+            }if(!empty($request->get('reg_std3'))){
+                $Search3 = $request->get('reg_std3');
+                $data3= reg_std::query()->where('std_code', 'LIKE', "{$Search3}")->get();
+            }else{
+                $data3=null;
+
+            }if(!empty($request->get('name_president'))){
+                $Search_name_president = $request->get('name_president');
+                $name_president= Teacher::query()->where('name', 'LIKE', "%{$Search_name_president}%")->get();
+            }else{
+                $name_president=null;
+            }if(!empty($request->get('name_director1'))){
+                $Search_name_director1 = $request->get('name_director1');
+                $name_director1= Teacher::query()->where('name', 'LIKE', "%{$Search_name_director1}%")->get();
+            }else{
+                $name_director1=null;
+            }if(!empty($request->get('name_director2'))){
+                $Search_name_director2 = $request->get('name_director2');
+                $name_director2= Teacher::query()->where('name', 'LIKE', "%{$Search_name_director2}%")->get();
+            }else{
+                $name_director2=null;
+            }
+            return response()->json([
+                'reg_std1' => $data,
+                'reg_std2' => $data2,
+                'reg_std3'=> $data3,
+                'tec' => $name_president,
+            ]);
+            // return view('/projects/submit_project', compact("data","data2","data3","name_president","name_director1","name_director2"));
+        } else {
+            abort(404);
+        }
     }
 
     /**
@@ -108,27 +154,14 @@ class projectControllers extends Controller
             'Project_name_eg'=>'required'
         ]);
         if ($user->hasRole('Admin')) {
-            $data = $request['Project_name_thai'];
-            $data2 = $request['Project_name_eg'];
-            $request->session()->put('name_th', $data);
-            $request->session()->put('name_eg', $data2);
-            return view('/projects/list_name');
+            $name = new project();
+            $name->name_th = $request['Project_name_thai'];
+            $name->name_en = $request['Project_name_eg'];
+            $name->save();
+            $id =  $name->id;
+            $data_nameProject = project::find($id);
+            return view('/projects/list_name',compact("data_nameProject"));
 
-        } else {
-            abort(404);
-        }
-    }
-    public function Searchreg1(Request $request)
-    {
-        $user = $request->user();
-        if ($user->hasRole('Admin')) {
-            $Search = $request->get(
-                'reg_std1'
-            );
-            $data= reg_std::query()
-                ->where('std_code', 'LIKE', "%{$Search}%")
-                ->get();
-            return view('projects.list_name', compact('data'));
         } else {
             abort(404);
         }
