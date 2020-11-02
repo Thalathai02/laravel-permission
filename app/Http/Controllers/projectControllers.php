@@ -22,7 +22,12 @@ class projectControllers extends Controller
      */
     public function index()
     {
-        return view('projects.projects');
+        // $data=project::orderBy('id', 'ASC')->get();
+        $data = DB::table('projects')
+            ->join('reg_stds', 'projects.id_regStd1', '=', 'reg_stds.id')
+            ->select('projects.*', 'reg_stds.*')->get();
+        return view('projects.projects', compact('data'));
+        // return response()->json(['reg_std1' => $data,]);
     }
 
     /**
@@ -92,46 +97,46 @@ class projectControllers extends Controller
             if (!empty($request->get('reg_std2'))) {
                 $Search2 = $request->get('reg_std2');
                 $data2 = reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
-                if($Search2 ==="-"){
-                    $this->Del_DataBase($id,'id_regStd2');
-                }else{
-                    $this->DataBase($id,'id_regStd2',$data2);
+                if ($Search2 === "-") {
+                    $this->Del_DataBase($id, 'id_regStd2');
+                } else {
+                    $this->DataBase($id, 'id_regStd2', $data2);
                 }
             }
             if (!empty($request->get('reg_std3'))) {
                 $Search3 = $request->get('reg_std3');
                 $data3 = reg_std::query()->where('std_code', 'LIKE', "{$Search3}")->get();
-                if($Search3 ==="-"){
-                    $this->Del_DataBase($id,'id_regStd3');
-                }else{
-                    $this->DataBase($id,'id_regStd3',$data3);
+                if ($Search3 === "-") {
+                    $this->Del_DataBase($id, 'id_regStd3');
+                } else {
+                    $this->DataBase($id, 'id_regStd3', $data3);
                 }
             }
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
                 $name_president = Teacher::query()->where('name', 'LIKE', "%{$Search_name_president}%")->get();
-                if($Search_name_president ==="-"){
-                    $this->Del_DataBase($id,'id_president');
-                }else{
-                    $this->DataBase($id,'id_president',$name_president);
+                if ($Search_name_president === "-") {
+                    $this->Del_DataBase($id, 'id_president');
+                } else {
+                    $this->DataBase($id, 'id_president', $name_president);
                 }
             }
             if (!empty($request->get('name_director1'))) {
                 $Search_name_director1 = $request->get('name_director1');
                 $name_director1 = Teacher::query()->where('name', 'LIKE', "%{$Search_name_director1}%")->get();
-                if($Search_name_director1 ==="-"){
-                    $this->Del_DataBase($id,'id_director1');
-                }else{
-                    $this->DataBase($id,'id_director1',$name_director1);
+                if ($Search_name_director1 === "-") {
+                    $this->Del_DataBase($id, 'id_director1');
+                } else {
+                    $this->DataBase($id, 'id_director1', $name_director1);
                 }
             }
             if (!empty($request->get('name_director2'))) {
                 $Search_name_director2 = $request->get('name_director2');
                 $name_director2 = Teacher::query()->where('name', 'LIKE', "%{$Search_name_director2}%")->get();
-                if($Search_name_director2 ==="-"){
-                    $this->Del_DataBase($id,'id_director2');
-                }else{
-                    $this->DataBase($id,'id_director2',$name_director2);
+                if ($Search_name_director2 === "-") {
+                    $this->Del_DataBase($id, 'id_director2');
+                } else {
+                    $this->DataBase($id, 'id_director2', $name_director2);
                 }
             }
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
