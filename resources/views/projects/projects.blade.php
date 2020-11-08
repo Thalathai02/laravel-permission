@@ -35,23 +35,21 @@
             </tr>
          </thead>
          <tbody>
-            @foreach($data as $row)
-
             <tr>
-               <th  scope="row">{{$row->id}}</th>
-               <td>{{$row->id_regStd1}}
-                  <hr> {{$row->id_regStd2}}
-                  <hr> {{$row->id_regStd3}}</td>
-               <td>{{$row->name}}</td>
-               <td>{{$row->name_th}}</td>
-               <td>{{$row->name_en}}</td>
+               <th scope="row"></th>
+               <td>
+                  <hr>
+                  <hr>
+               </td>
+               <td></td>
+               <td></td>
+               <td></td>
                <td></td>
                <td></td>
                <td></td>
                <td></td>
                <td> <a href="" class="btn btn-success my-2" align="left">แก้ไข</a></td>
             </tr>
-            @endforeach
          </tbody>
       </table>
    </div>

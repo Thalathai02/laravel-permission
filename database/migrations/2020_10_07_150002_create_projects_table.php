@@ -15,9 +15,10 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->text('name_th');
-            $table->text('name_en');            
-            $table->text('status');
+            $table->text('name_th')->nullable();
+            $table->text('name_en')->nullable();            
+            $table->text('status')->nullable();
+            
             $table->unsignedInteger('subject_id')->nullable();
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();

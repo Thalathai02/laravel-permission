@@ -19,6 +19,7 @@
       </div>
       @endif
       {!! Form::open(['action' => 'projectControllers@createNameProject','method'=>'POST']) !!}
+       {!! Form::select('subject', $term,['class' => 'md-6'] ) !!}
       <div class="my-2">
          {!! Form::label('name_th','ชื่อโปรเจค(ภาษาไทย)')!!}
          {!! Form::text('Project_name_thai',null,["class"=>"form-control"]) !!}
