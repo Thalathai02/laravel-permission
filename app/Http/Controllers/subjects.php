@@ -53,7 +53,7 @@ class subjects extends Controller
         $subject = new subject_student();
         $system = new system ;
 
-        $reg->name   = 'CS498';
+        $reg->name_subjects   = 'CS498';
         $reg->year  = $request['year'];
         $reg->term  = $request['term'];
         $reg->year_term  = $request['year'].'/'.$request['term'];

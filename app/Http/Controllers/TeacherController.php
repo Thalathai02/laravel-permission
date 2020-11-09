@@ -54,22 +54,22 @@ class TeacherController extends Controller
         $std_perm = Permission::where('slug', 'edit')->first();
         $student = new User();
         $reg = new Teacher();
-        $student->name = $request['name'];
-        $student->email = $request['email'];
-        $student->username = $request['username'];
-        $student->password =  Hash::make($request['password']);
+        $student->name = $request['name_Instructor'];
+        $student->email = $request['email_Instructor'];
+        $student->username = $request['username_Instructor'];
+        $student->password =  Hash::make($request['password_Instructor']);
         $student->save();
         $student->roles()->attach($std_role);
         $student->permissions()->attach($std_perm);
     
 
-        $reg->name   = $request['name'];
-        $reg->phone  = $request['phone'];
-        $reg->lineId  = $request['lineId'];
-        $reg->email  = $request['email'];
-        $reg->facebook  = $request['facebook'];
+        $reg->name_Instructor   = $request['name_Instructor'];
+        $reg->phone_Instructor  = $request['phone_Instructor'];
+        $reg->lineId_Instructor  = $request['lineId_Instructor'];
+        $reg->email_Instructor  = $request['email_Instructor'];
+        $reg->facebook_Instructor  = $request['facebook_Instructor'];
 
-        $reg->user_id  = $student->id;
+        $reg->user_id_Instructor  = $student->id;
         $reg->save();
         $student->reg_tea_id  =  $reg->id;
         $student->save();
@@ -124,22 +124,22 @@ class TeacherController extends Controller
         $user = $request->user();
         if ($id_user == $id) {
             $request->validate([
-           'name',
-           'phone',
-           'lineId',
-           'email'=>['required','email'],
-           'facebook',
+           'name_Instructor',
+           'phone_Instructor',
+           'lineId_Instructor',
+           'email_Instructor'=>['required','email'],
+           'facebook_Instructor',
        ]);
        Teacher::find($id)->update($request->all());
             return redirect('/home');
         }
         if ($user->hasRole('Admin')) {
             $request->validate([
-                'name',
-                'phone',
-                'lineId',
-                'email'=>['required','email'],
-                'facebook',
+                'name_Instructor',
+                'phone_Instructor',
+                'lineId_Instructor',
+                'email_Instructor'=>['required','email'],
+                'facebook_Instructor',
         ]);
         Teacher::find($id)->update($request->all());
             return redirect('/Teacher');
@@ -168,7 +168,7 @@ class TeacherController extends Controller
                 'Search'
             );
             $data =Teacher::query()
-        ->where('name', 'LIKE', "%{$Search}%")
+        ->where('name_Instructor', 'LIKE', "%{$Search}%")
         ->orWhere('id', 'LIKE', "%{$Search}%")
         ->get();
             return view('Teacher.index', compact('data'));

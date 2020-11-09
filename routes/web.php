@@ -58,4 +58,4 @@ Route::post('/system/index','systemController@show')->middleware('auth');
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
 Route::post('/projects/submit_project','projectControllers@Searchreg')->middleware('auth');
-Route::get('/projects/list_name','projectControllers@listname')->middleware('auth');
+

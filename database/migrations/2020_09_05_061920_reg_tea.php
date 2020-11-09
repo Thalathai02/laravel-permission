@@ -15,13 +15,13 @@ class RegTea extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('lineId')->nullable();
-            $table->string('email')->nullable();
-            $table->string('facebook')->nullable();
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name_Instructor')->nullable();
+            $table->string('phone_Instructor')->nullable();
+            $table->string('lineId_Instructor')->nullable();
+            $table->string('email_Instructor')->nullable();
+            $table->string('facebook_Instructor')->nullable();
+            $table->unsignedInteger('user_id_Instructor');
+            $table->foreign('user_id_Instructor')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

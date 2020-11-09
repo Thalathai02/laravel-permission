@@ -19,7 +19,12 @@
       </div>
       @endif
       {!! Form::open(['action' => 'projectControllers@createNameProject','method'=>'POST']) !!}
-       {!! Form::select('subject', $term,['class' => 'md-6'] ) !!}
+      @if (Auth::user()->hasRole('Admin'))
+      {!! Form::select('subject', $term,['class' => 'md-6'] ) !!}
+      @endif
+      @if (Auth::user()->hasRole('Std'))
+      {{ __('ปีการศึกษา ') }}{{$term[0]->year_term}}
+      @endif
       <div class="my-2">
          {!! Form::label('name_th','ชื่อโปรเจค(ภาษาไทย)')!!}
          {!! Form::text('Project_name_thai',null,["class"=>"form-control"]) !!}
@@ -28,7 +33,7 @@
          {!! Form::label('name_eg','ชื่อโปรเจค(ภาษาอังกฤษ)')!!}
          {!! Form::text('Project_name_eg',null,["class"=>"form-control"]) !!}
       </div>
-    
+
       <input type="submit" value="ถัดไป" class="btn btn-primary col-2 " name="submit" id="">
       {!! Form::close() !!}
    </div>

@@ -60,10 +60,21 @@
                         @else
                        
                             <li class="nav-item dropdown">
+                            @if (Auth::user()->hasRole('Std'))
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->name }}{{__(' (student)')}} <span class="caret"></span>
                                 </a>
-
+                                @endif
+                                @if (Auth::user()->hasRole('Admin'))
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}{{__(' (Administration)')}} <span class="caret"></span>
+                                </a>
+                                @endif
+                                @if (Auth::user()->hasRole('Tea'))
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}{{__(' (instructor)')}} <span class="caret"></span>
+                                </a>
+                                @endif
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->hasRole('Std'))
                                     <a class="dropdown-item" href="{{route('User.edit', Auth::user()->id)}}">
