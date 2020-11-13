@@ -24,17 +24,53 @@ class projectControllers extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
 
-        $datas = DB::table('projects')
-            ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-            ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-            ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-            ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-            ->select('projects.*', 'project_user.*','reg_stds.*','teachers.*')->get();
-        return view('projects.projects',compact('datas'));
-        // return response()->json(['reg_std1' => $data,]);
+        if ($user->hasRole('Admin')) {
+            $datas = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
+                ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+
+            return view('projects.projects', compact('datas'));
+        }
+        if ($user->hasRole('Std')) {
+            $user = $request->user()->id;
+            $data_std1 = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std1[0]->id)->select('project_user.*')->get();
+            if (!empty($data_std[0]->id)) {
+                $reject = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
+                    $datas = DB::table('projects')
+                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                        // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
+                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                        // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
+                        ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+                        if ($reject[0]->status == "reject") {
+                            return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                        }else{
+                            $reject = null;
+                             return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                        }
+                   
+               
+            } else {
+                $data_std = null;
+                $reject = null;
+                $datas = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+
+                return view('projects.projects', compact('datas', 'data_std', 'reject'));
+            }
+        }
     }
 
     /**
@@ -48,10 +84,11 @@ class projectControllers extends Controller
         if ($user->hasRole('Admin')) {
             $term = subject::pluck('year_term', 'id');
             return view('projects.into_project', compact('term'));
-        }if ($user->hasRole('Std')) {
+        }
+        if ($user->hasRole('Std')) {
             $term = $request->user()->id;
-            $term= subject_student::find($term);
-            $term =subject::find($term);
+            $term = subject_student::find($term);
+            $term = subject::find($term);
             return view('projects.into_project', compact('term'));
         } else {
             abort(404);
@@ -153,7 +190,7 @@ class projectControllers extends Controller
                 'reg_std1' => $data,
                 'reg_std2' => $data2,
                 'reg_std3' => $data3,
-                'tec' => $name_president,
+
             ]);
         }
         if ($user->hasRole('Std')) {
@@ -207,7 +244,6 @@ class projectControllers extends Controller
                 'reg_std1' => $data,
                 'reg_std2' => $data2,
                 'reg_std3' => $data3,
-                'tec' => $name_president,
             ]);
         } else {
             abort(404);
@@ -233,7 +269,6 @@ class projectControllers extends Controller
         DB::table('project_instructor')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
     }
 
-    
     public function createNameProject(Request $request)
     {
         $user = $request->user();
@@ -247,7 +282,7 @@ class projectControllers extends Controller
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];
             $name->status = "not Check";
-            $name->subject_id = $request['$term[0]->id'];
+            $name->subject_id = $request['subject'];
 
             $name->save();
             $id =  $name->id;
@@ -256,8 +291,8 @@ class projectControllers extends Controller
         }
         if ($user->hasRole('Std')) {
             $term = $request->user()->id;
-            $term= subject_student::find($term);
-            $term =subject::find($term);
+            $term = subject_student::find($term);
+            $term = subject::find($term);
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];
@@ -270,7 +305,7 @@ class projectControllers extends Controller
             $term = $request->user()->id;
             $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
 
-            return view('/projects/list_name', compact("data_nameProject","term"));
+            return view('/projects/list_name', compact("data_nameProject", "term"));
         } else {
             abort(404);
         }

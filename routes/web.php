@@ -36,6 +36,7 @@ Route::resource('/User', 'UserController')->middleware('auth');
 Route::resource('/Teacher', 'TeacherController')->middleware('auth');
 Route::resource('/system','systemController')->middleware('auth');
 Route::resource('/project','projectControllers')->middleware('auth');
+Route::resource('/Check_Project','CheckProjectController')->middleware('auth');
 
 Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
