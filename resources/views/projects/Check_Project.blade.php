@@ -42,7 +42,7 @@
                <td>{{$row->name_th}}</td>
                <td>{{$row->name_en}}</td>
                <td></td>
-               <td><a href="" class="btn btn-info">รายละเอียด</a></td>
+               <td><a href="{{route('Check_Project.show',$row->id)}}" class="btn btn-info">รายละเอียด</a></td>
                <td><a href="" class="btn btn-success">แต่งตั้งประธาน</a></td>
                <td>
                   <form action="{{route('Check_Project.destroy',$row->id)}}" method="POST">

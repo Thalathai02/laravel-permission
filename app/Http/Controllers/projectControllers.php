@@ -292,14 +292,14 @@ class projectControllers extends Controller
             $data_nameProject = project::find($id);
 
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->file_path = '/storage/' . $fileModel->name;
+            $fileModel->file_path = 'not Check/';
             $fileModel->status_file_path = "not Check";
             $fileModel->Project_id_File = $name->id;
 
             // $request->File->store("not Check");
 
             Storage::disk('local')->putFileAs(
-                'not Check/'.$fileModel->name_file,
+                'not Check/',
                 $request->File,
                 $fileModel->name_file
               );
@@ -323,9 +323,15 @@ class projectControllers extends Controller
             $term = $request->user()->id;
             $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->file_path = '/storage/' . $fileModel->name;
+            $fileModel->file_path = 'not Check/';
             $fileModel->status_file_path = "not Check";
             $fileModel->Project_id_File = $name->id;
+            
+            Storage::disk('local')->putFileAs(
+                'not Check/',
+                $request->File,
+                $fileModel->name_file
+              );
             $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject", "term"));
         } else {

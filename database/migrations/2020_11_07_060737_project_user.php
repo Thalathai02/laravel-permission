@@ -21,8 +21,8 @@ class ProjectUser extends Migration
                 $table->unsignedInteger('id_reg_Std')->nullable();
                 $table->foreign('id_reg_Std')->references('id')->on('reg_stds')->onDelete('cascade');
     
-                $table->text('isHead')->nullable();
-                $table->text('name_mentor')->nullable();
+                $table->text('isHead')->default('-');
+                $table->text('name_mentor')->default('-');
                 $table->timestamps();
                   
                 
