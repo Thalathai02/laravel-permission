@@ -18,14 +18,13 @@ class ProjectInstructor extends Migration
             $table->unsignedInteger('Project_id')->nullable();
             $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->unsignedInteger('id_director1')->nullable();
-            $table->foreign('id_director1')->references('id')->on('teachers')->onDelete('cascade');
-            $table->unsignedInteger('id_director2')->nullable();
-            $table->foreign('id_director2')->references('id')->on('teachers')->onDelete('cascade');
-            $table->unsignedInteger('id_president')->nullable();
-            $table->foreign('id_president')->references('id')->on('teachers')->onDelete('cascade');
-            
-      });
+            $table->unsignedInteger('id_instructor')->nullable();
+            $table->foreign('id_instructor')->references('id')->on('teachers')->onDelete('cascade');
+
+            $table->text('Is_director')->default(0);
+            $table->text('Is_president')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**

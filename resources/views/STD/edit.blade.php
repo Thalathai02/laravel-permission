@@ -14,11 +14,11 @@
     <div class="row">
         <div class="form-group col-4">
         {!! Form::label('std_code','รหัสนักศึกษา')!!}
-        {!! Form::text('std_code',$data->std_code,["class"=>"form-control"]) !!}
+        {!! Form::text('std_code',$data->std_code,['readonly',"class"=>"form-control"]) !!}
         </div>
         <div class="form-group col">
         {!! Form::label('name','ชื่อ')!!}
-        {!! Form::text('name',$data->name,["class"=>"form-control"]) !!}
+        {!! Form::text('name',$data->name,['readonly',"class"=>"form-control"]) !!}
         </div>
     </div>
     <div class="row">
