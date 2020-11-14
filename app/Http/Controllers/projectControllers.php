@@ -298,7 +298,11 @@ class projectControllers extends Controller
 
             // $request->File->store("not Check");
 
-            Storage::putFile('not Check',$request->File,$fileModel->name_file,'public');
+            Storage::disk('local')->putFileAs(
+                'not Check/'.$fileModel->name_file,
+                $request->File,
+                $fileModel->name_file
+              );
 
             $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject"));
