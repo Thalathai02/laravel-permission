@@ -23,6 +23,7 @@ class ProjectUser extends Migration
     
                 $table->text('isHead')->nullable();
                 $table->text('name_mentor')->nullable();
+                $table->timestamps();
                   
                 
           });

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use App\Project_Instructor;
 use App\project_user;
 use App\subject_student;
+use Illuminate\Support\Facades\Storage;
+use App\Project_File;
 
 class projectControllers extends Controller
 {
@@ -44,20 +46,18 @@ class projectControllers extends Controller
             $data_std = DB::table('project_user')->where('id_reg_Std', $data_std1[0]->id)->select('project_user.*')->get();
             if (!empty($data_std[0]->id)) {
                 $reject = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
-                    $datas = DB::table('projects')
-                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                        // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                        // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-                        ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
-                        if ($reject[0]->status == "reject") {
-                            return view('projects.projects', compact('datas', 'data_std', 'reject'));
-                        }else{
-                            $reject = null;
-                             return view('projects.projects', compact('datas', 'data_std', 'reject'));
-                        }
-                   
-               
+                $datas = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+                if ($reject[0]->status == "reject") {
+                    return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                } else {
+                    $reject = null;
+                    return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                }
             } else {
                 $data_std = null;
                 $reject = null;
@@ -275,8 +275,11 @@ class projectControllers extends Controller
         $request->validate([
             'Project_name_thai' => 'required',
             'Project_name_eg' => 'required',
-            'subject'
+            'File' => 'required|file|mimes:zip',
+            'subject' => 'required',
         ]);
+        $fileModel = new Project_File;
+
         if ($user->hasRole('Admin')) {
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
@@ -287,6 +290,17 @@ class projectControllers extends Controller
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
+
+            $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
+            $fileModel->file_path = '/storage/' . $fileModel->name;
+            $fileModel->status_file_path = "not Check";
+            $fileModel->Project_id_File = $name->id;
+
+            // $request->File->store("not Check");
+
+            Storage::putFile('not Check',$request->File,$fileModel->name_file,'public');
+
+            $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject"));
         }
         if ($user->hasRole('Std')) {
@@ -304,7 +318,11 @@ class projectControllers extends Controller
             $data_nameProject = project::find($id);
             $term = $request->user()->id;
             $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
-
+            $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
+            $fileModel->file_path = '/storage/' . $fileModel->name;
+            $fileModel->status_file_path = "not Check";
+            $fileModel->Project_id_File = $name->id;
+            $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject", "term"));
         } else {
             abort(404);

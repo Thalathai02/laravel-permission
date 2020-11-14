@@ -54,6 +54,7 @@
             {!! Form::label('name_mentor','ชื่อที่ปรึกษาพิเศษ')!!}
             {!! Form::text('name_mentor',null,["class"=>"form-control col-5"]) !!}
          </div>
+         
          {!!Form::submit('ยืนยัน',["class"=>"btn btn-danger updateProject"]); !!}
          @endif
 

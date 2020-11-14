@@ -18,7 +18,7 @@
          </ul>
       </div>
       @endif
-      {!! Form::open(['action' => 'projectControllers@createNameProject','method'=>'POST']) !!}
+      {!! Form::open(['action' => 'projectControllers@createNameProject','method'=>'POST','enctype'=>"multipart/form-data"]) !!}
       @if (Auth::user()->hasRole('Admin'))
       {!! Form::select('subject', $term,['class' => 'md-6'] ) !!}
       @endif
@@ -32,6 +32,10 @@
       <div class="my-4">
          {!! Form::label('name_eg','ชื่อโปรเจค(ภาษาอังกฤษ)')!!}
          {!! Form::text('Project_name_eg',null,["class"=>"form-control"]) !!}
+      </div>
+      <div class="my-4">
+         {!! Form::label('name_upload_File','นำเข้าไฟล์')!!}
+         {!! Form::file('File',["class"=>"form-control col-5"]) !!}
       </div>
 
       <input type="submit" value="ถัดไป" class="btn btn-primary col-2 " name="submit" id="">
