@@ -61,4 +61,5 @@ Route::post('/projects/list_name','projectControllers@createNameProject')->middl
 Route::post('/projects/submit_project','projectControllers@Searchreg')->middleware('auth');
 
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
-Route::get('/Check_Project/info_project/{file}', 'CheckProjectController@download')->name('download');
+Route::get('/Check_Project/info_project/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
+Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

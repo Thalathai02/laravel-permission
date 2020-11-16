@@ -276,11 +276,17 @@ class projectControllers extends Controller
             'Project_name_thai' => 'required',
             'Project_name_eg' => 'required',
             'File' => 'required|file|mimes:zip',
-            'subject' => 'required',
+            'subject',
         ]);
         $fileModel = new Project_File;
 
         if ($user->hasRole('Admin')) {
+            $request->validate([
+                'Project_name_thai' => 'required',
+                'Project_name_eg' => 'required',
+                'File' => 'required|file|mimes:zip',
+                'subject' => 'required',
+            ]);
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];

@@ -7,7 +7,7 @@
    <br />
 
    <div class="container">
-      <h3 align="center">เพิ่มรายชื่อในโปรเจค</h3>
+      <h3 align="center">รายละเอียดโปรเจค</h3>
       <br />
       @if(count($errors) > 0)
       <div class="alert alert-danger">
@@ -19,6 +19,9 @@
       </div>
       @endif
          @if (Auth::user()->hasRole('Admin'))
+         
+        {{$datas[0]->status_file_path}}
+        {{$datas[0]->name_file}}
          <div class="my-2">
             {!! Form::label('name_th','ชื่อโปรเจค(ภาษาไทย)')!!}
             {!! Form::text('Project_name_thai',$datas[0]->name_th,['readonly',"class"=>"form-control"]) !!}
@@ -43,19 +46,19 @@
             {!! Form::text('reg_std3',$datas[2]->name,['readonly',"class"=>"form-control col-3"]) !!}
          </div>
          @endif
-         @if(!empty( $datas[0]->name_Instructor))
+         @if(!empty($datas[0]->name_Instructor)&& $datas[0]->name_Instructor)
          <div class="my-4">
             {!! Form::label('name_president','ชื่อประธาน')!!}
             {!! Form::text('name_president',$datas[0]->name_Instructor,['readonly',"class"=>"form-control col-5"]) !!}
          </div>
          @endif
-         @if(!empty( $datas[1]->name_Instructor))
+         @if(!empty($datas[1]->name_Instructor))
          <div class="my-4">
             {!! Form::label('name_director1','ชื่อกรรมการคนที่ 1')!!}
             {!! Form::text('name_director1',$datas[1]->name_Instructor,['readonly',"class"=>"form-control col-5"]) !!}
          </div>
          @endif
-         @if(!empty( $datas[2]->name_Instructor))
+         @if(!empty($datas[2]->name_Instructor))
          <div class="my-4">
          <div class="my-4">
             {!! Form::label('name_director2','ชื่อกรรมการคนที่ 2')!!}
@@ -69,8 +72,9 @@
          </div>
          @endif
          <a href="{!! route('download', $datas[0]->name_file) !!}" download>ดาวน์โหลดเอกสาร</a>
+      
+     
          @endif
-      </form>
    </div>
 </body>
 
