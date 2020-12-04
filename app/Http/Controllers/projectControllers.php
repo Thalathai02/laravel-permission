@@ -16,7 +16,7 @@ use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
 use App\Project_File;
-
+use Illuminate\Support\Facades\Auth;
 class projectControllers extends Controller
 {
 
@@ -45,22 +45,24 @@ class projectControllers extends Controller
             $data_std1 = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
             $data_std = DB::table('project_user')->where('id_reg_Std', $data_std1[0]->id)->select('project_user.*')->get();
             if (!empty($data_std[0]->id)) {
-                $reject = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
+                $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
-                if ($reject[0]->status == "reject") {
-                    return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                if ($status[0]->status == "reject") {
+                    return view('projects.projects', compact('datas', 'data_std', 'status'));
+                } elseif ($status[0]->status == "not Check") {
+                    return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } else {
-                    $reject = null;
-                    return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                    $status = null;
+                    return view('projects.projects', compact('datas', 'data_std', 'status'));
                 }
             } else {
                 $data_std = null;
-                $reject = null;
+                $status = null;
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
@@ -68,7 +70,7 @@ class projectControllers extends Controller
                     // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
 
-                return view('projects.projects', compact('datas', 'data_std', 'reject'));
+                return view('projects.projects', compact('datas', 'data_std', 'status'));
             }
         }
     }
@@ -123,9 +125,46 @@ class projectControllers extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        $id_user = Auth::user()->id;
+        $user = $request->user();
+        if ($user->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas'));
+        }
+        if ($id_user == $id) {
+            $user = $request->user()->id;
+            $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_user.*')->get();
+
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas'));
+        } else {
+            abort(404);
+        }
     }
 
     /**
@@ -298,7 +337,6 @@ class projectControllers extends Controller
             $data_nameProject = project::find($id);
 
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->file_path = 'not Check/';
             $fileModel->status_file_path = "not Check";
             $fileModel->Project_id_File = $name->id;
 
@@ -308,7 +346,7 @@ class projectControllers extends Controller
                 'not Check/',
                 $request->File,
                 $fileModel->name_file
-              );
+            );
 
             $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject"));
@@ -329,15 +367,14 @@ class projectControllers extends Controller
             $term = $request->user()->id;
             $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->file_path = 'not Check/';
             $fileModel->status_file_path = "not Check";
             $fileModel->Project_id_File = $name->id;
-            
+
             Storage::disk('local')->putFileAs(
                 'not Check/',
                 $request->File,
                 $fileModel->name_file
-              );
+            );
             $fileModel->save();
             return view('/projects/list_name', compact("data_nameProject", "term"));
         } else {

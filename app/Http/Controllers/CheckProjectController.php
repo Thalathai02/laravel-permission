@@ -29,14 +29,8 @@ class CheckProjectController extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            // $datas = DB::table('projects')
-            // ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-            // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-            // ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-            // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-            // ->select('projects.*', 'project_user.*','reg_stds.*')->get();
-
             $datas = project::orderBy('id', 'ASC')->get();
+            
             return view('projects.Check_Project', compact('datas'));
         } else {
             abort(404);
@@ -70,34 +64,29 @@ class CheckProjectController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $datas_instructor = DB::table('projects')
+            ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+            ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+            ->select('teachers.*')->where('projects.id', '=', $id)->get();
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            $datas1 = DB::table('projects')
-                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id)->get();
-            // return response()->json([
-            //     'id' => $datas1
-            // ]);
+            if (!empty($datas_instructor[0]->id)) {
+                $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
 
-
-            if (!empty($datas1[0]->id)) {
-                $datas = DB::table('projects')
-                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
-                return view('projects.info_project', compact('datas'));
+                return view('projects.info_project', compact('datas','datas_std','datas_instructor'));
             } else {
-                $datas = DB::table('projects')
+                $datas_std = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
-                return view('projects.info_project', compact('datas'));
+                return view('projects.info_project', compact('datas_std','datas'));
             }
         } else {
             abort(404);
@@ -125,7 +114,7 @@ class CheckProjectController extends Controller
 
 
             if (empty($datas1)) {
-               
+
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')

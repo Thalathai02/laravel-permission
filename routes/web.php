@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use App\Role;
 use App\subject;
 use Illuminate\Support\Facades\Route;
@@ -58,8 +59,9 @@ Route::post('/system/index','systemController@show')->middleware('auth');
 
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
-Route::post('/projects/submit_project','projectControllers@Searchreg')->middleware('auth');
+Route::post('/edit_project','projectControllers@edit')->middleware('auth');
 
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
 Route::get('/Check_Project/info_project/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
 Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
+// Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
