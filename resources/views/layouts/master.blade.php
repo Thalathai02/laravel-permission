@@ -6,6 +6,7 @@
     
         @if ( Auth::user())
         @section('sidebar')
+        
         <div class="sidebar">
             <a class="nav-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
             @if (Auth::user()->hasRole('Admin'))
@@ -26,6 +27,7 @@
             <div class="py-4">
             <main >
                 @yield('content')
+                
             </main>
         </div>
         @endif

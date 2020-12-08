@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\RouteServiceProvider;
 use App\Role;
 use App\subject;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,7 @@ Route::resource('/User', 'UserController')->middleware('auth');
 Route::resource('/Teacher', 'TeacherController')->middleware('auth');
 Route::resource('/system','systemController')->middleware('auth');
 Route::resource('/project','projectControllers')->middleware('auth');
+Route::resource('/Check_Project','CheckProjectController')->middleware('auth');
 
 Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
@@ -57,5 +59,10 @@ Route::post('/system/index','systemController@show')->middleware('auth');
 
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
-Route::post('/projects/submit_project','projectControllers@Searchreg')->middleware('auth');
-Route::get('/projects/list_name','projectControllers@listname')->middleware('auth');
+Route::post('/edit_project','projectControllers@edit')->middleware('auth');
+
+Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
+Route::get('/Check_Project/info_project/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
+Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
+
+// Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

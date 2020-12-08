@@ -15,6 +15,7 @@ use App\Role;
 use App\subject_student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 
 class ImportStd implements ToModel
@@ -38,39 +39,46 @@ class ImportStd implements ToModel
         // $student = User::all();
         // $student->roles()->attach($std_role);
         // $student->permissions()->attach($std_perm);
-        $student = new User();
-        $student->name = $row[2];
-        $student->email = $row[6];
-        $student->username = 'MJU' . $row[1];
-        $student->password =  bcrypt($row[1]);
-        $student->save();
-        $student->roles()->attach($std_role);
-        $student->permissions()->attach($std_perm);
+        if (empty($row[0])) {
+            // errors()->add('field', 'Something is wrong with this field!');
+        }
+        if (empty($row[1])) {
+            // errors()->add('field', 'Something is wrong with this field!');
+        } else {
+            $student = new User();
+            $student->name = $row[2];
+            $student->email = $row[6];
+            $student->username = 'MJU' . $row[1];
+            $student->password =  bcrypt($row[1]);
+            $student->save();
+            $student->roles()->attach($std_role);
+            $student->permissions()->attach($std_perm);
 
 
-        $reg->std_code = $row[1];
-        $reg->name   = $row[2];
-        $reg->nick_name  = $row[3];
-        $reg->phone  = $row[4];
-        $reg->lineId  = $row[5];
-        $reg->email  = $row[6];
-        $reg->facebook  = $row[7];
-        $reg->address  = $row[8];
-        $reg->parent_name  = $row[9];
-        $reg->parent_phone = $row[10];
-        $reg->username  = 'MJU' . $row[1];
-        $reg->password  = Hash::make($row[1]);
-        $reg->user_id  = $student->id;
-        $reg->save();
-        $student->reg_std_id  =  $reg->id;
-        $student->save();
-        $subject->student_id = $reg->id;
-        $subject->subject_id = Session::get('subject_id');
-        
-        $subject->save();
+            $reg->std_code = $row[1];
+            $reg->name   = $row[2];
+            $reg->nick_name  = $row[3];
+            $reg->phone  = $row[4];
+            $reg->lineId  = $row[5];
+            $reg->email  = $row[6];
+            $reg->facebook  = $row[7];
+            $reg->address  = $row[8];
+            $reg->parent_name  = $row[9];
+            $reg->parent_phone = $row[10];
+            $reg->username  = 'MJU' . $row[1];
+            $reg->password  = Hash::make($row[1]);
+            $reg->user_id  = $student->id;
+            $reg->save();
+            $student->reg_std_id  =  $reg->id;
+            $student->save();
+            $subject->student_id = $reg->id;
+            $subject->subject_id = Session::get('subject_id');
 
-        
-       
+            $subject->save();
+        }
+
+
+
 
 
         // $reg->user()->attach($std_reg);

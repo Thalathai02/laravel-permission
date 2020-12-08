@@ -53,9 +53,9 @@
     @foreach($data as $row)
   <tr>
     <th scope="row">{{$row->id}}</th>
-    <td>{{$row->name}}</td>
-    <td>{{$row->email}}</td>
-    <td>{{$row->phone}}</td>
+    <td>{{$row->name_Instructor}}</td>
+    <td>{{$row->email_Instructor}}</td>
+    <td>{{$row->phone_Instructor}}</td>
     <td><a href="{{route('Teacher.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
     <td>
         <form action="{{route('Teacher.destroy',$row->id)}}" method="POST">
