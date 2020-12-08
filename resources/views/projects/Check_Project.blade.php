@@ -18,6 +18,11 @@
                     </ul>
                 </div>
             @endif
+            
+            <div class="progress ">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100" style="width: 25%">นำเสนอหัวข้อ</div>
+              </div>
+              
 
             <table class="table table-striped">
                 <thead>
@@ -55,6 +60,7 @@
                                     </form>
                                 </td>
                                 <td><a  href="{{ route('project.edit', $row->id) }}" class="btn btn-warning">แก้ไข</td>
+                                    
                             </tr>
                         @endif
                     @endforeach

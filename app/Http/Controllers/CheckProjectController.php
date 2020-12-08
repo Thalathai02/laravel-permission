@@ -203,9 +203,9 @@ class CheckProjectController extends Controller
         DB::table('project__files')->where('id', '=', $id)->update(['status_file_path' => "reject"]);
         return redirect('/Check_Project');
     }
+
     public function download($file)
     {
-
         return response()->download(storage_path('/app/not Check/' . $file));
     }
 }

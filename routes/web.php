@@ -64,4 +64,5 @@ Route::post('/edit_project','projectControllers@edit')->middleware('auth');
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
 Route::get('/Check_Project/info_project/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
 Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
+
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

@@ -332,6 +332,8 @@ class projectControllers extends Controller
             $name->status = "not Check";
             $name->subject_id = $request['subject'];
 
+            $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
+
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
@@ -343,7 +345,7 @@ class projectControllers extends Controller
             // $request->File->store("not Check");
 
             Storage::disk('local')->putFileAs(
-                'not Check/',
+                'not Check/'.$term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
@@ -361,6 +363,8 @@ class projectControllers extends Controller
             $name->status = "not Check";
             $name->subject_id = $term[0]->id;
 
+            $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
+            
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
@@ -371,7 +375,7 @@ class projectControllers extends Controller
             $fileModel->Project_id_File = $name->id;
 
             Storage::disk('local')->putFileAs(
-                'not Check/',
+                 'not Check/'.$term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );

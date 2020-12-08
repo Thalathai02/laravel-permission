@@ -20,9 +20,9 @@
             @endif
             @if (Auth::user()->hasRole('Admin'))
 
-                {{-- {{ $datas }}
-                {{ $datas_std }}
-                {{ $datas_instructor }} --}}
+                {{-- {{ $datas[0]->subject_id }} --}}
+                {{-- {{ $datas_std }} --}}
+                {{-- {{ $datas_instructor }} --}}
                 <div class="my-2">
                     {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                     {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -82,7 +82,7 @@
                         !!}
                     </div>
                 @endif
-                <a href="{!!  route('download', $datas_std[0]->name_file) !!}" download>ดาวน์โหลดเอกสาร</a>
+                <a href="{!!  route('download', $datas_std[0]->name_file,$datas[0]->subject_id) !!}" download>ดาวน์โหลดเอกสาร</a>
 
 
 
