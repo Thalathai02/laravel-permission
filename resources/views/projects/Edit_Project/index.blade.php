@@ -18,8 +18,7 @@
                     </ul>
                 </div>
             @endif
-            {!! Form::open(['action' => 'projectControllers@createNameProject', 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
+            
             
                 <div class="my-2">
                     {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -86,7 +85,7 @@
 
             
                
-            {!! Form::close() !!}
+          
         </div>
     </body>
 
