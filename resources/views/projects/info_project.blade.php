@@ -21,8 +21,8 @@
             @if (Auth::user()->hasRole('Admin'))
 
                 {{-- {{ $datas }} --}}
-                {{ $datas_std[0]->year_term }}
-                {{ $datas_std[0]->name_file }}
+                {{-- {{ $datas_std[0]->year_term }} --}}
+                {{-- {{ $datas_std[0]->name_file }} --}}
                 {{-- {{ $datas_instructor }} --}}
                 <div class="my-2">
                     {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}

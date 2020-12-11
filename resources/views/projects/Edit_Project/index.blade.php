@@ -32,21 +32,33 @@
                     {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
                     {!! Form::file('File', ['class' => 'form-control col-5']) !!}
                 </div>
-                <div class="my-2">
-                    {!! Form::label('reg_std1', 'นักศึกษาคนที่ 1*(ตัวแทนกลุ่ม)') !!}
+                <div class="my-2 row-1">
+                {!! Form::label('reg_std1', 'รหัสนักศึกษาคนที่ 1') !!}
+                <div class="row">
                     {!! Form::text('reg_std1', $datas_std[0]->std_code, ['class' => 'form-control col-3']) !!}
+                    <div id="name_reg1" class="col-3"></div>
                 </div>
+            </div>
+                   
 
                 @if (!empty($datas_std[1]->name))
-                    <div class="my-4">
-                        {!! Form::label('reg_std2', 'นักศึกษาคนที่ 2') !!}
+                <div class="my-4">
+                    {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
+                    <div class="row">
                         {!! Form::text('reg_std2', $datas_std[1]->std_code, ['class' => 'form-control col-3']) !!}
+                        <div id="name_reg2" class="col-3"></div>
+                    </div>
+                </div>
+
                 @endif
                 @if (!empty($datas_std[2]->name))
-                    <div class="my-4">
-                        {!! Form::label('reg_std3', 'นักศึกษาคนที่ 3') !!}
+                <div class="my-4">
+                    {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3') !!}
+                    <div class="row">
                         {!! Form::text('reg_std3', $datas_std[2]->std_code, ['class' => 'form-control col-3']) !!}
+                        <div id="name_reg3" class="col-3"></div>
                     </div>
+                </div>
                 @endif
                 @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
                     <div class="my-4">
@@ -87,6 +99,68 @@
                
           
         </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#reg_std1').on('keyup', function() {
+                    var query = $(this).val();
+                    $.ajax({
+                        url: "{{ route('action') }}",
+                        type: "GET",
+                        data: {
+                            'reg_std': query
+                        },
+                        success: function(data) {
+                            $('#name_reg1').html(data);
+                        }
+                    })
+                });
+
+
+                $('#reg_std2').on('keyup', function() {
+                    var query = $(this).val();
+                    $.ajax({
+                        url: "{{ route('action') }}",
+                        type: "GET",
+                        data: {
+                            'reg_std': query
+                        },
+                        success: function(data) {
+                            $('#name_reg2').html(data);
+                        }
+                    })
+                });
+
+
+                $('#reg_std3').on('keyup', function() {
+                    var query = $(this).val();
+                    $.ajax({
+                        url: "{{ route('action') }}",
+                        type: "GET",
+                        data: {
+                            'reg_std': query
+                        },
+                        success: function(data) {
+                            $('#name_reg3').html(data);
+                        }
+                    })
+                });
+
+
+                $(document).on('click', 'li', function() {
+
+                    var value = $(this).text();
+                    $('#reg_std1').val(value);
+                    $('#name_reg1').html("");
+
+                    $('#reg_std2').val(value);
+                    $('#name_reg2').html("");
+
+                    $('#reg_std2').val(value);
+                    $('#name_reg2').html("");
+                });
+            });
+
+        </script>
     </body>
 
     </html>

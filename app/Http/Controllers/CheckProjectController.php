@@ -16,6 +16,8 @@ use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
 use App\Project_File;
+use http\Env\Response;
+
 
 class CheckProjectController extends Controller
 {
@@ -78,7 +80,7 @@ class CheckProjectController extends Controller
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('reg_stds.*', 'project__files.*','subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                 return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
             } else {
                 $datas_std = DB::table('projects')
@@ -86,7 +88,7 @@ class CheckProjectController extends Controller
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*','subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                 return view('projects.info_project', compact('datas_std', 'datas'));
             }
         } else {
@@ -120,7 +122,7 @@ class CheckProjectController extends Controller
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                   
+
 
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
@@ -207,13 +209,28 @@ class CheckProjectController extends Controller
         return redirect('/Check_Project');
     }
 
-    public function download( $year,$term, $file)
+    public function download($year, $term, $file)
     {
         // return response()->json([
         //     $year,
         //     $term,
         //    $file ,
         //     ]);
-        return response()->download(storage_path('/app/not Check/'.$year.'/'.$term.'/'.$file));
+        return response()->download(storage_path('/app/not Check/' . $year . '/' . $term . '/' . $file));
+    }
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = reg_std::where('std_code', 'LIKE', $request->reg_std . '%')->get();
+            $output = '';
+            if (count($data) > 0) {
+                foreach ($data as $row) {
+                    $output = '<p>' .'ชื่อ ' . $row->name . '</p>';
+                }
+            } else {
+                $output .= '<p>' . 'No results' . '</p>';
+            }
+            return $output;
+        }
     }
 }
