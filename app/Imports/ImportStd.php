@@ -40,10 +40,10 @@ class ImportStd implements ToModel
         // $student->roles()->attach($std_role);
         // $student->permissions()->attach($std_perm);
         if (empty($row[0])) {
-            // errors()->add('field', 'Something is wrong with this field!');
+            // return back()->with('error', 'error datas');
         }
         if (empty($row[1])) {
-            // errors()->add('field', 'Something is wrong with this field!');
+            // return back()->with('error', 'error datas');
         } else {
             $student = new User();
             $student->name = $row[2];
@@ -75,6 +75,7 @@ class ImportStd implements ToModel
             $subject->subject_id = Session::get('subject_id');
 
             $subject->save();
+            
         }
 
 
