@@ -27,7 +27,8 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     {{--  --}}
-    
+    <link rel="stylesheet" type="text/css" href={{ asset('css/loading-bar.css') }}/>
+    <script type="text/javascript" src={{ asset('js/loading-bar.js') }}></script>
 </head>
 <body>
     

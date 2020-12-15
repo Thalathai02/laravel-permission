@@ -1,4 +1,4 @@
-/* .ldBar {
+.ldBar {
     position: relative;
   }
   .ldBar.label-center > .ldBar-label {
@@ -15,4 +15,4 @@
   }
   .ldBar.no-percent .ldBar-label:after {
     content: "";
-  } */
+  }
