@@ -58,16 +58,10 @@
                 @endif
                 @if(!empty($status))
                 @if ($status[0]->status == 'reject')
-                <div class="progress ">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100" style="width: 25%">ดำเนินการแก้ไข</div>
-                  </div>
                     <a  href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2" align="left">แก้ไขโปรเจค</a>
                 @endif
                 
                 @if ($status[0]->status == 'not Check')
-                <div class="progress ">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100" style="width: 25%">รอแต่งตั้งประธานและกรรมการ</div>
-                  </div>
                     <a  href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2" align="left">แก้ไขโปรเจค</a>
                 @endif
                 @endif
