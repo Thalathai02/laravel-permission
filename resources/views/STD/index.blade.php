@@ -65,6 +65,7 @@
       <th scope="col">อีเมล</th>
       <th scope="col">เบอร์โทร</th>
       <th scope="col">ปีการศึกษา</th>
+      <th scope="col">หมายเหตุ</th>
       <th scope="col">แก้ไข</th>
       <th scope="col">ลบ</th>
     </tr>
@@ -78,6 +79,7 @@
       <td>{{$row->email}}</td>
       <td>{{$row->phone}}</td>
       <td>{{$row->year_term}}</td>
+      <td>รอหมายเหตุ</td>
       <td><a href="{{route('STD.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
       <td>
           <form action="{{route('STD.destroy',$row->id)}}" method="POST">
