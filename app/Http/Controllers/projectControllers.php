@@ -129,8 +129,6 @@ class projectControllers extends Controller
     {
         $id_user = Auth::user()->id;
         $user = $request->user();
-        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
-
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
                 ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
@@ -144,7 +142,7 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
-            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas'));
         }
         if ($id_user == $id) {
             $user = $request->user()->id;
@@ -163,7 +161,7 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
-            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas'));
         } else {
             abort(404);
         }
@@ -202,7 +200,7 @@ class projectControllers extends Controller
             }
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
-                $name_president = Teacher::query()->where('id', 'LIKE', "%{$Search_name_president}%")->get();
+                $name_president = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_president}%")->get();
                 if ($Search_name_president === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_president, $action = "Is_president", $is_action = 1);
@@ -210,7 +208,7 @@ class projectControllers extends Controller
             }
             if (!empty($request->get('name_director1'))) {
                 $Search_name_director1 = $request->get('name_director1');
-                $name_director1 = Teacher::query()->where('id', 'LIKE', "%{$Search_name_director1}%")->get();
+                $name_director1 = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_director1}%")->get();
                 if ($Search_name_director1 === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_director1, $action = "Is_director", $is_action = 1);
@@ -218,7 +216,7 @@ class projectControllers extends Controller
             }
             if (!empty($request->get('name_director2'))) {
                 $Search_name_director2 = $request->get('name_director2');
-                $name_director2 = Teacher::query()->where('id', 'LIKE', "%{$Search_name_director2}%")->get();
+                $name_director2 = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_director2}%")->get();
                 if ($Search_name_director2 === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 1);
@@ -320,7 +318,7 @@ class projectControllers extends Controller
             'subject',
         ]);
         $fileModel = new Project_File;
-        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
         if ($user->hasRole('Admin')) {
             $request->validate([
                 'Project_name_thai' => 'required',
@@ -345,7 +343,7 @@ class projectControllers extends Controller
             $fileModel->Project_id_File = $name->id;
 
             // $request->File->store("not Check");
-            
+
             Storage::disk('local')->putFileAs(
                 'not Check/'.$term[0]->year_term,
                 $request->File,
@@ -353,7 +351,7 @@ class projectControllers extends Controller
             );
 
             $fileModel->save();
-            return view('/projects/list_name', compact("data_nameProject",'name_Instructor'));
+            return view('/projects/list_name', compact("data_nameProject"));
         }
         if ($user->hasRole('Std')) {
             $term = $request->user()->id;
@@ -381,9 +379,8 @@ class projectControllers extends Controller
                 $request->File,
                 $fileModel->name_file
             );
-           
             $fileModel->save();
-            return view('/projects/list_name', compact("data_nameProject", "term",'name_Instructor'));
+            return view('/projects/list_name', compact("data_nameProject", "term"));
         } else {
             abort(404);
         }

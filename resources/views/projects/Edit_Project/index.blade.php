@@ -18,7 +18,8 @@
                     </ul>
                 </div>
             @endif
-            
+            {!! Form::open(['action' => 'projectControllers@createNameProject', 'method' => 'POST', 'enctype' =>
+            'multipart/form-data']) !!}
             
                 <div class="my-2">
                     {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -63,20 +64,27 @@
                 @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
                     <div class="my-4">
                         {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                         {!! Form::select('name_president',  array_merge([$datas_instructor[0]->name_Instructor,$name_Instructor]), ['class' => ' col-8']) !!}
+                        {!! Form::text('name_president', $datas_instructor[0]->name_Instructor, [
+                        'class' => 'form-control
+                        col-5',
+                        ]) !!}
                     </div>
                 @endif
                 @if (!empty($datas_instructor[1]->name_Instructor))
                     <div class="my-4">
                         {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                        {!! Form::select('name_director1',  array_merge([$datas_instructor[1]->name_Instructor,$name_Instructor]), ['class' => ' col-8']) !!}
+                        {!! Form::text('name_director1', $datas_instructor[1]->name_Instructor, [
+                        'class' => 'form-control
+                        col-5',
+                        ]) !!}
                     </div>
                 @endif
                 @if (!empty($datas_instructor[2]->name_Instructor))
                     <div class="my-4">
                         <div class="my-4">
                             {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                            {!! Form::select('name_director2',  array_merge([$datas_instructor[2]->name_Instructor,$name_Instructor]), ['class' => 'col-8']) !!}
+                            {!! Form::text('name_director2', $datas_instructor[2]->name_Instructor, ['class' =>
+                            'form-control col-5']) !!}
                         </div>
                 @endif
                 @if (!empty($datas[0]->name_mentor))
@@ -90,7 +98,7 @@
 
             
                
-          
+            {!! Form::close() !!}
         </div>
         <script type="text/javascript">
             $(document).ready(function() {

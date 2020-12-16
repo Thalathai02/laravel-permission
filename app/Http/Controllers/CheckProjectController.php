@@ -32,7 +32,7 @@ class CheckProjectController extends Controller
 
         if ($user->hasRole('Admin')) {
             $datas = project::orderBy('id', 'ASC')->get();
-
+            
             return view('projects.Check_Project', compact('datas'));
         } else {
             abort(404);
@@ -70,26 +70,40 @@ class CheckProjectController extends Controller
             ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
             ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
-        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
             if (!empty($datas_instructor[0]->id)) {
                 $datas_std = DB::table('projects')
+<<<<<<< HEAD
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
                     ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                 return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
+=======
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+
+                return view('projects.info_project', compact('datas','datas_std','datas_instructor'));
+>>>>>>> parent of 54effd4... โหลดไฟล์ได้แล้ว
             } else {
                 $datas_std = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+<<<<<<< HEAD
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                 return view('projects.info_project', compact('datas_std', 'datas'));
+=======
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                return view('projects.info_project', compact('datas_std','datas'));
+>>>>>>> parent of 54effd4... โหลดไฟล์ได้แล้ว
             }
         } else {
             abort(404);
@@ -115,26 +129,29 @@ class CheckProjectController extends Controller
             //     'id' => $datas1
             // ]);
 
-            $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
             if (empty($datas1)) {
 
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 54effd4... โหลดไฟล์ได้แล้ว
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
-                return view('projects.instructor_project', compact('datas','name_Instructor'));
+                return view('projects.instructor_project', compact('datas'));
             } else {
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
-                return view('projects.instructor_project', compact('datas','name_Instructor'));
+                return view('projects.instructor_project', compact('datas'));
             }
         } else {
             abort(404);
@@ -156,7 +173,7 @@ class CheckProjectController extends Controller
 
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
-                $name_president = Teacher::query()->where('id', 'LIKE', "%{$Search_name_president}%")->get();
+                $name_president = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_president}%")->get();
                 if ($Search_name_president === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_president, $action = "Is_president", $is_action = 1);
@@ -164,7 +181,7 @@ class CheckProjectController extends Controller
             }
             if (!empty($request->get('name_director1'))) {
                 $Search_name_director1 = $request->get('name_director1');
-                $name_director1 = Teacher::query()->where('id', 'LIKE', "%{$Search_name_director1}%")->get();
+                $name_director1 = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_director1}%")->get();
                 if ($Search_name_director1 === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_director1, $action = "Is_director", $is_action = 1);
@@ -172,7 +189,7 @@ class CheckProjectController extends Controller
             }
             if (!empty($request->get('name_director2'))) {
                 $Search_name_director2 = $request->get('name_director2');
-                $name_director2 = Teacher::query()->where('id', 'LIKE', "%{$Search_name_director2}%")->get();
+                $name_director2 = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_director2}%")->get();
                 if ($Search_name_director2 === "-") {
                 } else {
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 1);
@@ -209,6 +226,7 @@ class CheckProjectController extends Controller
         return redirect('/Check_Project');
     }
 
+<<<<<<< HEAD
     public function download($year, $term, $file)
     {
         // return response()->json([
@@ -232,5 +250,10 @@ class CheckProjectController extends Controller
             }
             return $output;
         }
+=======
+    public function download($file)
+    {
+        return response()->download(storage_path('/app/not Check/' . $file));
+>>>>>>> parent of 54effd4... โหลดไฟล์ได้แล้ว
     }
 }
