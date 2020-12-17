@@ -94,6 +94,39 @@
                     </tbody>
                 </table>
             @endif
+
+            @if (Auth::user()->hasRole('Tea'))
+            
+            
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ลำดับโครงงาน</th>
+                            <th scope="col">รหัสนักศึกษา</th>
+                            <th scope="col">ชื่อ-สกุล</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                            <th scope="col">ที่ปรึกษาพิเศษ</th>
+                            <th scope="col">หมายเหตุ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datas as $row)
+                            @if ($row->status == 'Check')
+                                <tr>
+                                    <th scope="row">{{ $row->Project_id }}</th>
+                                    <td>{{ $row->std_code }}</td>
+                                    <td>{{ $row->name }}</td>
+                                    <td>{{ $row->name_th }}</td>
+                                    <td>{{ $row->name_en }}</td>
+                                    <td>{{ $row->name_mentor }}</td>
+                                    <td></td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </body>
 

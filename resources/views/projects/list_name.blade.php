@@ -52,15 +52,15 @@
 
                     <div class="my-4">
                         {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                        {!! Form::text('name_president', null, ['class' => 'form-control col-5']) !!}
+                        {!! Form::select('name_president',array_merge(['-' => 'Please Select',$name_Instructor]),  ['class' => ' col-8']) !!}
                     </div>
                     <div class="my-4">
                         {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                        {!! Form::text('name_director1', null, ['class' => 'form-control col-5']) !!}
+                        {!! Form::select('name_director1', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
                     </div>
                     <div class="my-4">
                         {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                        {!! Form::text('name_director2', null, ['class' => 'form-control col-5']) !!}
+                        {!! Form::select('name_director2', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
                     </div>
                     <div class="my-4">
                         {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
