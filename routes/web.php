@@ -60,9 +60,11 @@ Route::post('/system/index','systemController@show')->middleware('auth');
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
 Route::post('/edit_project','projectControllers@edit')->middleware('auth');
+Route::GET('/001','projectControllers@wordExport')->middleware('auth');
 
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
 Route::get('/Check_Project/info_project/{year}/{term}/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
 Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 Route::get('/Check_Project/instructor_projectฝSearch/Search','CheckProjectController@Search')->name('action')->middleware('auth');
+
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

@@ -17,6 +17,7 @@ use App\subject_student;
 use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\TemplateProcessor;
 class projectControllers extends Controller
 {
 
@@ -395,5 +396,26 @@ class projectControllers extends Controller
         } else {
             abort(404);
         }
+    }
+    public function wordExport()
+    {
+        $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
+        $templateProcessor->setValue('id', 6004101360);
+        $templateProcessor->setValue('name', "นางสาวกันยารัตน์ ขำพงศ์ ");
+        
+        $templateProcessor->setValue('id2', 6004101360);
+        $templateProcessor->setValue('name2', "นายกริชชัย ผลเจริญ ");
+
+        $templateProcessor->setValue('id3', 6004101360);
+        $templateProcessor->setValue('name3', "นายพีระวิชญ์ ตระกูลพิตรพิบูล ");
+
+        
+
+        $templateProcessor->setValue('email', "ระบบบริการข้อมูลเพื่อการศึกษาของสาขาวิชาวิทยาการคอมพิวเตอร์ หกเไำห้เไำฟพ้พหะ่พะกั่กพะั่พะ่พะ่พำะ่พะ่พ่ะพดเ้พะ้พำถ้พะ้พด้่พดะ่พะ่ำพะ่พะ่ั้าัะีาะัา่พะัา่ะพัาะัาะัาพ่ำพะ่ำพะ่พะ่ ");
+        $templateProcessor->setValue('address', "Educational Information Service System of the Digital Technology Innovation ");
+        $fileName = 001;
+        $templateProcessor->saveAs($fileName . '.PDF');
+
+        return response()->download($fileName . '.PDF')->deleteFileAfterSend(true);
     }
 }
