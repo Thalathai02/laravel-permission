@@ -204,6 +204,7 @@ class ImportExcelController extends Controller
     public function Search(Request $request)
     {
         $user = $request->user();
+       
         if ($user->hasRole('Admin')) {
             $Search = $request->get(
                 'Search'

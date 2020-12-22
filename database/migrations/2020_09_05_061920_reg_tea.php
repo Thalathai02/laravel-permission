@@ -15,6 +15,7 @@ class RegTea extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id('id');
+            $table->string('Title_name_Instructor')->nullable();
             $table->string('name_Instructor')->nullable();
             $table->string('phone_Instructor')->nullable();
             $table->string('lineId_Instructor')->nullable();
