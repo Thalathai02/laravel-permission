@@ -79,7 +79,7 @@
       <td>{{$row->email}}</td>
       <td>{{$row->phone}}</td>
       <td>{{$row->year_term}}</td>
-      <td>รอหมายเหตุ</td>
+      <td>{{$row->note}}</td>
       <td><a href="{{route('STD.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
       <td>
           <form action="{{route('STD.destroy',$row->id)}}" method="POST">

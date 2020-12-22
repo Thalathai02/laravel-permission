@@ -8,11 +8,12 @@ class Teacher extends Model
 {
     protected $fillable = [
         'id',
-           'name_Instructor',
-            'phone_Instructor',
-           'lineId_Instructor',
-            'email_Instructor',
-           'facebook_Instructor',
-           'user_id_Instructor'
-       ];
+        'Title_name_Instructor',
+        'name_Instructor',
+        'phone_Instructor',
+        'lineId_Instructor',
+        'email_Instructor',
+        'facebook_Instructor',
+        'user_id_Instructor'
+    ];
 }

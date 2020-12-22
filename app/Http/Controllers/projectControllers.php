@@ -411,11 +411,11 @@ class projectControllers extends Controller
 
         
 
-        $templateProcessor->setValue('email', "ระบบบริการข้อมูลเพื่อการศึกษาของสาขาวิชาวิทยาการคอมพิวเตอร์ หกเไำห้เไำฟพ้พหะ่พะกั่กพะั่พะ่พะ่พำะ่พะ่พ่ะพดเ้พะ้พำถ้พะ้พด้่พดะ่พะ่ำพะ่พะ่ั้าัะีาะัา่พะัา่ะพัาะัาะัาพ่ำพะ่ำพะ่พะ่ ");
+        $templateProcessor->setValue('email', "ระบบบริการข้อมูลเพื่อการศึกษาของสาขาวิชาวิทยาการคอมพิวเตอร์ ");
         $templateProcessor->setValue('address', "Educational Information Service System of the Digital Technology Innovation ");
         $fileName = 001;
-        $templateProcessor->saveAs($fileName . '.PDF');
+        $templateProcessor->saveAs($fileName . '.docx');
 
-        return response()->download($fileName . '.PDF')->deleteFileAfterSend(true);
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
 }

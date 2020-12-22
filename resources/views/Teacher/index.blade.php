@@ -53,7 +53,7 @@
     @foreach($data as $row)
   <tr>
     <th scope="row">{{$row->id}}</th>
-    <td>{{$row->name_Instructor}}</td>
+    <td>{{$row->Title_name_Instructor}}{{$row->name_Instructor}}</td>
     <td>{{$row->email_Instructor}}</td>
     <td>{{$row->phone_Instructor}}</td>
     <td><a href="{{route('Teacher.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
