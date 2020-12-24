@@ -190,6 +190,11 @@ class ImportExcelController extends Controller
                 'password',
             ]);
             reg_std::find($id)->update($request->all());
+            $id_user=reg_std::find($id);
+            $user = User::find($id_user->user_id);
+            $user->name = $request['name'];
+            $user->email=$request['email']; 
+            $user->save();
             return redirect('/STD');
         } else {
             abort(404);

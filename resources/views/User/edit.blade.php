@@ -22,13 +22,13 @@
     <div class="row">
         <div class="form-group col-6">
             {!! Form::label('name','ชื่อ')!!}
-            {!! Form::text('name',$data->name,["class"=>"form-control"]) !!}
+            {!! Form::text('name',$data->name,['readonly',"class"=>"form-control"]) !!}
         </div>
     </div>
     <div class="row">
         <div class="form-group col-6">
         {!! Form::label('email')!!}
-        {!! Form::email('email',$data->email,["class"=>"form-control"]) !!}
+        {!! Form::email('email',$data->email,['readonly',"class"=>"form-control"]) !!}
         </div>
     </div>
     @endif

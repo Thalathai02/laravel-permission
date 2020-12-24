@@ -131,18 +131,25 @@ class TeacherController extends Controller
            'facebook_Instructor',
        ]);
        Teacher::find($id)->update($request->all());
-       User::find($request->validate(['user_id_Instructor']));
+       
             return redirect('/home');
         }
         if ($user->hasRole('Admin')) {
             $request->validate([
                 'name_Instructor',
+                'user_id_Instructor',
+                'Title_name_Instructor',
                 'phone_Instructor',
                 'lineId_Instructor',
                 'email_Instructor'=>['required','email'],
                 'facebook_Instructor',
         ]);
         Teacher::find($id)->update($request->all());
+       $tec=Teacher::find($id);
+       $user = User::find($tec->user_id_Instructor);
+       $user->name = $request['Title_name_Instructor'].$request['name_Instructor'];
+       $user->email=$request['email_Instructor']; 
+       $user->save();
             return redirect('/Teacher');
         } else {
             abort(404);
