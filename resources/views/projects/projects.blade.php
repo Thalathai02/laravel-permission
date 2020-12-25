@@ -38,7 +38,7 @@
                         @foreach ($datas as $row)
                             @if ($row->status == 'Check')
                                 <tr>
-                                    <th scope="row">{{ $row->Project_id }}</th>
+                                    <td scope="row">{{ $row->Project_id }}</td>
                                     <td>{{ $row->std_code }}</td>
                                     <td>{{ $row->name }}</td>
                                     <td>{{ $row->name_th }}</td>

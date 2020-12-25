@@ -52,7 +52,7 @@
   <tbody>
     @foreach($data as $row)
   <tr>
-    <th scope="row">{{$row->id}}</th>
+    <td scope="row">{{$row->id}}</td>
     <td>{{$row->Title_name_Instructor}}{{$row->name_Instructor}}</td>
     <td>{{$row->email_Instructor}}</td>
     <td>{{$row->phone_Instructor}}</td>
