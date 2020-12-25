@@ -60,7 +60,7 @@ Route::post('/system/index','systemController@show')->middleware('auth');
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
 Route::post('/edit_project','projectControllers@edit')->middleware('auth');
-Route::GET('/001','projectControllers@wordExport')->middleware('auth');
+Route::GET('/test50/{id}','projectControllers@test50')->name('project.test50')->middleware('auth');
 
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
 Route::get('/Check_Project/info_project/{year}/{term}/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');

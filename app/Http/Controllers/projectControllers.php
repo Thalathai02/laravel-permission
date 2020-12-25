@@ -32,21 +32,11 @@ class projectControllers extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            $datas = DB::table('projects')
-                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-                ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
-
+            $datas = project::all();
             return view('projects.projects', compact('datas'));
+
         }if ($user->hasRole('Tea')) {
-            $datas = DB::table('projects')
-                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-                ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+            $datas = project::all();
 
             return view('projects.projects', compact('datas'));
         }
@@ -56,15 +46,12 @@ class projectControllers extends Controller
             $data_std = DB::table('project_user')->where('id_reg_Std', $data_std1[0]->id)->select('project_user.*')->get();
             if (!empty($data_std[0]->id)) {
                 $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
-                $datas = DB::table('projects')
-                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                    // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                    // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
+                $datas = project::all();
                 if ($status[0]->status == "reject") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } elseif ($status[0]->status == "not Check") {
+                    return view('projects.projects', compact('datas', 'data_std', 'status'));
+                }elseif ($status[0]->status == "Check") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } else {
                     $status = null;
@@ -397,7 +384,49 @@ class projectControllers extends Controller
             abort(404);
         }
     }
-    public function wordExport()
+    public function test50(Request $request, $id){
+        $id_user = Auth::user()->id;
+        $user = $request->user();
+        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+        if ($user->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+                return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+        }
+        if ($id_user == $id) {
+            $user = $request->user()->id;
+            $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_user.*')->get();
+
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+                return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+        } else {
+            abort(404);
+        }
+       
+    }
+    public function wordExport_test50()
     {
         $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
         $templateProcessor->setValue('id', 6004101360);

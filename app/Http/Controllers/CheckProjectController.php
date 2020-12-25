@@ -17,7 +17,7 @@ use App\subject_student;
 use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use http\Env\Response;
-
+use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 
 class CheckProjectController extends Controller
 {
@@ -73,7 +73,7 @@ class CheckProjectController extends Controller
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
 
-        if ($user->hasRole('Admin')) {
+        
             if (!empty($datas_instructor[0]->id)) {
                 $datas_std = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
@@ -91,9 +91,7 @@ class CheckProjectController extends Controller
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                 return view('projects.info_project', compact('datas_std', 'datas'));
             }
-        } else {
-            abort(404);
-        }
+        
     }
 
     /**
@@ -153,6 +151,7 @@ class CheckProjectController extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
+            project::find($id)->update(['status'=>'Check']);
 
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
@@ -195,6 +194,7 @@ class CheckProjectController extends Controller
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
         DB::table('project_instructor')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
+
     }
     /**
      * Remove the specified resource from storage.

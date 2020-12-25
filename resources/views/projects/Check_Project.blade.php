@@ -18,11 +18,12 @@
                     </ul>
                 </div>
             @endif
-            
+
             <div class="progress ">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="20" aria-valuemax="100" style="width: 25%">นำเสนอหัวข้อ</div>
-              </div>
-              
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+                    aria-valuemin="20" aria-valuemax="100" style="width: 25%">นำเสนอหัวข้อ</div>
+            </div>
+
 
             <table class="table table-striped">
                 <thead>
@@ -51,7 +52,8 @@
                                 <td><a href="{{ route('Check_Project.show', $row->id) }}"
                                         class="btn btn-info">รายละเอียด</a></td>
                                 <td><a href="{{ route('Check_Project.edit', $row->id) }}"
-                                        class="btn btn-success">แต่งตั้งประธาน</a></td>
+                                        class="btn btn-success">แต่งตั้งประธาน</a>
+                                </td>
                                 <td>
                                     <form action="{{ route('Check_Project.destroy', $row->id) }}" method="POST">
                                         @csrf @method('DELETE')
@@ -59,8 +61,8 @@
                                             class="btn btn-danger rejectProject">
                                     </form>
                                 </td>
-                                <td><a  href="{{ route('project.edit', $row->id) }}" class="btn btn-warning">แก้ไข</td>
-                                    
+                                <td><a href="{{ route('project.edit', $row->id) }}" class="btn btn-warning">แก้ไข</td>
+
                             </tr>
                         @endif
                     @endforeach
