@@ -7,7 +7,7 @@
         <br />
 
         <div class="container">
-            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ50</h3>
+            <h3 align="center">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</h3>
             <br />
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -18,7 +18,7 @@
                     </ul>
                 </div>
             @endif
-            {!! Form::open(['action' => 'projectControllers@wordExport_test50', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => 'projectControllers@wordExport_ChangeBoard', 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 
             <div class="my-2">
@@ -73,8 +73,9 @@
                     </div>
                 </div>
             @endif
+            <h3 class="my-4">จากคณะกรรมการชุดเดิม </h3>
             @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
-                <div class="my-4">
+                <div class="my-2">
                     {!! Form::label('name_president', 'ชื่อประธาน') !!}
                     {!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor .
                     $datas_instructor[0]->name_Instructor, [
@@ -85,7 +86,7 @@
                 </div>
             @endif
             @if (!empty($datas_instructor[1]->name_Instructor))
-                <div class="my-4">
+                <div class="my-2">
                     {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
                     {!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor .
                     $datas_instructor[1]->name_Instructor, [
@@ -96,8 +97,7 @@
                 </div>
             @endif
             @if (!empty($datas_instructor[2]->name_Instructor))
-                <div class="my-4">
-                    <div class="my-4">
+                <div class="my-2">
                         {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
                         {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor .
                         $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control col-5']) !!}
@@ -109,27 +109,31 @@
                     {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
                 </div>
             @endif
-
-            <div class="my4">
-                {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::date('date_test50', \Carbon\Carbon::now()->format('d/m/Y'), ['class' => 'form-control col-5']) !!}
-
-            </div>
-
-            <div class="my4">
-                {!! Form::label('time_test50', 'เวลา ') !!}
-                {!! Form::time('time_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
-            </div>
-
+            <h3 class="my-4">เป็นคณะกรรมการชุดใหม่ </h3>
+            @if (empty($datas[0]->name_Instructor))
             <div class="my-4">
-                {!! Form::label('room_test50', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test50', null, ['class' => 'form-control col-5']) !!}
+                {!! Form::label('new_name_president', 'ชื่อประธาน') !!}
+                {!! Form::select('new_name_president', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
             </div>
+        @endif
+        @if (empty($datas[1]->name_Instructor))
             <div class="my-4">
-                {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
-                {!! Form::file('File', ['class' => 'form-control col-5']) !!}
-            </div>
+                {!! Form::label('new_name_director1', 'ชื่อกรรมการคนที่ 1') !!}
+                {!! Form::select('new_name_director1', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
 
+            </div>
+        @endif
+        @if (empty($datas[2]->name_Instructor))
+            <div class="my-4">
+                <div class="my-4">
+                    {!! Form::label('new_name_director2', 'ชื่อกรรมการคนที่ 2') !!}
+                    {!! Form::select('new_name_director2', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
+                </div>
+        @endif
+        <div class="my-4">
+            {!! Form::label('note', 'เนื่องจาก') !!}
+            {!! Form::textarea('note','', ['class' => 'form-control col-8']) !!}
+        </div>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 ดาวน์โหลดเอกสาร

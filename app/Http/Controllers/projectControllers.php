@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
+
 class projectControllers extends Controller
 {
 
@@ -34,8 +35,8 @@ class projectControllers extends Controller
         if ($user->hasRole('Admin')) {
             $datas = project::all();
             return view('projects.projects', compact('datas'));
-
-        }if ($user->hasRole('Tea')) {
+        }
+        if ($user->hasRole('Tea')) {
             $datas = project::all();
 
             return view('projects.projects', compact('datas'));
@@ -51,7 +52,7 @@ class projectControllers extends Controller
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } elseif ($status[0]->status == "not Check") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
-                }elseif ($status[0]->status == "Check") {
+                } elseif ($status[0]->status == "Check") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } else {
                     $status = null;
@@ -60,13 +61,7 @@ class projectControllers extends Controller
             } else {
                 $data_std = null;
                 $status = null;
-                $datas = DB::table('projects')
-                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                    // ->join('project_instructor','projects.id','=', 'project_instructor.Project_id')
-                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                    // ->join('teachers','project_instructor.ID_Instructor','=', 'teachers.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*')->get();
-
+                $datas = project::all();
                 return view('projects.projects', compact('datas', 'data_std', 'status'));
             }
         }
@@ -140,7 +135,7 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
-                return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
             $user = $request->user()->id;
@@ -159,7 +154,7 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
-                return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
         }
@@ -344,13 +339,13 @@ class projectControllers extends Controller
             // $request->File->store("not Check");
 
             Storage::disk('local')->putFileAs(
-                'not Check/'.$term[0]->year_term,
+                'not Check/' . $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
 
             $fileModel->save();
-            return view('/projects/list_name', compact("data_nameProject","name_Instructor"));
+            return view('/projects/list_name', compact("data_nameProject", "name_Instructor"));
         }
         if ($user->hasRole('Std')) {
             $term = $request->user()->id;
@@ -363,7 +358,7 @@ class projectControllers extends Controller
             $name->subject_id = $term[0]->id;
 
             $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
-            
+
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
@@ -374,17 +369,19 @@ class projectControllers extends Controller
             $fileModel->Project_id_File = $name->id;
 
             Storage::disk('local')->putFileAs(
-                 'not Check/'.$term[0]->year_term,
+                'not Check/' . $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
             $fileModel->save();
-            return view('/projects/list_name', compact("data_nameProject", "term","name_Instructor"));
+            return view('/projects/list_name', compact("data_nameProject", "term", "name_Instructor"));
         } else {
             abort(404);
         }
     }
-    public function test50(Request $request, $id){
+    
+    public function test50(Request $request, $id)
+    {
         $id_user = Auth::user()->id;
         $user = $request->user();
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
@@ -401,7 +398,7 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
-                return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
             $user = $request->user()->id;
@@ -420,29 +417,355 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
-                return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas','name_Instructor'));
+            return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
         }
-       
     }
-    public function wordExport_test50()
+    public function ChangeBoard(Request $request, $id){
+        $id_user = Auth::user()->id;
+        $user = $request->user();
+        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+        if ($user->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            return view('/word-template/ChangeBoard', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        }
+        if ($id_user == $id) {
+            $user = $request->user()->id;
+            $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_user.*')->get();
+
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            return view('/word-template/ChangeBoard', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        } else {
+            abort(404);
+        }
+    }
+    public function CompleteForm(Request $request, $id){
+        $id_user = Auth::user()->id;
+        $user = $request->user();
+        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+        if ($user->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            return view('/word-template/CompleteForm', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        }
+        if ($id_user == $id) {
+            $user = $request->user()->id;
+            $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_user.*')->get();
+
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            return view('/word-template/CompleteForm', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        } else {
+            abort(404);
+        }
+    }
+    public function test100(Request $request, $id){
+        $id_user = Auth::user()->id;
+        $user = $request->user();
+        $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+        if ($user->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            return view('/word-template/test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        }
+        if ($id_user == $id) {
+            $user = $request->user()->id;
+            $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            $data_std = DB::table('project_user')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_user.*')->get();
+
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
+
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+
+            $datas_std = DB::table('projects')
+                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            return view('/word-template/test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+        } else {
+            abort(404);
+        }
+    }
+    public function wordExport_CompleteForm(Request $request){
+        $templateProcessor = new TemplateProcessor('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx');
+        $templateProcessor->setValue('id', $request->reg_std1);
+        $templateProcessor->setValue('name', $request->reg_std1_name);
+        $templateProcessor->setValue('phone', $request->reg_std1_Phone);
+
+        if (!empty($request->reg_std2)) {
+            $templateProcessor->setValue('id2', $request->reg_std2);
+            $templateProcessor->setValue('name2', $request->reg_std2_name);
+            $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
+            $templateProcessor->setValue('code2', "รหัส ");
+            $templateProcessor->setValue('phone_n2', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('code2', "");
+            $templateProcessor->setValue('phone_n2', "");
+            $templateProcessor->setValue('id2',"" );
+            $templateProcessor->setValue('name2',"" );
+            $templateProcessor->setValue('phone2', "");
+        }
+
+
+        if (!empty($request->reg_std3)) {
+            $templateProcessor->setValue('id3', $request->reg_std3);
+            $templateProcessor->setValue('name3', $request->reg_std3_name);
+            $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
+            $templateProcessor->setValue('code3', "รหัส ");
+            $templateProcessor->setValue('phone_n3', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('id3', "");
+            $templateProcessor->setValue('name3', "");
+            $templateProcessor->setValue('phone3', "");
+            $templateProcessor->setValue('code3', "");
+            $templateProcessor->setValue('phone_n3', "");
+        }
+        $templateProcessor->setValue('name_president', $request->name_president);
+        $templateProcessor->setValue('name_director1', $request->name_director1);
+        $templateProcessor->setValue('name_director2', $request->name_director2);
+
+        $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
+        $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
+        $templateProcessor->setValue('date_now', \Carbon\Carbon::now()->format('d/m/Y'));
+
+        $fileName = "แบบขอส่งโครงงานฉบับสมบูรณ์";
+        $templateProcessor->saveAs($fileName . '.docx');
+
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+    }
+    public function wordExport_test50(Request $request)
     {
+
+        $request->validate([
+            'room_test50' => 'required',
+        ]);
         $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
-        $templateProcessor->setValue('id', 6004101360);
-        $templateProcessor->setValue('name', "นางสาวกันยารัตน์ ขำพงศ์ ");
-        
-        $templateProcessor->setValue('id2', 6004101360);
-        $templateProcessor->setValue('name2', "นายกริชชัย ผลเจริญ ");
+        $templateProcessor->setValue('id', $request->reg_std1);
+        $templateProcessor->setValue('name', $request->reg_std1_name);
+        $templateProcessor->setValue('phone', $request->reg_std1_Phone);
 
-        $templateProcessor->setValue('id3', 6004101360);
-        $templateProcessor->setValue('name3', "นายพีระวิชญ์ ตระกูลพิตรพิบูล ");
+        if (!empty($request->reg_std2)) {
+            $templateProcessor->setValue('id2', $request->reg_std2);
+            $templateProcessor->setValue('name2', $request->reg_std2_name);
+            $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
+            $templateProcessor->setValue('code2', "รหัส ");
+            $templateProcessor->setValue('phone_n2', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('code2', "");
+            $templateProcessor->setValue('phone_n2', "");
+            $templateProcessor->setValue('id2',"" );
+            $templateProcessor->setValue('name2',"" );
+            $templateProcessor->setValue('phone2', "");
+        }
 
-        
 
-        $templateProcessor->setValue('email', "ระบบบริการข้อมูลเพื่อการศึกษาของสาขาวิชาวิทยาการคอมพิวเตอร์ ");
-        $templateProcessor->setValue('address', "Educational Information Service System of the Digital Technology Innovation ");
-        $fileName = 001;
+        if (!empty($request->reg_std3)) {
+            $templateProcessor->setValue('id3', $request->reg_std3);
+            $templateProcessor->setValue('name3', $request->reg_std3_name);
+            $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
+            $templateProcessor->setValue('code3', "รหัส ");
+            $templateProcessor->setValue('phone_n3', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('id3', "");
+            $templateProcessor->setValue('name3', "");
+            $templateProcessor->setValue('phone3', "");
+            $templateProcessor->setValue('code3', "");
+            $templateProcessor->setValue('phone_n3', "");
+        }
+        $templateProcessor->setValue('name_president', $request->name_president);
+        $templateProcessor->setValue('name_director1', $request->name_director1);
+        $templateProcessor->setValue('name_director2', $request->name_director2);
+
+        $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
+        $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
+
+        $templateProcessor->setValue('date', $request->date_test50);
+        $templateProcessor->setValue('time', $request->time_test50);
+        $templateProcessor->setValue('room', $request->room_test50);
+        $templateProcessor->setValue('date_now', \Carbon\Carbon::now()->format('d/m/Y'));
+
+        $fileName = "แบบเสนอขอสอบ50";
+        $templateProcessor->saveAs($fileName . '.docx');
+
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+    }
+    public function wordExport_ChangeBoard(Request $request){
+        $request->validate([
+            'note' => 'required',
+        ]);
+        $templateProcessor = new TemplateProcessor('word-template/07-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์.docx');
+        $templateProcessor->setValue('id', $request->reg_std1);
+        $templateProcessor->setValue('name', $request->reg_std1_name);
+        $templateProcessor->setValue('phone', $request->reg_std1_Phone);
+
+        if (!empty($request->reg_std2)) {
+            $templateProcessor->setValue('id2', $request->reg_std2);
+            $templateProcessor->setValue('name2', $request->reg_std2_name);
+            $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
+            $templateProcessor->setValue('code2', "รหัส ");
+            $templateProcessor->setValue('phone_n2', "มือถือ ");
+            $templateProcessor->setValue('and_name2',"และ ");
+        } else {
+            $templateProcessor->setValue('code2', "");
+            $templateProcessor->setValue('phone_n2', "");
+            $templateProcessor->setValue('id2',"" );
+            $templateProcessor->setValue('name2',"" );
+            $templateProcessor->setValue('phone2', "");
+            $templateProcessor->setValue('and_name2'," ");
+        }
+
+
+        if (!empty($request->reg_std3)) {
+            $templateProcessor->setValue('id3', $request->reg_std3);
+            $templateProcessor->setValue('name3', $request->reg_std3_name);
+            $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
+            $templateProcessor->setValue('code3', "รหัส ");
+            $templateProcessor->setValue('phone_n3', "มือถือ ");
+            $templateProcessor->setValue('and_name3',"และ ");
+        } else {
+            $templateProcessor->setValue('id3', "");
+            $templateProcessor->setValue('name3', "");
+            $templateProcessor->setValue('phone3', "");
+            $templateProcessor->setValue('code3', "");
+            $templateProcessor->setValue('phone_n3', "");
+            $templateProcessor->setValue('and_name3'," ");
+        }
+        $templateProcessor->setValue('name_president', $request->name_president);
+        $templateProcessor->setValue('name_director1', $request->name_director1);
+        $templateProcessor->setValue('name_director2', $request->name_director2);
+
+        $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
+        $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
+
+        $new_name_president = $request->get('new_name_president');
+        $new_name_president = Teacher::query()->where('id', 'LIKE', "%{$new_name_president}%")->get();
+        $new_name_director1 = $request->get('new_name_director1');
+        $new_name_director1 = Teacher::query()->where('id', 'LIKE', "%{$new_name_director1}%")->get();
+        $new_name_director2 = $request->get('new_name_director2');
+        $new_name_director2 = Teacher::query()->where('id', 'LIKE', "%{$new_name_director2}%")->get();
+
+        $templateProcessor->setValue('new_name_president', $new_name_president[0]->Title_name_Instructor.$new_name_president[0]->name_Instructor);
+        $templateProcessor->setValue('new_name_director1', $new_name_director1[0]->Title_name_Instructor.$new_name_director1[0]->name_Instructor);
+        $templateProcessor->setValue('new_name_director2', $new_name_director2[0]->Title_name_Instructor.$new_name_director2[0]->name_Instructor);
+        $templateProcessor->setValue('note', $request->note);
+        $templateProcessor->setValue('date_now', \Carbon\Carbon::now()->format('d/m/Y'));
+
+        $fileName = "ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์";
+        $templateProcessor->saveAs($fileName . '.docx');
+
+        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+    }
+    public function wordExport_test100(Request $request)
+    {
+
+        $request->validate([
+            'room_test50' => 'required',
+        ]);
+        $templateProcessor = new TemplateProcessor('word-template/04-แบบเสนอขอสอบ100.docx');
+        $templateProcessor->setValue('id', $request->reg_std1);
+        $templateProcessor->setValue('name', $request->reg_std1_name);
+        $templateProcessor->setValue('phone', $request->reg_std1_Phone);
+
+        if (!empty($request->reg_std2)) {
+            $templateProcessor->setValue('id2', $request->reg_std2);
+            $templateProcessor->setValue('name2', $request->reg_std2_name);
+            $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
+            $templateProcessor->setValue('code2', "รหัส ");
+            $templateProcessor->setValue('phone_n2', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('code2', "");
+            $templateProcessor->setValue('phone_n2', "");
+            $templateProcessor->setValue('id2',"" );
+            $templateProcessor->setValue('name2',"" );
+            $templateProcessor->setValue('phone2', "");
+        }
+
+
+        if (!empty($request->reg_std3)) {
+            $templateProcessor->setValue('id3', $request->reg_std3);
+            $templateProcessor->setValue('name3', $request->reg_std3_name);
+            $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
+            $templateProcessor->setValue('code3', "รหัส ");
+            $templateProcessor->setValue('phone_n3', "มือถือ ");
+        } else {
+            $templateProcessor->setValue('id3', "");
+            $templateProcessor->setValue('name3', "");
+            $templateProcessor->setValue('phone3', "");
+            $templateProcessor->setValue('code3', "");
+            $templateProcessor->setValue('phone_n3', "");
+        }
+        $templateProcessor->setValue('name_president', $request->name_president);
+        $templateProcessor->setValue('name_director1', $request->name_director1);
+        $templateProcessor->setValue('name_director2', $request->name_director2);
+
+        $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
+        $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
+
+        $templateProcessor->setValue('date', $request->date_test50);
+        $templateProcessor->setValue('time', $request->time_test50);
+        $templateProcessor->setValue('room', $request->room_test50);
+        $templateProcessor->setValue('date_now', \Carbon\Carbon::now()->format('d/m/Y'));
+
+        $fileName = "แบบเสนอขอสอบ100";
         $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);

@@ -51,7 +51,7 @@
                 @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
                     <div class="my-4">
                         {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                        {!! Form::text('name_president', $datas_instructor[0]->name_Instructor, [
+                        {!! Form::text('name_president',$datas_instructor[0]->Title_name_Instructor.$datas_instructor[0]->name_Instructor, [
                         'readonly',
                         'class' => 'form-control
                         col-5',
@@ -61,7 +61,7 @@
                 @if (!empty($datas_instructor[1]->name_Instructor))
                     <div class="my-4">
                         {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                        {!! Form::text('name_director1', $datas_instructor[1]->name_Instructor, [
+                        {!! Form::text('name_director1',$datas_instructor[1]->Title_name_Instructor.$datas_instructor[1]->name_Instructor, [
                         'readonly',
                         'class' => 'form-control
                         col-5',
@@ -72,7 +72,7 @@
                     <div class="my-4">
                         <div class="my-4">
                             {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                            {!! Form::text('name_director2', $datas_instructor[2]->name_Instructor, ['readonly', 'class' =>
+                            {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor.$datas_instructor[2]->name_Instructor, ['readonly', 'class' =>
                             'form-control col-5']) !!}
                         </div>
                 @endif
