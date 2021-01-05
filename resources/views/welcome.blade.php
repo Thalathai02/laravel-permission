@@ -8,17 +8,52 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
+        
         <!-- Styles -->
         <style type="text/css">
-            
-            * {
-                margin: 0;
-                padding: 0;
-            }
             body {
                 font-family: 'Open Sans', Arial, sans-serif;
                 font-weight: 600;
+                margin: 0;
+                padding: 0;
+            }
+            .wrapper{
+                background: url(img/maejo.png)
+                no-repeat center center;
+                min-height: 30rem;
+            }
+            nav{
+                width: 100%;
+                height: 50px;
+                background-color: #2E86C1;
+                line-height: 50px
+            }
+            nav ul{
+                float: right;
+                margin: 0;
+                margin-right: 1.9rem;
+            }
+            nav ul li{
+                list-style-type: none;
+                display: inline-block;
+            }
+            nav ul li a{
+                text-decoration: none;
+                color: #fff;
+                padding: 20px;
+            }
+            img{
+                width: 3.5%;
+                height: 80%;
+                margin-left: 1rem;
+                margin-top: 0.3%;
+                border-radius: 10%;
+            }
+            nav ul li:hover{
+                background-color: coral;
+                color: #000;
+                font-weight: bold;
+                font-size: 1.2rem;
             }
             .content {
                 text-align: right;
@@ -93,55 +128,68 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="wrapper">
+            <!--Navigation-->
             
-            <div class="welcome-section content-hidden">
-                <div class="content-wrap">
-                    <ul class="fly-in-text">
-                        <li>W</li>
-                        <li>E</li>
-                        <li>L</li>
-                        <li>C</li>
-                        <li>O</li>
-                        <li>M</li>
-                        <li>E</li>
-                        <li>C</li>
-                        <li>S</li>
-                        <li>M</li>
-                        <li>J</li>
-                        <li>U</li>
-                    </ul>
-                    
-                    @if (Route::has('login'))
-                    <div class="top-right links">
-                        @auth
-                        <div class="content">
-                            <div class="title m-b-md">
-                                <a href="{{ url('/home') }}">HOME</a>
-                            </div>
-                        </div>
-                        @else
+            <div class="flex-center position-ref full-height">
+                
+                <div class="welcome-section content-hidden">
+                    <nav>
+                        <img src="https://lh3.googleusercontent.com/proxy/SEhODiDYqfOytekVmskPNjsdq8aYI9yD0fdNrMCj7XyQKoqs0JcmO96OlIjfs8OgbibLbIXlaXqois5zng" class="img" alt="logo">
+                        <ul>
+                            <li><a href="#">HOME</a></li>
+                            <li><a href="#">ABOUT</a></li>
+                            <li><a href="#">EVENTS</a></li>
+                            <li><a href="#">GALLERY</a></li>
+                            <li><a href="#">CONTANT</a></li>
+                            <li><a href="#">BLOG</a></li>
+                        </ul>
+                    </nav>
+                    <div class="content-wrap">
+                        
+                        <ul class="fly-in-text">
+                            <li>W</li>
+                            <li>E</li>
+                            <li>L</li>
+                            <li>C</li>
+                            <li>O</li>
+                            <li>M</li>
+                            <li>E</li>
+                            <li>C</li>
+                            <li>S</li>
+                            <li>M</li>
+                            <li>J</li>
+                            <li>U</li>
+                        </ul>
+                        
+                        @if (Route::has('login'))
+                        <div class="top-right links">
+                            @auth
                             <div class="content">
                                 <div class="title m-b-md">
-                                        <a href="{{ route('login') }}">LOGIN</a>
+                                    <a href="{{ url('/home') }}">HOME</a>
                                 </div>
                             </div>
-                        @endauth
+                            @else
+                                <div class="content">
+                                    <div class="title m-b-md">
+                                            <a href="{{ route('login') }}">LOGIN</a>
+                                    </div>
+                                </div>
+                            @endauth
+                        </div>
+                    @endif
+                        
                     </div>
-    
-                @endif
-                    
-                </div>
-             </div>
-
-
+                 </div>
+            </div>
 
         </div>
-        <script src="js/app.js"></script>
 
+
+        <script src="js/app.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script type="text/javascript">
-            
             $(function() {
                 
                 var welcomeSection = $('.welcome-section'),
@@ -157,11 +205,7 @@
                 });
                 
                 
-            })();
-            
-            
-            
+            })();  
         </script>
-
     </body>
 </html>
