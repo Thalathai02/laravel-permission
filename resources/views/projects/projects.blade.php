@@ -52,7 +52,7 @@
                 </table>
             @endif
             @if (Auth::user()->hasRole('Std'))
-
+           
                 @if ($data_std == null)
 
                     <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
@@ -60,72 +60,22 @@
                 @if (!empty($status))
                     @if ($status[0]->status == 'reject')
                         <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2"
-                            align="left">แก้ไขโปรเจค</a>
+                            align="left">ดูข้อมูลโปรเจด</a>
 
                     @endif
 
                     @if ($status[0]->status == 'not Check')
                         <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
-                            align="left">แก้ไขโปรเจค</a>
+                            align="left">ดูข้อมูลโปรเจด</a>
 
-                   
-                    
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" align="left">
-                        ยืนแบบคำร้องต่าางๆ
-                    </button>
-
-
-                    <!-- Modal -->
-                    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">ยืนแบบคำร้อง</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <a href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
-                                    </div>
-                                    <div>
-                                        <a href="">รายงานการสอบความก้าวหน้า</a>
-                                    </div>
-                                    <div>
-                                        <a href="">แบบเสนอขอสอบ100</a>
-                                    </div>
-                                    <div>
-                                        <a href="">แบบขอส่งโครงงานฉบับสมบูรณ์</a>
-                                    </div>
-                                    <div>
-                                        <a href="">รายงานผลการสอบโครงงานคอมพิวเตอร์</a>
-                                    </div>
-                                    <div>
-                                        <a href="">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
-                                    </div>
-                                    <div>
-                                        <a href="">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
-                                    </div>
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     @endif
 
                     @if ($status[0]->status == 'Check')
                     <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
-                        align="left">แก้ไขโปรเจค</a>
+                        align="left">ดูข้อมูลโปรเจด</a>
 
                
-                
+                        
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" align="left">
                     ยืนแบบคำร้องต่าางๆ
@@ -163,7 +113,7 @@
                                     <a href="{{ route('project.ChangeBoard', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
                                 </div>
                                 <div>
-                                    <a href="">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
+                                    <a href="{{ route('project.ChangeTopic', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
                                 </div>
 
                             </div>

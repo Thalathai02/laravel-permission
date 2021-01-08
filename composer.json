@@ -46,7 +46,7 @@
         "classmap": [
             "database/seeds",
             "database/factories"
-        ]
+        ],"files" : ["app/formatDateThat.php"]
     },
     "autoload-dev": {
         "psr-4": {
