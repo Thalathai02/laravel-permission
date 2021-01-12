@@ -1,97 +1,193 @@
 @extends('layouts.app')
 @section('content')
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
 
-<body>
-   <br />
+    <body>
+        <br />
 
-   <div class="container">
-      <h3 align="center">Projects</h3>
-      <br />
-      @if(count($errors) > 0)
-      <div class="alert alert-danger">
-         <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-         </ul>
-      </div>
-      @endif
-      @if (Auth::user()->hasRole('Admin'))
-      <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
-      <a href="/Check_Project" class="btn btn-warning my-2" align="left">ตรวจโปรเจค</a>
-      <a href="" class="btn btn-info my-2" align="left">สถานะโปรเจค</a>
-      <table class="table table-striped">
-         <thead>
-            <tr>
-               <th scope="col">ลำดับโครงงาน</th>
-               <th scope="col">รหัสนักศึกษา</th>
-               <th scope="col">ชื่อ-สกุล</th>
-               <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-               <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>            
-               <th scope="col">ที่ปรึกษาพิเศษ</th>
-               <th scope="col">หมายเหตุ</th>
-            </tr>
-         </thead>
-         <tbody>
-            @foreach($datas as $row)
-            @if( $row->status == "Check")
-            <tr>
-               <th scope="row">{{$row->Project_id}}</th>
-               <td>{{$row->std_code}}</td>
-               <td>{{$row->name}}</td>
-               <td>{{$row->name_th}}</td>
-               <td>{{$row->name_en}}</td>
-               <td>{{$row->name_mentor}}</td>
-               <td></td>
-            </tr>
+        <div class="container">
+            <h3 align="center">Projects</h3>
+            <br />
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
-            @endforeach
-         </tbody>
-      </table>
-      @endif
-      @if (Auth::user()->hasRole('Std'))
-      @if($data_std == null)
-      <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
-      @endif
-      @if($reject !== null)
-      <a href="" class="btn btn-danger my-2" align="left">แก้ไขโปรเจค</a>
-      
-      @endif
+            @if (Auth::user()->hasRole('Admin'))
+                <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
+                <a href="/Check_Project" class="btn btn-warning my-2" align="left">ตรวจโปรเจค</a>
+                <a href="" class="btn btn-info my-2" align="left">สถานะโปรเจค</a>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ลำดับโครงงาน</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                            <th scope="col">หมายเหตุ</th>
+                            <th scope="col">รายละเอียด</th>
+                            <th scope="col">แก้ไข</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datas as $row)
+                            @if ($row->status == 'Check')
+                                <tr>
 
-      <table class="table table-striped">
-         <thead>
-            <tr>
-               <th scope="col">ลำดับโครงงาน</th>
-               <th scope="col">รหัสนักศึกษา</th>
-               <th scope="col">ชื่อ-สกุล</th>
-               <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-               <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>            
-               <th scope="col">ที่ปรึกษาพิเศษ</th>
-               <th scope="col">หมายเหตุ</th>
-            </tr>
-         </thead>
-         <tbody>
-            @foreach($datas as $row)
-            @if( $row->status == "Check")
-            <tr>
-               <th scope="row">{{$row->Project_id}}</th>
-               <td>{{$row->std_code}}</td>
-               <td>{{$row->name}}</td>
-               <td>{{$row->name_th}}</td>
-               <td>{{$row->name_en}}</td>
-               <td>{{$row->name_mentor}}</td>
-               <td></td>
-            </tr>
+                                    <th scope="row">{{ $row->id }}</th>
+
+                                    <td>{{ $row->std_code }}</td>
+                                    <td>{{ $row->name }}</td>
+
+                                    <td>{{ $row->name_th }}</td>
+                                    <td>{{ $row->name_en }}</td>
+                                    <td></td>
+                                    <td><a href="{{ route('Check_Project.show', $row->id) }}"
+                                            class="btn btn-info">รายละเอียด</a>
+                                    </td>
+                                    <td><a href="{{ route('project.edit', $row->id) }}" class="btn btn-warning">แก้ไข</td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             @endif
-            @endforeach
-         </tbody>
-      </table>
-      @endif
-   </div>
-</body>
+            @if (Auth::user()->hasRole('Std'))
+           
+                @if ($data_std == null)
 
-</html>
+                    <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
+                @endif
+                @if (!empty($status))
+                    @if ($status[0]->status == 'reject')
+                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2"
+                            align="left">ดูข้อมูลโปรเจด</a>
+
+                    @endif
+
+                    @if ($status[0]->status == 'not Check')
+                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
+                            align="left">ดูข้อมูลโปรเจด</a>
+
+                    @endif
+
+                    @if ($status[0]->status == 'Check')
+                    <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
+                        align="left">ดูข้อมูลโปรเจด</a>
+                        
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" align="left">
+                    ยืนแบบคำร้องต่าางๆ
+                </button>
+
+
+                <!-- Modal -->
+                <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">ยืนแบบคำร้อง</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <a href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('project.ProgressReport', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า</a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('project.CompleteForm', Auth::user()->id) }}">แบบขอส่งโครงงานฉบับสมบูรณ์</a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('project.ChangeBoard', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
+                                </div>
+                                <div>
+                                    <a href="{{ route('project.ChangeTopic', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @endif
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ลำดับโครงงาน</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                            <th scope="col">หมายเหตุ</th>
+                            <th scope="col">รายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datas as $row)
+                            @if ($row->status == 'Check')
+                                <tr>
+                                    <th scope="row">{{ $row->id }}</th>
+                                    <td>{{ $row->name_th }}</td>
+                                    <td>{{ $row->name_en }}</td>
+                                    <td></td>
+                                    <td><a href="{{ route('Check_Project.show', $row->id) }}"
+                                            class="btn btn-info">รายละเอียด</a>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+
+            @if (Auth::user()->hasRole('Tea'))
+
+
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">ลำดับโครงงาน</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                            <th scope="col">หมายเหตุ</th>
+                            <th scope="col">รายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($datas as $row)
+                            @if ($row->status == 'Check')
+                                <tr>
+                                    <th scope="row">{{ $row->id }}</th>
+                                    <td>{{ $row->name_th }}</td>
+                                    <td>{{ $row->name_en }}</td>
+                                    <td></td>
+                                    <td><a href="{{ route('Check_Project.show', $row->id) }}"
+                                            class="btn btn-info">รายละเอียด</a>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
+    </body>
+
+    </html>
 
 @endsection

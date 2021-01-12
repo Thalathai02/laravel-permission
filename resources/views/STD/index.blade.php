@@ -45,7 +45,7 @@
     {!! Form::Label('subject_id','ปีการศึกษา:') !!}
     {!! Form::select('subject', $term,['class' => 'form-control'] ) !!}
     <a href="/STD/term/create" class="btn btn-primary my-2" align="left">เพิ่มปีการศึกษา</a>
-    <div class="col-md-6" align="center">
+    <div class="col-md" align="center">
         {!! Form::file($name ?? 'import_file', $attributes = [])!!}
         <input type="submit" value="อัพโหลด" class="btn btn-primary col-2 " name="submit_2" id="">
         <span>----- Or -----</span>
@@ -57,27 +57,28 @@
 {!! Form::close() !!}
    
    <br />
+   <div class="table-users">
     <table class="table table-striped">
-  <thead>
     <tr>
       <th scope="col">รหัส</th>
       <th scope="col">ชื่อ</th>
       <th scope="col">อีเมล</th>
       <th scope="col">เบอร์โทร</th>
       <th scope="col">ปีการศึกษา</th>
+      <th scope="col">หมายเหตุ</th>
       <th scope="col">แก้ไข</th>
       <th scope="col">ลบ</th>
     </tr>
-  </thead>
   <tbody>
     {{-- {{ $data_subject }} --}}
       @foreach($data as $row)
     <tr>
-      <th scope="row">{{$row->std_code}}</th>
+      <td scope="row">{{$row->std_code}}</td>
       <td>{{$row->name}}</td>
       <td>{{$row->email}}</td>
       <td>{{$row->phone}}</td>
       <td>{{$row->year_term}}</td>
+      <td>{{$row->note}}</td>
       <td><a href="{{route('STD.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>
       <td>
           <form action="{{route('STD.destroy',$row->id)}}" method="POST">
@@ -92,6 +93,7 @@
   </tbody>
 </table>
   </div>
+</div>
  </body>
 </html>
 

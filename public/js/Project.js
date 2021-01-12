@@ -33,7 +33,7 @@ $(document).ready(function(){
           evt.preventDefault();
           swal({
             title:`คุณต้องการส่งคืนโครงการ ${name} หรือไม่ ?`,
-              text : "ถ้าลบแล้วไม่สามารถกู้คืนได้",
+              text : "ยืนยันหรือไม่",
               icon:"warning",
               buttons:true,
               dangerMode:true
@@ -43,6 +43,8 @@ $(document).ready(function(){
               }
           });
       });
-    
+     
+     
 });
    
+

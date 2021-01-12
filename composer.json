@@ -17,7 +17,10 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "2.4",
         "laravelcollective/html": "^6.1",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "phpoffice/phpword": "^0.17.0",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.3"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -43,7 +46,7 @@
         "classmap": [
             "database/seeds",
             "database/factories"
-        ]
+        ],"files" : ["app/formatDateThat.php"]
     },
     "autoload-dev": {
         "psr-4": {

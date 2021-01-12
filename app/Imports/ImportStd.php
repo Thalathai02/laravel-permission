@@ -15,6 +15,7 @@ use App\Role;
 use App\subject_student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 
 class ImportStd implements ToModel
@@ -39,10 +40,10 @@ class ImportStd implements ToModel
         // $student->roles()->attach($std_role);
         // $student->permissions()->attach($std_perm);
         if (empty($row[0])) {
-            abort(403, $row[0]);
+            // errors()->add('field', 'Something is wrong with this field!');
         }
         if (empty($row[1])) {
-            abort(403, 'ไม่มีรหัสนักศึกษา.');
+            // errors()->add('field', 'Something is wrong with this field!');
         } else {
             $student = new User();
             $student->name = $row[2];

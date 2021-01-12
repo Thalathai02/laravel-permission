@@ -94,6 +94,20 @@ class ImportExcelController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'std_code' => ['required'],
+            'name'=> ['required'],
+            'nick_name',
+            'phone'=>'required',
+            'lineId',
+            'email' => ['required', 'email'],
+            'facebook',
+            'address',
+            'parent_name',
+            'parent_phone',
+            'username',
+            'password',
+        ]);
         $subject = new subject_student();
         $std_role = Role::where('slug', 'std')->first();
         $std_perm = Permission::where('slug', 'edit')->first();
@@ -161,7 +175,7 @@ class ImportExcelController extends Controller
                 'std_code' => ['required'],
                 'name',
                 'nick_name',
-                'phone',
+                'phone'=>'required',
                 'lineId',
                 'email' => ['required', 'email'],
                 'facebook',
@@ -179,7 +193,7 @@ class ImportExcelController extends Controller
                 'std_code' => ['required'],
                 'name',
                 'nick_name',
-                'phone',
+                'phone'=>'required',
                 'lineId',
                 'email' => ['required', 'email'],
                 'facebook',
@@ -190,6 +204,11 @@ class ImportExcelController extends Controller
                 'password',
             ]);
             reg_std::find($id)->update($request->all());
+            $id_user=reg_std::find($id);
+            $user = User::find($id_user->user_id);
+            $user->name = $request['name'];
+            $user->email=$request['email']; 
+            $user->save();
             return redirect('/STD');
         } else {
             abort(404);
@@ -204,6 +223,7 @@ class ImportExcelController extends Controller
     public function Search(Request $request)
     {
         $user = $request->user();
+       
         if ($user->hasRole('Admin')) {
             $Search = $request->get(
                 'Search'

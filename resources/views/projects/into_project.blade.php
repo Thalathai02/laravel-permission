@@ -34,7 +34,7 @@
          {!! Form::text('Project_name_eg',null,["class"=>"form-control"]) !!}
       </div>
       <div class="my-4">
-         {!! Form::label('name_upload_File','นำเข้าไฟล์')!!}
+         {!! Form::label('name_upload_File','นำไฟล์เข้า')!!}
          {!! Form::file('File',["class"=>"form-control col-5"]) !!}
       </div>
 

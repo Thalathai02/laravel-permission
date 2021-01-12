@@ -52,27 +52,27 @@ class TeacherController extends Controller
     {
         $std_role = Role::where('slug', 'Tea')->first();
         $std_perm = Permission::where('slug', 'edit')->first();
-        $student = new User();
+        $User = new User();
         $reg = new Teacher();
-        $student->name = $request['name_Instructor'];
-        $student->email = $request['email_Instructor'];
-        $student->username = $request['username_Instructor'];
-        $student->password =  Hash::make($request['password_Instructor']);
-        $student->save();
-        $student->roles()->attach($std_role);
-        $student->permissions()->attach($std_perm);
+        $User->name = $request['Title_name_Instructor'].$request['name_Instructor'];
+        $User->email = $request['email_Instructor'];
+        $User->username = $request['username_Instructor'];
+        $User->password =  Hash::make($request['password_Instructor']);
+        $User->save();
+        $User->roles()->attach($std_role);
+        $User->permissions()->attach($std_perm);
     
-
+        $reg->Title_name_Instructor = $request['Title_name_Instructor'];
         $reg->name_Instructor   = $request['name_Instructor'];
         $reg->phone_Instructor  = $request['phone_Instructor'];
         $reg->lineId_Instructor  = $request['lineId_Instructor'];
         $reg->email_Instructor  = $request['email_Instructor'];
         $reg->facebook_Instructor  = $request['facebook_Instructor'];
 
-        $reg->user_id_Instructor  = $student->id;
+        $reg->user_id_Instructor  = $User->id;
         $reg->save();
-        $student->reg_tea_id  =  $reg->id;
-        $student->save();
+        $User->reg_tea_id  =  $reg->id;
+        $User->save();
         
         return redirect('/Teacher');
     }
@@ -131,17 +131,25 @@ class TeacherController extends Controller
            'facebook_Instructor',
        ]);
        Teacher::find($id)->update($request->all());
+       
             return redirect('/home');
         }
         if ($user->hasRole('Admin')) {
             $request->validate([
                 'name_Instructor',
+                'user_id_Instructor',
+                'Title_name_Instructor',
                 'phone_Instructor',
                 'lineId_Instructor',
                 'email_Instructor'=>['required','email'],
                 'facebook_Instructor',
         ]);
         Teacher::find($id)->update($request->all());
+       $tec=Teacher::find($id);
+       $user = User::find($tec->user_id_Instructor);
+       $user->name = $request['Title_name_Instructor'].$request['name_Instructor'];
+       $user->email=$request['email_Instructor']; 
+       $user->save();
             return redirect('/Teacher');
         } else {
             abort(404);

@@ -16,7 +16,6 @@ class CreateProjectFilesTable extends Migration
         Schema::create('project__files', function (Blueprint $table) {
             $table->id();
             $table->string('name_file')->nullable();
-            $table->string('file_path')->nullable();
             $table->unsignedInteger('Project_id_File')->nullable();
             $table->foreign('Project_id_File')->references('id')->on('projects')->onDelete('cascade');
             $table->text('status_file_path')->nullable();
