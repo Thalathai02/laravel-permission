@@ -7,7 +7,7 @@
         <br />
 
         <div class="container">
-            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ100</h3>
+            <h3 align="center">รายงานการสอบความก้าวหน้า</h3>
             <br />
             @if (count($errors) > 0)
                 <div class="alert alert-danger">
@@ -18,7 +18,7 @@
                     </ul>
                 </div>
             @endif
-            {!! Form::open(['action' => 'projectControllers@wordExport_test100', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => 'projectControllers@wordExport_ProgressReport', 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 
             <div class="my-2">
@@ -110,26 +110,7 @@
                 </div>
             @endif
 
-            <div class="my4">
-                {!! Form::label('date_test100', 'จะขอสอบ 100 % ในวันที่ ') !!}
-                {!! Form::date('date_test100', \Carbon\Carbon::now()->format('d/m/Y'), ['class' => 'form-control col-5']) !!}
-
-            </div>
-
-            <div class="my4">
-                {!! Form::label('time_test100', 'เวลาเริ่มสอบ (ในการสอบใช้เวลา 3 ชั่วโมง)') !!}
-                {!! Form::time('time_test100', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
-            </div>
-
-            <div class="my-4">
-                {!! Form::label('room_test100', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test100', null, ['class' => 'form-control col-5']) !!}
-            </div>
-            <div class="my-4">
-                {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
-                {!! Form::file('File', ['class' => 'form-control col-5']) !!}
-            </div>
-
+            
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                 ดาวน์โหลดเอกสาร

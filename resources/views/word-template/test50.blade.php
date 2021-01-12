@@ -113,13 +113,16 @@
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
                 {!! Form::date('date_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
-
             </div>
 
             <div class="my4">
-                {!! Form::label('time_test50', 'เวลา ') !!}
+                {!! Form::label('time_test50', 'เวลาเริ่มสอบ (ในการสอบใช้เวลา 3 ชั่วโมง)') !!}
                 {!! Form::time('time_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
+
+
             </div>
+
+
 
             <div class="my-4">
                 {!! Form::label('room_test50', 'ห้องสอบ ') !!}
@@ -155,17 +158,9 @@
                     </div>
                 </div>
             </div>
-
-
-
             {!! Form::close() !!}
         </div>
-        <script type="text/javascript">
-            $('#datetimepicker').datetimepicker({
-                format: 'dd/mm/yyyy'
-            });
 
-        </script>
     </body>
 
     </html>

@@ -73,8 +73,6 @@
                     @if ($status[0]->status == 'Check')
                     <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
                         align="left">ดูข้อมูลโปรเจด</a>
-
-               
                         
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" align="left">
@@ -98,16 +96,13 @@
                                     <a href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
                                 </div>
                                 <div>
-                                    <a href="">รายงานการสอบความก้าวหน้า</a>
+                                    <a href="{{ route('project.ProgressReport', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า</a>
                                 </div>
                                 <div>
                                     <a href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>
                                 </div>
                                 <div>
                                     <a href="{{ route('project.CompleteForm', Auth::user()->id) }}">แบบขอส่งโครงงานฉบับสมบูรณ์</a>
-                                </div>
-                                <div>
-                                    <a href="">รายงานผลการสอบโครงงานคอมพิวเตอร์</a>
                                 </div>
                                 <div>
                                     <a href="{{ route('project.ChangeBoard', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
