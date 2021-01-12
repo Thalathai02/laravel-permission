@@ -48,7 +48,7 @@
   <tbody>
       @foreach($data as $row)
     <tr>
-      <th scope="row">{{$row->username}}</th>
+      <td scope="row">{{$row->username}}</td>
       <td>{{$row->name}}</td>
       <td>{{$row->email}}</td>
       <td><a href="{{route('User.edit',$row->id)}}" class="btn btn-success">แก้ไข</a></td>

@@ -15,6 +15,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
     <script src="{{ asset('js/bonus.js') }}" defer></script>
     <script src="{{ asset('js/Project.js') }}" defer></script>
+    <script src="{{ asset('js/login.js') }}" defer></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css" integrity="sha512-kJ30H6g4NGhWopgdseRb8wTsyllFUYIx3hiUwmGAkgA9B/JbzUBDQVr2VVlWGde6sdBVOG7oU8AL35ORDuMm8g==" crossorigin="anonymous" />
   
     
 
@@ -25,16 +28,28 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/nav.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/table.css') }}" rel="stylesheet">
 
-    
+
 </head>
+<style>
+img {
+  border-radius: 50%;
+}
+</style>
 <body>
     
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <br><br>
+        <nav class="navbar navbar-expand-md fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    <img src="layouts/" alt="" style="width:50px;height:40px;">
+                    {{ config('', 'CSMJUPROJECT') }}
+                    
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -77,6 +92,8 @@
                                     {{ Auth::user()->name }}{{__(' (instructor)')}} <span class="caret"></span>
                                 </a>
                                 @endif
+
+                                
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (Auth::user()->hasRole('Std'))
                                     <a class="dropdown-item" href="{{route('User.edit', Auth::user()->id)}}">
@@ -103,6 +120,61 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    
+                                    
+                                        <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i>(<b>2</b>)</a>
+                                        <ul class="dropdown-menu notify-drop">
+                                          <div class="notify-drop-title">
+                                              <div class="row">
+                                                  <div class="col-md-6 col-sm-6 col-xs-6">Message(<b>2</b>)</div>
+                                                  <div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="tümü okundu."><i class="fa fa-dot-circle-o"></i></a></div>
+                                              </div>
+                                          </div>
+                                          <!-- end notify title -->
+                                          <!-- notify content -->
+                                          <div class="drop-content">
+                                              <li>
+                                                  <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                                                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Ahmet</a> yorumladı. <a href="">click</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+                                                  <hr>
+                                                  <p class="time">time</p>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                                                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Ahmet</a> yorumladı. <a href="">click</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+                                                  <p>Lorem ipsum sit dolor amet consilium.</p>
+                                                  <p class="time">time</p>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                                                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Ahmet</a> yorumladı. <a href="">click</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+                                                  <p>Lorem ipsum sit dolor amet consilium.</p>
+                                                  <p class="time">time</p>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                                                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Ahmet</a> yorumladı. <a href="">click</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+                                                  <p>Lorem ipsum sit dolor amet consilium.</p>
+                                                  <p class="time">time</p>
+                                                  </div>
+                                              </li>
+                                              <li>
+                                                  <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                                                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Ahmet</a> yorumladı. <a href="">click</a> <a href="" class="rIcon"><i class="fa fa-dot-circle-o"></i></a>
+                                                  <p>Lorem ipsum sit dolor amet consilium.</p>
+                                                  <p class="time">time</p>
+                                                  </div>
+                                              </li>
+                                          </div>
+                                          <div class="notify-drop-footer text-center">
+                                              <a href=""><i class="fa fa-eye"></i> See</a>
+                                          </div>
+                                        </ul>
+                                      </li>
                                     
                                    
 

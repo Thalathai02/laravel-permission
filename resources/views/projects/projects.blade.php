@@ -37,7 +37,12 @@
                         @foreach ($datas as $row)
                             @if ($row->status == 'Check')
                                 <tr>
+
                                     <th scope="row">{{ $row->id }}</th>
+
+                                    <td>{{ $row->std_code }}</td>
+                                    <td>{{ $row->name }}</td>
+
                                     <td>{{ $row->name_th }}</td>
                                     <td>{{ $row->name_en }}</td>
                                     <td></td>

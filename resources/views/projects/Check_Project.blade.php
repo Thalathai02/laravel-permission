@@ -45,7 +45,7 @@
                     @foreach ($datas as $row)
                         @if ($row->status == 'not Check')
                             <tr>
-                                <th scope="row">{{ $row->id }}</th>
+                                <td scope="row">{{ $row->id }}</td>
                                 <td>{{ $row->name_th }}</td>
                                 <td>{{ $row->name_en }}</td>
                                 <td></td>
