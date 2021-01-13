@@ -6,7 +6,7 @@
     
         @if ( Auth::user())
         @section('sidebar')
-<<<<<<< HEAD
+
 
         <div class="sidebar">
             <ul>
@@ -70,7 +70,7 @@
                 toggle.classList.toggle('active');
                 }
                 </script>
-=======
+
         
         <div class="sidebar">
             <a class="nav-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
@@ -82,7 +82,7 @@
             @endif
             <a href="/project">{{ __('Projects') }}</a>
           </div>
->>>>>>> parent of 060ada9... เพิ่มรายงานความคืบหน้า
+
         @show
         <div class="content py-4">
             <main >
