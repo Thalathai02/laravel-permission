@@ -1,13 +1,12 @@
 <html>
-
-<head>
-    <title>App Name - @yield('title')</title>
-</head>
-
-<body>
-
-    @if (Auth::user())
+    <head>
+        <title>App Name - @yield('title')</title>
+    </head>
+    <body>
+    
+        @if ( Auth::user())
         @section('sidebar')
+<<<<<<< HEAD
 
         <div class="sidebar">
             <ul>
@@ -71,20 +70,32 @@
                 toggle.classList.toggle('active');
                 }
                 </script>
+=======
+        
+        <div class="sidebar">
+            <a class="nav-item" href="{{ url('/home') }}">{{ __('Home') }}</a>
+            @if (Auth::user()->hasRole('Admin'))
+                <a class="nav-link" href="/STD">{{ __('Student information') }}</a>
+                <a class="nav-link" href="/User">{{ __('User information') }}</a>
+                <a class="nav-link" href="/Teacher">{{ __('Teacher information') }}</a>
+                <a class="nav-link" href="/system">{{ __('system') }}</a>
+            @endif
+            <a href="/project">{{ __('Projects') }}</a>
+          </div>
+>>>>>>> parent of 060ada9... เพิ่มรายงานความคืบหน้า
         @show
         <div class="content py-4">
-            <main>
+            <main >
                 @yield('content')
             </main>
         </div>
-    @else
-        <div class="py-4">
-            <main>
+        @else
+            <div class="py-4">
+            <main >
                 @yield('content')
-
+                
             </main>
         </div>
-    @endif
-</body>
-
+        @endif
+    </body>
 </html>
