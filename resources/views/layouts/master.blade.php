@@ -82,7 +82,6 @@
             @endif
             <a href="/project">{{ __('Projects') }}</a>
           </div>
-
         @show
         <div class="content py-4">
             <main >
