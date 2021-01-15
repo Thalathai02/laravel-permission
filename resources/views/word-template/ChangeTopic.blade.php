@@ -161,7 +161,12 @@
 
             {!! Form::close() !!}
         </div>
-        
+        <script type="text/javascript">
+            $('#datetimepicker').datetimepicker({
+                format: 'dd/mm/yyyy'
+            });
+
+        </script>
     </body>
 
     </html>

@@ -111,19 +111,19 @@
             @endif
 
             <div class="my4">
-                {!! Form::label('date_test100', 'จะขอสอบ 100 % ในวันที่ ') !!}
-                {!! Form::date('date_test100', \Carbon\Carbon::now()->format('d/m/Y'), ['class' => 'form-control col-5']) !!}
+                {!! Form::label('date_test50', 'จะขอสอบ 100 % ในวันที่ ') !!}
+                {!! Form::date('date_test50', \Carbon\Carbon::now()->format('d/m/Y'), ['class' => 'form-control col-5']) !!}
 
             </div>
 
             <div class="my4">
-                {!! Form::label('time_test100', 'เวลาเริ่มสอบ (ในการสอบใช้เวลา 3 ชั่วโมง)') !!}
-                {!! Form::time('time_test100', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
+                {!! Form::label('time_test50', 'เวลา ') !!}
+                {!! Form::time('time_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
             </div>
 
             <div class="my-4">
-                {!! Form::label('room_test100', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test100', null, ['class' => 'form-control col-5']) !!}
+                {!! Form::label('room_test50', 'ห้องสอบ ') !!}
+                {!! Form::text('room_test50', null, ['class' => 'form-control col-5']) !!}
             </div>
             <div class="my-4">
                 {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
