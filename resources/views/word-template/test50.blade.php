@@ -18,9 +18,9 @@
                     </ul>
                 </div>
             @endif
-            {!! Form::open(['action' => 'projectControllers@wordExport_test50', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => ['projectControllers@wordExport_test50',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
-
+{!! formatDateEnd_test(\Carbon\Carbon::now() )!!}
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -112,14 +112,11 @@
 
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::date('date_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
+                {!! Form::datetimeLocal('date_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
 
             </div>
 
-            <div class="my4">
-                {!! Form::label('time_test50', 'เวลา ') !!}
-                {!! Form::time('time_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
-            </div>
+
 
             <div class="my-4">
                 {!! Form::label('room_test50', 'ห้องสอบ ') !!}
