@@ -15,8 +15,8 @@ class CreateTest50sTable extends Migration
     {
         Schema::create('test50s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('Project_id')->nullable();
-            $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->unsignedInteger('Project_id_test50')->nullable();
+            $table->foreign('Project_id_test50')->references('id')->on('projects')->onDelete('cascade');
             $table->DateTime('date_test50');
             $table->DateTime('end_date_test50');
             $table->text('room_test50');

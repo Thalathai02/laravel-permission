@@ -73,7 +73,7 @@ Route::get('/Check_Project/instructor_projectฝSearch/Search','CheckProjectCont
 
 
 Route::post('/test50/{id}',"projectControllers@wordExport_test50" )->middleware('auth');
-Route::post('/test100',"projectControllers@wordExport_test100" )->middleware('auth');
+Route::post('/test100/{id}',"projectControllers@wordExport_test100" )->middleware('auth');
 Route::post('/ChangeBoard', "projectControllers@wordExport_ChangeBoard")->middleware('auth');
 Route::post('/CompleteForm', "projectControllers@wordExport_CompleteForm")->middleware('auth');
 Route::post('/ChangeTopic', "projectControllers@wordExport_ChangeTopic")->middleware('auth');

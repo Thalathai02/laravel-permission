@@ -20,7 +20,7 @@
             @endif
             {!! Form::open(['action' => ['projectControllers@wordExport_test50',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
-{!! formatDateEnd_test(\Carbon\Carbon::now() )!!}
+
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}

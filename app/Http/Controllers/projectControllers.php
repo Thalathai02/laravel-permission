@@ -702,15 +702,21 @@ class projectControllers extends Controller
             'room_test50' => 'required',
             'File' => 'required|file|mimes:zip',
         ]);
+        $name_file =time() . '_' . $request->File->getClientOriginalName();
         //Database
             test50::create([
-                'Project_id'=>$id,
+                'Project_id_test50'=>$id,
                 'date_test50' => $request->date_test50,
                 'end_date_test50' =>formatDateEnd_test($request->date_test50),
                 'room_test50'=> $request->room_test50,
                 'file_test50'=>time() . '_' . $request->File->getClientOriginalName(),
                 'status_test50'=>'not check'
             ]);
+            Storage::disk('local')->putFileAs(
+                'test50/not Check',
+                $request->File,
+                $name_file
+            );
 
         //wordExport
         $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
@@ -830,11 +836,27 @@ class projectControllers extends Controller
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
-    public function wordExport_test100(Request $request)
+    public function wordExport_test100(Request $request,$id)
     {
         $request->validate([
-            'room_test50' => 'required',
+            'room_test100' => 'required',
+            'File' => 'required|file|mimes:zip',
         ]);
+        $name_file = time() . '_' . $request->File->getClientOriginalName();
+        //Database
+            test50::create([
+                'Project_id'=>$id,
+                'date_test100' => $request->date_test100,
+                'end_date_test100' =>formatDateEnd_test($request->date_test100),
+                'room_test100'=> $request->room_test100,
+                'file_test100'=>$name_file,
+                'status_test100'=>'not check'
+            ]);
+            Storage::disk('local')->putFileAs(
+                'test100/not Check',
+                $request->File,
+                $name_file
+            );
         $templateProcessor = new TemplateProcessor('word-template/04-แบบเสนอขอสอบ100.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -875,9 +897,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
 
-        $templateProcessor->setValue('date', formatDateThai($request->date_test50));
-        $templateProcessor->setValue('time', $request->time_test50);
-        $templateProcessor->setValue('room', $request->room_test50);
+        $templateProcessor->setValue('date', formatDateThai($request->date_test100));
+        $templateProcessor->setValue('time', formatDateThai_time($request->date_test100));
+        $templateProcessor->setValue('room', $request->room_test100);
+        $templateProcessor->setValue('end_time',formatDateThai_End_time($request->date_test100));
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "แบบเสนอขอสอบ100";

@@ -8,7 +8,7 @@ class test50 extends Model
 {
     protected $fillable = [
         'id',
-        'Project_id',
+        'Project_id_test50',
         'date_test50',
         'end_date_test50',
         'room_test50',
