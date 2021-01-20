@@ -1,15 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-@if($errors->all())
-<ul class="alert alert-danger">
-    @foreach($errors->all() as $error)  
-    <li>
-    {{$error}}
-    </li>
-    @endforeach
-</ul>
-@endif
 {!! Form::open(['action' => 'ImportExcel\ImportExcelController@store','method'=>'POST']) !!}
     <div class="row">
         <div class="form-  col-4">

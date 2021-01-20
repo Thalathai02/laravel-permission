@@ -40,7 +40,7 @@ class ImportExcelController extends Controller
             $data = DB::table('reg_stds')
             ->join('subject_students', 'reg_stds.id', '=', 'subject_students.student_id')
             ->join('subjects', 'subject_students.subject_id', '=', 'subjects.id')
-            ->select('reg_stds.*','subject_students.*','subjects.*')->get();
+            ->select('reg_stds.*','subjects.year_term')->paginate(20);
             // $subject =  DB::table('reg_stds')->rightJoin('subject_students', 'reg_stds.id', '=', 'subject_students.id')->get();
             // $subject =  DB::table('reg_stds')->rightJoin('subjects', 'reg_stds.id', '=', 'subjects.id')->get();
             return view('STD.index', compact('data', 'term', 'data_subject','subject'));

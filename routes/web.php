@@ -65,16 +65,24 @@ Route::GET('/test100/{id}','projectControllers@test100')->name('project.test100'
 Route::GET('/ChangeBoard/{id}','projectControllers@ChangeBoard')->name('project.ChangeBoard')->middleware('auth');
 Route::GET('/CompleteForm/{id}','projectControllers@CompleteForm')->name('project.CompleteForm')->middleware('auth');
 Route::GET('/ChangeTopic/{id}','projectControllers@ChangeTopic')->name('project.ChangeTopic')->middleware('auth');
+Route::GET('/ProgressReport_test50/{id}','projectControllers@ProgressReport_test50')->name('project.ProgressReport_test50')->middleware('auth');
+Route::GET('/ProgressReport_test100/{id}','projectControllers@ProgressReport_test100')->name('project.ProgressReport_test100')->middleware('auth');
 
 Route::post('/Check_Project/info_project','CheckProjectController@show')->middleware('auth');
 Route::get('/Check_Project/info_project/{year}/{term}/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
 Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
-Route::get('/Check_Project/instructor_projectฝSearch/Search','CheckProjectController@Search')->name('action')->middleware('auth');
+Route::get('/Check_Project/instructor_projectSearch/Search','CheckProjectController@Search')->name('action')->middleware('auth');
 
 
-Route::post('/test50',"projectControllers@wordExport_test50" )->middleware('auth');
-Route::post('/test100',"projectControllers@wordExport_test100" )->middleware('auth');
+Route::post('/test50/{id}',"projectControllers@wordExport_test50" )->middleware('auth');
+Route::post('/test100/{id}',"projectControllers@wordExport_test100" )->middleware('auth');
 Route::post('/ChangeBoard', "projectControllers@wordExport_ChangeBoard")->middleware('auth');
 Route::post('/CompleteForm', "projectControllers@wordExport_CompleteForm")->middleware('auth');
 Route::post('/ChangeTopic', "projectControllers@wordExport_ChangeTopic")->middleware('auth');
+Route::post('/ProgressReport_test50', "projectControllers@wordExport_ProgressReport_test50")->middleware('auth');
+Route::post('/ProgressReport_test100', "projectControllers@wordExport_ProgressReport_test100")->middleware('auth');
+
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
+
+
+

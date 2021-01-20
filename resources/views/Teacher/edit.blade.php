@@ -1,15 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        @if ($errors->all())
-            <ul class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        @endif
+        
         {!! Form::open(['action' => ['TeacherController@update', $data->id], 'method' => 'PUT']) !!}
         <div class="row">
             <div class="form-group col-6">
