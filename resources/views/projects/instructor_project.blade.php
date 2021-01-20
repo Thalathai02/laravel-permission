@@ -9,15 +9,7 @@
    <div class="container">
       <h3 align="center">แต่งตั้งประธาน</h3>
       <br />
-      @if(count($errors) > 0)
-      <div class="alert alert-danger">
-         <ul>
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-         </ul>
-      </div>
-      @endif
+      
       {{-- {{{$datas}}}
       {{{$name_Instructor}}} --}}
       <form action="{{route('Check_Project.update',$datas[0]->Project_id)}}" method="POST">

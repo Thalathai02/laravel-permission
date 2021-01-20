@@ -9,15 +9,7 @@
         <div class="container">
             <h3 align="center">แก้ไขโปรเจค</h3>
             <br />
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+          
             {!! Form::open(['action' => 'projectControllers@createNameProject', 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
             

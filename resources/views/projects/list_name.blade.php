@@ -9,15 +9,7 @@
         <div class="container">
             <h3 align="center">เพิ่มรายชื่อในโปรเจค</h3>
             <br />
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        
             <form action="{{ route('project.update', $data_nameProject->id) }}" method="POST">
                 @csrf @method('PUT')
                 @if (Auth::user()->hasRole('Admin'))

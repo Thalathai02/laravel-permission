@@ -92,7 +92,10 @@
                                             <a href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
                                         </div>
                                         <div>
-                                            <a href="{{ route('project.ProgressReport', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า</a>
+                                            <a href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า (สอบ50)</a>
+                                        </div>
+                                        <div>
+                                            <a href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า (สอบ100)</a>
                                         </div>
                                         <div>
                                             <a href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>

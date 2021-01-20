@@ -1,15 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        @if ($errors->all())
-            <ul class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    <li>
-                        {{ $error }}
-                    </li>
-                @endforeach
-            </ul>
-        @endif
+       
         {!! Form::open(['action' => ['ImportExcel\ImportExcelController@update', $data->id], 'method' => 'PUT']) !!}
         @if (Auth::user()->hasRole('Admin'))
             <div class="row">

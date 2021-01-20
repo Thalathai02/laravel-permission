@@ -9,15 +9,7 @@
         <div class="container">
             <h3 align="center">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</h3>
             <br />
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+          
             {!! Form::open(['action' => 'projectControllers@wordExport_ChangeTopic', 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 

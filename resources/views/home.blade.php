@@ -1,25 +1,23 @@
 @extends('layouts.app')
-
 @section('content')
+@if (Auth::user()->hasRole('Std'))
+
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-            
-        </div>
+    <div class="row g-2">
+      <div class="col-6">
+        <div class="p-3 border bg-light">Custom column padding</div>
+      </div>
+      <div class="col-6">
+        <div class="p-3 border bg-light">Custom column padding</div>
+      </div>
+      <div class="col-6">
+        <div class="p-3 border bg-light">Custom column padding</div>
+      </div>
+      <div class="col-6">
+        <div class="p-3 border bg-light">Custom column padding</div>
+      </div>
     </div>
-</div>
+  </div>
+@endif
 @endsection
+
