@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use App\test50;
 use App\test100;
+use App\notification;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -705,7 +706,7 @@ class projectControllers extends Controller
         ]);
         $name_file =time() . '_' . $request->File->getClientOriginalName();
         //Database
-            test50::create([
+        $test50_DB = test50::create([
                 'Project_id_test50'=>$id,
                 'date_test50' => $request->date_test50,
                 'end_date_test50' =>formatDateEnd_test($request->date_test50),
@@ -718,6 +719,14 @@ class projectControllers extends Controller
                 $request->File,
                 $name_file
             );
+            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+
+           $id_test50DB = test50::find($test50_DB->id);
+            $this->notification($Project_id[0]->id_instructor,1,$id_test50DB->id);
+            $this->notification($Project_id[1]->id_instructor,1,$id_test50DB->id);
+            $this->notification($Project_id[2]->id_instructor,1,$id_test50DB->id);
+            $this->notification(1,1,$id_test50DB->id);
+            // return response()->json($id_test50DB);
 
         //wordExport
         $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
@@ -1092,5 +1101,13 @@ class projectControllers extends Controller
         $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+    }
+    public function notification($id_Instructor_notification,$form,$form_id){
+        notification::create([
+        'read_notification'=>0,
+        'form_notification'=>$form,
+        'user_id_notification'=>$id_Instructor_notification,
+        'form_id_notification'=>$form_id
+        ]);
     }
 }

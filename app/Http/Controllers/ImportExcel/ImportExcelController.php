@@ -232,7 +232,7 @@ class ImportExcelController extends Controller
             $data = reg_std::query()
                 ->where('name', 'LIKE', "%{$Search}%")
                 ->orWhere('std_code', 'LIKE', "%{$Search}%")
-                ->get();
+                ->paginate(20);
             return view('STD.index', compact('data', 'term'));
         } else {
             abort(404);

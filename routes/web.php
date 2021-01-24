@@ -82,6 +82,7 @@ Route::post('/ChangeTopic', "projectControllers@wordExport_ChangeTopic")->middle
 Route::post('/ProgressReport_test50', "projectControllers@wordExport_ProgressReport_test50")->middleware('auth');
 Route::post('/ProgressReport_test100', "projectControllers@wordExport_ProgressReport_test100")->middleware('auth');
 
+Route::post('/notification', "projectControllers@notification")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 
 

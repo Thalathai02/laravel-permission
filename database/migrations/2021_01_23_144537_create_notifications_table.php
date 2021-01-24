@@ -1,10 +1,11 @@
 <?php
 
+use Doctrine\DBAL\Schema\Table;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgressReportTest50sTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,12 @@ class CreateProgressReportTest50sTable extends Migration
      */
     public function up()
     {
-        Schema::create('progress_report_test50s', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('Project_id_report_test50');
-            $table->foreign('Project_id_report_test50')->references('id')->on('projects')->onDelete('cascade');
-            $table->text('status_progress_report_test50');
+            $table->integer('read_notification');
+            $table->integer('form_notification');
+            $table->integer('user_id_notification');
+            $table->integer('form_id_notification');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateProgressReportTest50sTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('progress_report_test50s');
+        Schema::dropIfExists('notifications');
     }
 }
