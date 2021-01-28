@@ -76,12 +76,13 @@ Route::get('/Check_Project/instructor_projectSearch/Search','CheckProjectControl
 
 Route::post('/test50/{id}',"projectControllers@wordExport_test50" )->middleware('auth');
 Route::post('/test100/{id}',"projectControllers@wordExport_test100" )->middleware('auth');
-Route::post('/ChangeBoard', "projectControllers@wordExport_ChangeBoard")->middleware('auth');
-Route::post('/CompleteForm', "projectControllers@wordExport_CompleteForm")->middleware('auth');
-Route::post('/ChangeTopic', "projectControllers@wordExport_ChangeTopic")->middleware('auth');
-Route::post('/ProgressReport_test50', "projectControllers@wordExport_ProgressReport_test50")->middleware('auth');
-Route::post('/ProgressReport_test100', "projectControllers@wordExport_ProgressReport_test100")->middleware('auth');
+Route::post('/ChangeBoard/{id}', "projectControllers@wordExport_ChangeBoard")->middleware('auth');
+Route::post('/CompleteForm/{id}', "projectControllers@wordExport_CompleteForm")->middleware('auth');
+Route::post('/ChangeTopic/{id}', "projectControllers@wordExport_ChangeTopic")->middleware('auth');
+Route::post('/ProgressReport_test50/{id}', "projectControllers@wordExport_ProgressReport_test50")->middleware('auth');
+Route::post('/ProgressReport_test100/{id}', "projectControllers@wordExport_ProgressReport_test100")->middleware('auth');
 
+Route::post('/notification', "projectControllers@notification")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 
 

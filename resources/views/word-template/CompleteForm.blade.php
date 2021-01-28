@@ -10,7 +10,7 @@
             <h3 align="center">แบบขอส่งโครงงานฉบับสมบูรณ์</h3>
             <br />
             
-            {!! Form::open(['action' => 'projectControllers@wordExport_CompleteForm', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => ['projectControllers@wordExport_CompleteForm',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 
             <div class="my-2">

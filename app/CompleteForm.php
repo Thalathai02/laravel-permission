@@ -4,12 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project_Instructor extends Model
+class CompleteForm extends Model
 {
     protected $fillable = [
         'id',
-        'Project_id',
-        'id_instructor',
-      
+        'Project_id_CompleteForm',
+        'status_CompleteForm',
     ];
 }

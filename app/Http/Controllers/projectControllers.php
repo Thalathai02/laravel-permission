@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use App\reg_std;
 use App\Teacher;
 use App\subject;
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\Project_Instructor;
@@ -18,8 +19,16 @@ use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use App\test50;
 use App\test100;
+use App\ProgressReport_test50;
+use App\ProgressReport_test100;
+use App\CompleteForm;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\TemplateProcessor;
+use App\Notifications\InvoicePaid;
+use App\changetopic;
+use App\ChangeBoard;
+
+
 
 class projectControllers extends Controller
 {
@@ -506,12 +515,32 @@ class projectControllers extends Controller
             abort(404);
         }
     }
-    public function wordExport_ChangeTopic(Request $request){
+    public function wordExport_ChangeTopic(Request $request ,$id){
         $request->validate([
             'note' => 'required',
             'new_project_name_thai'=> 'required',
             'new_project_name_eg'=>'required'
         ]);
+        $ChangeTopic_DB = ChangeTopic::create([
+            'Project_id_changetopics'=>$id,
+            'old_name_th' => $request->Project_name_thai,
+            'old_name_en' =>$request->Project_name_eg,
+            'new_name_th'=>$request->new_project_name_thai,
+            'new_name_en'=>$request->new_project_name_eg,
+            'note'=>$request->note,
+            'status_changetopics'=>'Waiting'
+        ]);
+       
+        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+        $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+        $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+       $id_ChangeTopicDB = test50::find($ChangeTopic_DB->id);
+        $this->notifications_fun($user_noti1[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
+        $this->notifications_fun($user_noti2[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
+        $this->notifications_fun($user_noti3[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
+        $this->notifications_fun(1,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
+
         $templateProcessor = new TemplateProcessor('word-template/08-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -649,7 +678,19 @@ class projectControllers extends Controller
             abort(404);
         }
     }
-    public function wordExport_CompleteForm(Request $request){
+    public function wordExport_CompleteForm(Request $request, $id){
+        
+        
+        //Database
+        $CompleteForm_DB = CompleteForm::create([
+                'Project_id_CompleteForm'=>$id,
+                'status_CompleteForm'=>'Waiting'
+            ]);
+           
+            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+           $id_CompleteFormDB = test50::find($CompleteForm_DB->id);           
+            $this->notifications_fun(1,5,$id_CompleteFormDB->id,'แบบขอส่งโครงงานฉบับสมบูรณ์');
+
         $templateProcessor = new TemplateProcessor('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -705,7 +746,7 @@ class projectControllers extends Controller
         ]);
         $name_file =time() . '_' . $request->File->getClientOriginalName();
         //Database
-            test50::create([
+        $test50_DB = test50::create([
                 'Project_id_test50'=>$id,
                 'date_test50' => $request->date_test50,
                 'end_date_test50' =>formatDateEnd_test($request->date_test50),
@@ -718,6 +759,16 @@ class projectControllers extends Controller
                 $request->File,
                 $name_file
             );
+            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+            $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+            $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+           $id_test50DB = test50::find($test50_DB->id);
+            $this->notifications_fun($user_noti1[0]->id,1,$id_test50DB->id,'แบบเสนอขอสอบ50');
+            $this->notifications_fun($user_noti2[0]->id,1,$id_test50DB->id,'แบบเสนอขอสอบ50');
+            $this->notifications_fun($user_noti3[0]->id,1,$id_test50DB->id,'แบบเสนอขอสอบ50');
+            $this->notifications_fun(1,1,$id_test50DB->id,'แบบเสนอขอสอบ50');
+            // return response()->json($user_noti1[0]->id);
 
         //wordExport
         $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
@@ -771,10 +822,59 @@ class projectControllers extends Controller
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
-    public function wordExport_ChangeBoard(Request $request){
+    public function wordExport_ChangeBoard(Request $request,$id){
         $request->validate([
             'note' => 'required',
         ]);
+        $ChangeBoard_DB = ChangeBoard::create([
+            'Project_id_ChangeBoard'=>$id,
+            'old_name_president'=>$request->name_president,
+            'old_name_director1'=>$request->name_director1,
+            'old_name_director2'=>$request->name_director2,
+            'new_name_president'=>$request->new_name_president,
+            'new_name_director1'=>$request->new_name_director1,
+            'new_name_director2'=>$request->new_name_director2,
+            'note'=>$request->note,
+            'status_ChangeBoard'=>'Waiting'
+        ]);
+       
+        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+        $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+        $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+
+        $new_user_noti1 = User::where('reg_tea_id',$request->new_name_president)->get();
+        $new_user_noti2 = User::where('reg_tea_id',$request->new_name_director1)->get();
+        $new_user_noti3 = User::where('reg_tea_id',$request->new_name_director2)->get();
+
+       $id_ChangeBoardDB = ChangeBoard::find($ChangeBoard_DB->id);
+        $this->notifications_fun($user_noti1[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+        $this->notifications_fun($user_noti2[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+        $this->notifications_fun($user_noti3[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+
+        switch($new_user_noti1[0]->id){
+            case($user_noti1[0]->id):break;
+            case($user_noti2[0]->id):break;
+            case($user_noti3[0]->id):break;
+            default: $this->notifications_fun($new_user_noti1,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+            break;
+        }
+        switch($new_user_noti2[0]->id){
+            case($user_noti1[0]->id):break;
+            case($user_noti2[0]->id):break;
+            case($user_noti3[0]->id):break;
+            default:$this->notifications_fun($new_user_noti2,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
+        }
+        switch($new_user_noti3[0]->id){
+            default:$this->notifications_fun($new_user_noti3,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
+            case($user_noti1[0]->id):break;
+            case($user_noti2[0]->id):break;
+            case($user_noti3[0]->id):break;
+        }
+        
+            // return response()->json($user_noti1[0]->id);
+        $this->notifications_fun(1,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+
         $templateProcessor = new TemplateProcessor('word-template/07-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -845,7 +945,7 @@ class projectControllers extends Controller
         ]);
         $name_file = time() . '_' . $request->File->getClientOriginalName();
         //Database
-            test100::create([
+        $test100_DB = test100::create([
                 'Project_id_test100'=>$id,
                 'date_test100' => $request->date_test100,
                 'end_date_test100' =>formatDateEnd_test($request->date_test100),
@@ -858,6 +958,15 @@ class projectControllers extends Controller
                 $request->File,
                 $name_file
             );
+            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+            $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+            $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+           $id_test100DB = test100::find($test100_DB->id);
+            $this->notifications_fun($user_noti1[0]->id,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
+            $this->notifications_fun($user_noti2[0]->id,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
+            $this->notifications_fun($user_noti3[0]->id,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
+            $this->notifications_fun(1,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
         $templateProcessor = new TemplateProcessor('word-template/04-แบบเสนอขอสอบ100.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -913,21 +1022,7 @@ class projectControllers extends Controller
         $id_user = Auth::user()->id;
         $user = $request->user();
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
-        if ($user->hasRole('Admin')) {
-            $datas_instructor = DB::table('projects')
-                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id)->get();
-
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
-
-            $datas_std = DB::table('projects')
-                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
-            return view('/word-template/ProgressReport_test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
-        }
+     
         if ($id_user == $id) {
             $user = $request->user()->id;
             $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
@@ -945,12 +1040,33 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
-            return view('/word-template/ProgressReport_test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+            
+            $time_test50 = test50::where('Project_id_test50',$datas[0]->id)->get();
+            return view('/word-template/ProgressReport_test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));
         } else {
             abort(404);
         }
     }
-    public function wordExport_ProgressReport_test50(Request $request){
+    public function wordExport_ProgressReport_test50(Request $request ,$id){
+
+        
+        
+        //Database
+        $ProgressReport_test50_DB = ProgressReport_test50::create([
+                'Project_id_report_test50'=>$id,              
+                'status_progress_report_test50'=>'Waiting'
+            ]);
+          
+            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+            $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+            $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+           $id_ProgressReport_test50_DB = ProgressReport_test50::find($ProgressReport_test50_DB->id);
+            $this->notifications_fun($user_noti1[0]->id,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
+            $this->notifications_fun($user_noti2[0]->id,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
+            $this->notifications_fun($user_noti3[0]->id,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
+            $this->notifications_fun(1,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
+
         $templateProcessor = new TemplateProcessor('word-template/03-รายงานการสอบความก้าวหน้า.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -991,12 +1107,13 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_president', $request->name_president);
         $templateProcessor->setValue('name_director1', $request->name_director1);
         $templateProcessor->setValue('name_director2', $request->name_director2);
+        $templateProcessor->setValue('date_test',$request->date_test );
 
         $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "รายงานการสอบความก้าวหน้า";
+        $fileName = "รายงานการสอบความก้าวหน้า50";
         $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
@@ -1005,21 +1122,7 @@ class projectControllers extends Controller
         $id_user = Auth::user()->id;
         $user = $request->user();
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
-        if ($user->hasRole('Admin')) {
-            $datas_instructor = DB::table('projects')
-                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id)->get();
-
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
-
-            $datas_std = DB::table('projects')
-                ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
-            return view('/word-template/ProgressReport_test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
-        }
+      
         if ($id_user == $id) {
             $user = $request->user()->id;
             $data_std_reg = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
@@ -1037,12 +1140,28 @@ class projectControllers extends Controller
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                 ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
-            return view('/word-template/ProgressReport_test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+                $time_test100 = test100::where('Project_id_test100',$datas[0]->id)->get();
+            return view('/word-template/ProgressReport_test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test100'));
         } else {
             abort(404);
         }
     }
-    public function wordExport_ProgressReport_test100(Request $request){
+    public function wordExport_ProgressReport_test100(Request $request, $id){
+        //Database
+        $ProgressReport_test50_DB = ProgressReport_test100::create([
+            'Project_id_report_test100'=>$id,              
+            'status_progress_report_test100'=>'Waiting'
+        ]);
+      
+        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
+        $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
+        $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
+       $id_ProgressReport_test100_DB = ProgressReport_test100::find($ProgressReport_test50_DB->id);
+        $this->notifications_fun($user_noti1[0]->id,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
+        $this->notifications_fun($user_noti2[0]->id,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
+        $this->notifications_fun($user_noti3[0]->id,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
+        $this->notifications_fun(1,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
         $templateProcessor = new TemplateProcessor('word-template/03-รายงานการสอบความก้าวหน้า.docx');
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
@@ -1083,6 +1202,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_president', $request->name_president);
         $templateProcessor->setValue('name_director1', $request->name_director1);
         $templateProcessor->setValue('name_director2', $request->name_director2);
+        $templateProcessor->setValue('date_test',$request->date_test );
 
         $templateProcessor->setValue('name_Thai', $request->Project_name_thai);
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
@@ -1092,5 +1212,10 @@ class projectControllers extends Controller
         $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+    }
+    public function notifications_fun($id_Instructor,$form,$form_id,$Title_form){
+        $sendToUser  = User::find($id_Instructor);
+        $sendToUser->notify(new InvoicePaid($form ,$form_id,$Title_form,Auth::user()));
+        // Notification::send($id_Instructor ,new InvoicePaid($form ,$form_id));
     }
 }

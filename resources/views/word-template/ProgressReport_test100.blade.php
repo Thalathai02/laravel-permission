@@ -10,7 +10,7 @@
             <h3 align="center">รายงานการสอบความก้าวหน้า (สอบ100)</h3>
             <br />
            
-            {!! Form::open(['action' => 'projectControllers@wordExport_ProgressReport_test100', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => ['projectControllers@wordExport_ProgressReport_test100',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 
             <div class="my-2">
@@ -101,6 +101,10 @@
                     {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
                 </div>
             @endif
+            <div class="my-4">
+                {!! Form::label('date_test', 'คณะกรรมการได้ทำการสอบโครงงานแล้วเมื่อวันที่ ') !!}
+                {!! Form::text('date_test', formatDateThai($time_test100[0]->date_test100), ['readonly', 'class' => 'form-control col-5']) !!}
+            </div>
 
             
             <!-- Button trigger modal -->
