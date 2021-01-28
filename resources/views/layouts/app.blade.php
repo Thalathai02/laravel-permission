@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous"></script>
     <script src="{{ asset('js/bonus.js') }}" defer></script>
     <script src="{{ asset('js/Project.js') }}" defer></script>
-    <script src="{{ asset('js/login.js') }}" defer></script>
+    {{-- <script src="{{ asset('js/login.js') }}" defer></script> --}}
     <script src="{{ asset('js/sb-admin-2.min.js') }}" ></script>
     <script src="{{ asset('js/sb-admin-2.js') }}" ></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -41,7 +41,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ asset("vendor/fontawesome-free/css/all.min.css") }}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -142,27 +142,11 @@
                          <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
                          <a class="collapse-item" href="/projects/into_project">เพิ่มโปรเจค</a>
                          <a class="collapse-item" href="/Check_Project">ตรวจโปรเจค</a>
-                         <div class="collapse-divider"></div>
-                         <h6 class="collapse-header">Other Pages:</h6>
-                         <a class="collapse-item" href="404.html">404 Page</a>
-                         <a class="collapse-item" href="blank.html">Blank Page</a>
+                         
                      </div>
                  </div>
              </li>
              
-             <!-- Nav Item - Charts -->
-             <li class="nav-item">
-                 <a class="nav-link" href="charts.html">
-                     <i class="fas fa-fw fa-chart-area"></i>
-                     <span>Charts</span></a>
-             </li>
-    
-             <!-- Nav Item - Tables -->
-             <li class="nav-item">
-                 <a class="nav-link" href="tables.html">
-                     <i class="fas fa-fw fa-table"></i>
-                     <span>Tables</span></a>
-             </li>
             @endif
             @if (Auth::user()->hasRole('Std'))
         
@@ -189,20 +173,6 @@
                     </div>
                 </div>
             </li>
-            
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-   
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
            @endif
            @if (Auth::user()->hasRole('Tea'))
         
@@ -228,20 +198,7 @@
                     </div>
                 </div>
             </li>
-            
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li>
-   
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li>
+           
            @endif
              <!-- Divider -->
              <hr class="sidebar-divider d-none d-md-block">
@@ -278,14 +235,61 @@
     
                          
 
-                         @if (Auth::user()->hasRole('Tea'))
+                         @if (Auth::user()->hasRole('Std'))
+                         {{-- {{ count(Auth::user()->notifications)}} --}}
+                         <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                @if( count(Auth::user()->notifications) !== 0)
+                                    <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                                 @else
+                                 @endif
+                            </a>
+                            
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+                                @foreach(Auth::user()->unreadNotifications as $key => $value)                      
+                                {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
+                                     <a class="dropdown-item d-flex align-items-center" href="#">
+                                         <div class="mr-3">
+                                             <div class="icon-circle bg-primary">
+                                                 <i class="fas fa-file-alt text-white"></i>
+                                             </div>
+                                         </div>
+                                         <div>
+                                             <div class="small text-gray-500">{{$value->created_at}}</div>
+                                             <span class="font-weight-bold">{{$value->data['userseed']['name']}} <br>
+                                            </span>
+                                            <span class="font-weight">
+                                                {{$value->data['Title_form']}}
+                                            </span>
+                                         </div>
+                                     </a>
+                                     @endforeach
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            </div>
+                        </li>
+                         @endif
+                        
+                         @if (Auth::user()->hasRole('Admin'))
+                         {{-- {{ count(Auth::user()->notifications)}} --}}
+                
                          <!-- Nav Item - Alerts -->
                          <li class="nav-item dropdown no-arrow mx-1">
                              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <i class="fas fa-bell fa-fw"></i>
                                  <!-- Counter - Alerts -->
-                                 <span class="badge badge-danger badge-counter">*</span>
+                                 @if( count(Auth::user()->notifications) !== 0)
+                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                              @else
+                             @endif
                              </a>
                              <!-- Dropdown - Alerts -->
                              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -293,6 +297,8 @@
                                  <h6 class="dropdown-header">
                                      Alerts Center
                                  </h6>
+                                 @foreach(Auth::user()->unreadNotifications as $key => $value)                      
+                            {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
                                  <a class="dropdown-item d-flex align-items-center" href="#">
                                      <div class="mr-3">
                                          <div class="icon-circle bg-primary">
@@ -300,15 +306,62 @@
                                          </div>
                                      </div>
                                      <div>
-                                         <div class="small text-gray-500">December 12, 2019</div>
-                                         <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                         <div class="small text-gray-500">{{$value->created_at}}</div>
+                                         <span class="font-weight-bold">{{$value->data['userseed']['name']}} <br>
+                                        </span>
+                                        <span class="font-weight">
+                                            {{$value->data['Title_form']}}
+                                        </span>
                                      </div>
                                  </a>
+                                 @endforeach
                                  <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                              </div>
                          </li>
                          @endif
-                        
+                         @if (Auth::user()->hasRole('Tea'))
+                         {{-- {{ count(Auth::user()->notifications)}} --}}
+                         
+                         <!-- Nav Item - Alerts -->
+                         <li class="nav-item dropdown no-arrow mx-1">
+                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                 <i class="fas fa-bell fa-fw"></i>
+                                 <!-- Counter - Alerts -->
+                                 @if( count(Auth::user()->notifications) !== 0)
+                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                              @else
+                             @endif
+                             </a>
+                             
+                             <!-- Dropdown - Alerts -->
+                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="alertsDropdown">
+                                 <h6 class="dropdown-header">
+                                     Alerts Center
+                                 </h6>
+                                 @foreach(Auth::user()->unreadNotifications as $key => $value)                      
+                            {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
+                                 <a class="dropdown-item d-flex align-items-center" href="#">
+                                     <div class="mr-3">
+                                         <div class="icon-circle bg-primary">
+                                             <i class="fas fa-file-alt text-white"></i>
+                                         </div>
+                                     </div>
+                                     <div>
+                                         <div class="small text-gray-500">{{$value->created_at}}</div>
+                                         <span class="font-weight-bold">{{$value->data['userseed']['name']}} <br>
+                                        </span>
+                                        <span class="font-weight">
+                                            {{$value->data['Title_form']}}
+                                        </span>
+                                     </div>
+                                 </a>
+                                 @endforeach
+                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                             </div>
+                         </li>
+                         @endif
     
                          <div class="topbar-divider d-none d-sm-block"></div>
                          @if (Auth::user()->hasRole('Admin'))
@@ -317,7 +370,8 @@
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ Auth::user()->name }}{{__(' (Administration)')}}</span>
-                                
+                                 <img class="img-profile rounded-circle"
+                                    src="img/undraw_profile.svg">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -341,7 +395,8 @@
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (student)')}}</span>
-                                 
+                                 <img class="img-profile rounded-circle"
+                                 src="img/undraw_profile.svg">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -372,7 +427,8 @@
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (instructor)')}}</span>
-                                 
+                                 <img class="img-profile rounded-circle"
+                                 src="img/undraw_profile.svg">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -496,22 +552,20 @@
  });
 
 </script>
-     <!-- Bootstrap core JavaScript-->
-     <script src="vendor/jquery/jquery.min.js"></script>
-     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+        <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
     
-     <!-- Core plugin JavaScript-->
-     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
     
-     <!-- Custom scripts for all pages-->
-     <script src="js/sb-admin-2.min.js"></script>
-    
-     <!-- Page level plugins -->
-     <script src="vendor/chart.js/Chart.min.js"></script>
-    
-     <!-- Page level custom scripts -->
-     <script src="js/demo/chart-area-demo.js"></script>
-     <script src="js/demo/chart-pie-demo.js"></script>
+  
     
      
     

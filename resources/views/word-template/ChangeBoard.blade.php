@@ -10,7 +10,7 @@
             <h3 align="center">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</h3>
             <br />
            
-            {!! Form::open(['action' => 'projectControllers@wordExport_ChangeBoard', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => ['projectControllers@wordExport_ChangeBoard',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
 
             <div class="my-2">
