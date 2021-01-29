@@ -541,7 +541,7 @@ class projectControllers extends Controller
         $this->notifications_fun($user_noti3[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
         $this->notifications_fun(1,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
 
-        $templateProcessor = new TemplateProcessor('word-template/08-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/08-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -691,7 +691,7 @@ class projectControllers extends Controller
            $id_CompleteFormDB = test50::find($CompleteForm_DB->id);           
             $this->notifications_fun(1,5,$id_CompleteFormDB->id,'แบบขอส่งโครงงานฉบับสมบูรณ์');
 
-        $templateProcessor = new TemplateProcessor('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -771,7 +771,7 @@ class projectControllers extends Controller
             // return response()->json($user_noti1[0]->id);
 
         //wordExport
-        $templateProcessor = new TemplateProcessor('word-template/02-แบบเสนอขอสอบ50.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/02-แบบเสนอขอสอบ50.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -875,7 +875,7 @@ class projectControllers extends Controller
             // return response()->json($user_noti1[0]->id);
         $this->notifications_fun(1,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
 
-        $templateProcessor = new TemplateProcessor('word-template/07-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/07-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -967,7 +967,7 @@ class projectControllers extends Controller
             $this->notifications_fun($user_noti2[0]->id,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
             $this->notifications_fun($user_noti3[0]->id,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
             $this->notifications_fun(1,3,$id_test100DB->id,'แบบเสนอขอสอบ100');
-        $templateProcessor = new TemplateProcessor('word-template/04-แบบเสนอขอสอบ100.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/04-แบบเสนอขอสอบ100.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -1067,7 +1067,7 @@ class projectControllers extends Controller
             $this->notifications_fun($user_noti3[0]->id,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
             $this->notifications_fun(1,2,$id_ProgressReport_test50_DB->id,'รายงานการสอบความก้าวหน้าสอบ50');
 
-        $templateProcessor = new TemplateProcessor('word-template/03-รายงานการสอบความก้าวหน้า.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/03-รายงานการสอบความก้าวหน้า.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
@@ -1162,7 +1162,7 @@ class projectControllers extends Controller
         $this->notifications_fun($user_noti2[0]->id,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
         $this->notifications_fun($user_noti3[0]->id,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
         $this->notifications_fun(1,4,$id_ProgressReport_test100_DB->id,'รายงานการสอบความก้าวหน้าสอบ100');
-        $templateProcessor = new TemplateProcessor('word-template/03-รายงานการสอบความก้าวหน้า.docx');
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/03-รายงานการสอบความก้าวหน้า.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
