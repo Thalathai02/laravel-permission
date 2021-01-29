@@ -57,7 +57,7 @@
 
                     @endif
 
-                    @if ($status[0]->status == 'not Check')
+                    @if ($status[0]->status == 'Waiting')
                         <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
 

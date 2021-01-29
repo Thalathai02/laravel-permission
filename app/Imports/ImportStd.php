@@ -73,7 +73,6 @@ class ImportStd implements ToModel
             $student->save();
             $subject->student_id = $reg->id;
             $subject->subject_id = Session::get('subject_id');
-
             $subject->save();
         }
 

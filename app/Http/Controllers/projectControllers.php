@@ -61,7 +61,7 @@ class projectControllers extends Controller
                 $datas = project::all();
                 if ($status[0]->status == "reject") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
-                } elseif ($status[0]->status == "not Check") {
+                } elseif ($status[0]->status == "Waiting") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } elseif ($status[0]->status == "Check") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
@@ -91,9 +91,10 @@ class projectControllers extends Controller
             return view('projects.into_project', compact('term'));
         }
         if ($user->hasRole('Std')) {
-            $term = $request->user()->id;
-            $term = subject_student::find($term);
-            $term = subject::find($term);
+            $user_id = $request->user()->id;
+            $term = subject_student::where('student_id',$user_id)->get();
+            $term = subject::find($term[0]->subject_id);
+            // return response()->json($term);
             return view('projects.into_project', compact('term'));
         } else {
             abort(404);
@@ -334,7 +335,7 @@ class projectControllers extends Controller
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];
-            $name->status = "not Check";
+            $name->status = "Waiting";
             $name->subject_id = $request['subject'];
 
             $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
@@ -344,13 +345,13 @@ class projectControllers extends Controller
             $data_nameProject = project::find($id);
 
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->status_file_path = "not Check";
+            $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
-            // $request->File->store("not Check");
+            // $request->File->store("Waiting");
 
             Storage::disk('local')->putFileAs(
-                'not Check/' . $term[0]->year_term,
+                'Waiting/' . $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
@@ -365,7 +366,7 @@ class projectControllers extends Controller
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];
-            $name->status = "not Check";
+            $name->status = "Waiting";
             $name->subject_id = $term[0]->id;
 
             $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
@@ -376,11 +377,11 @@ class projectControllers extends Controller
             $term = $request->user()->id;
             $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
-            $fileModel->status_file_path = "not Check";
+            $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
             Storage::disk('local')->putFileAs(
-                'not Check/' . $term[0]->year_term,
+                'Waiting/' . $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
@@ -752,10 +753,10 @@ class projectControllers extends Controller
                 'end_date_test50' =>formatDateEnd_test($request->date_test50),
                 'room_test50'=> $request->room_test50,
                 'file_test50'=>time() . '_' . $request->File->getClientOriginalName(),
-                'status_test50'=>'not check'
+                'status_test50'=>'Waiting'
             ]);
             Storage::disk('local')->putFileAs(
-                'test50/not Check',
+                'test50/Waiting',
                 $request->File,
                 $name_file
             );
@@ -951,10 +952,10 @@ class projectControllers extends Controller
                 'end_date_test100' =>formatDateEnd_test($request->date_test100),
                 'room_test100'=> $request->room_test100,
                 'file_test100'=>$name_file,
-                'status_test100'=>'not check'
+                'status_test100'=>'Waiting'
             ]);
             Storage::disk('local')->putFileAs(
-                'test100/not Check',
+                'test100/Waiting',
                 $request->File,
                 $name_file
             );
