@@ -159,7 +159,10 @@ class InfoWordTemplateController extends Controller
         //     $term,
         //    $file ,
         //     ]);
-        return response()->download(storage_path('/app/test50'.'/' . $form . '/' . $status . '/' . $file));
+        // return Storage::download($file, $file, $form . '/' . $status );
+        // return response()->download(storage_path('/app/Waiting/' . $year . '/' . $term . '/' . $file));
+        // return response()->json($form);
+        return response()->download(storage_path("/app/{$form}/{$status}/{$file}"));
     }
     public function markAsRead($id){
         
