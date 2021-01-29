@@ -13,7 +13,7 @@ class ProjectInstructor extends Migration
      */
     public function up()
     {
-        Schema::create('Project_Instructor', function (Blueprint $table) {
+        Schema::create('project_instructor', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('Project_id')->nullable();
             $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
@@ -34,6 +34,6 @@ class ProjectInstructor extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Project_Instructor');
+        Schema::dropIfExists('project_instructor');
     }
 }
