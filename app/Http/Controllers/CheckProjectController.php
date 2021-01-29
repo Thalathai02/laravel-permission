@@ -67,8 +67,8 @@ class CheckProjectController extends Controller
     public function show(Request $request, $id)
     {
         $datas_instructor = DB::table('projects')
-            ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-            ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+            ->join('Project_Instructor', 'projects.id', '=', 'Project_Instructor.Project_id')
+            ->join('teachers', 'Project_Instructor.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
@@ -106,8 +106,8 @@ class CheckProjectController extends Controller
 
         if ($user->hasRole('Admin')) {
             $datas1 = DB::table('projects')
-                ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
-                ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructor', 'projects.id', '=', 'Project_Instructor.Project_id')
+                ->join('teachers', 'Project_Instructor.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
             // return response()->json([
             //     'id' => $datas1
@@ -118,12 +118,12 @@ class CheckProjectController extends Controller
 
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
-                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                    ->join('Project_Instructor', 'projects.id', '=', 'Project_Instructor.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
 
 
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                    ->join('teachers', 'Project_Instructor.ID_Instructor', '=', 'teachers.id')
                     ->select('projects.*', 'project_user.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
                     return view('projects.instructor_project', compact('datas','name_Instructor'));
             } else {
