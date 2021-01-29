@@ -591,10 +591,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('note', $request->note);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์". '.docx');
+        $templateProcessor->saveAs($fileName );
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function CompleteForm(Request $request, $id){
         $id_user = Auth::user()->id;
@@ -732,10 +732,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "แบบขอส่งโครงงานฉบับสมบูรณ์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("แบบขอส่งโครงงานฉบับสมบูรณ์". '.docx');
+        $templateProcessor->saveAs($fileName);
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function wordExport_test50(Request $request ,$id)
     {
@@ -817,10 +817,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('end_time',formatDateThai_End_time($request->date_test50));
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "แบบเสนอขอสอบ50";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("แบบเสนอขอสอบ50". '.docx');
+        $templateProcessor->saveAs($fileName);
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function wordExport_ChangeBoard(Request $request,$id){
         $request->validate([
@@ -932,10 +932,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('note', $request->note);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์". '.docx');
+        $templateProcessor->saveAs($fileName );
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName)->deleteFileAfterSend(true);
     }
     public function wordExport_test100(Request $request,$id)
     {
@@ -1013,10 +1013,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('end_time',formatDateThai_End_time($request->date_test100));
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "แบบเสนอขอสอบ100";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("แบบเสนอขอสอบ100". '.docx');
+        $templateProcessor->saveAs($fileName );
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function ProgressReport_test50(Request $request, $id){
         $id_user = Auth::user()->id;
@@ -1113,10 +1113,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "รายงานการสอบความก้าวหน้า50";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("รายงานการสอบความก้าวหน้า50". '.docx');
+        $templateProcessor->saveAs($fileName);
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function ProgressReport_test100(Request $request, $id){
         $id_user = Auth::user()->id;
@@ -1208,10 +1208,10 @@ class projectControllers extends Controller
         $templateProcessor->setValue('name_Eng', $request->Project_name_eg);
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
-        $fileName = "รายงานการสอบความก้าวหน้า";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $fileName = storage_path("รายงานการสอบความก้าวหน้า". '.docx');
+        $templateProcessor->saveAs($fileName );
 
-        return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
+        return response()->download($fileName )->deleteFileAfterSend(true);
     }
     public function notifications_fun($id_Instructor,$form,$form_id,$Title_form){
         $sendToUser  = User::find($id_Instructor);
