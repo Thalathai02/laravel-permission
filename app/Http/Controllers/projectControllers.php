@@ -592,7 +592,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -733,7 +733,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "แบบขอส่งโครงงานฉบับสมบูรณ์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -818,7 +818,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "แบบเสนอขอสอบ50";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -933,7 +933,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -1014,7 +1014,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "แบบเสนอขอสอบ100";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -1114,7 +1114,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "รายงานการสอบความก้าวหน้า50";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
@@ -1209,7 +1209,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
 
         $fileName = "รายงานการสอบความก้าวหน้า";
-        // $templateProcessor->saveAs($fileName . '.docx');
+        $templateProcessor->saveAs($fileName . '.docx');
 
         return response()->download($fileName . '.docx')->deleteFileAfterSend(true);
     }
