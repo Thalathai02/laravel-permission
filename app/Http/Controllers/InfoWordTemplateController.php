@@ -150,6 +150,183 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
             }
+
+            if($form == 2){
+                $tableTest50_id = test50::find($formId);
+                $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
+                if (Auth::user()->hasRole('Admin')) {
+                    $datas_instructor = DB::table('projects')
+                        ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                        ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                        ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_test50)->get();
+        
+                    $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+        
+                    $datas_std = DB::table('projects')
+                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+                        $time_test50 = test50::where('Project_id_test50',$datas[0]->id)->get();
+                    
+                    return view('/info_word_template/ProgressReport_test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications','time_test50'));
+                    // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+                }
+                if (Auth::user()->hasRole('Tea')) {
+                    $datas_instructor = DB::table('projects')
+                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_test50)->get();
+    
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+    
+                $datas_std = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+                    $time_test50 = test50::where('Project_id_test50',$datas[0]->id)->get();
+                
+                return view('/info_word_template/ProgressReport_test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications','time_test50'));
+                }
+                else {
+                    abort(404);
+                }
+            }
+            if($form == 3){
+                $tableTest100_id = test100::find($formId);
+                $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+                if (Auth::user()->hasRole('Admin')) {
+                    $datas_instructor = DB::table('projects')
+                        ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                        ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                        ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
+        
+                    $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+        
+                    $datas_std = DB::table('projects')
+                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+
+                    
+                    return view('info_word_template.test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications'));
+                }
+                if (Auth::user()->hasRole('Tea')) {
+                    $datas_instructor = DB::table('projects')
+                        ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                        ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                        ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
+        
+                    $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+        
+                    $datas_std = DB::table('projects')
+                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+
+
+                    return view('info_word_template.test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications'));
+                }
+                else {
+                    abort(404);
+                }
+            }
+            if($form == 4){
+                $tableTest100_id = test100::find($formId);
+                $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
+                if (Auth::user()->hasRole('Admin')) {
+                    $datas_instructor = DB::table('projects')
+                        ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                        ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                        ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
+        
+                    $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+        
+                    $datas_std = DB::table('projects')
+                        ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                        ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                        $time_test100 = test100::where('Project_id_test100',$datas[0]->id)->get();
+                    
+                    return view('/info_word_template/ProgressReport_test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications','time_test100'));
+                    // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+                }
+                if (Auth::user()->hasRole('Tea')) {
+                    $datas_instructor = DB::table('projects')
+                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
+    
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+    
+                $datas_std = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                    $time_test100 = test100::where('Project_id_test100',$datas[0]->id)->get();
+                
+                return view('/info_word_template/ProgressReport_test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications','time_test100'));
+                }
+                else {
+                    abort(404);
+                }
+            }
+            if($form == 5){
+                $tableCompleteForm_id = CompleteForm::find($formId);
+                $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
+                if (Auth::user()->hasRole('Admin')) {
+                    $datas_instructor = DB::table('projects')
+                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm)->get();
+    
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
+    
+                $datas_std = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
+                    
+                    return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableCompleteForm_id','id_Notifications'));
+                    // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+                }else {
+                    abort(404);
+                }
+            }
+            if($form == 6){
+                $tableChangeBoard_id = ChangeBoard::find($formId);
+                $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
+                if (Auth::user()->hasRole('Admin')) {
+                    $datas_instructor = DB::table('projects')
+                    ->join('project_instructor', 'projects.id', '=', 'project_instructor.Project_id')
+                    ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard)->get();
+    
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
+    
+                $datas_std = DB::table('projects')
+                    ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
+                // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+               
+                    return view('/info_word_template/ChangeBoard', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableChangeBoard_id','id_Notifications'));
+                    // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+                }else {
+                    abort(404);
+                }
+            }
         // return response()->json($tableTest50_id->Project_id_test50 );
     }
     public function download($form, $status, $file)
@@ -159,8 +336,7 @@ class InfoWordTemplateController extends Controller
         //     $term,
         //    $file ,
         //     ]);
-        // return Storage::download($file, $file, $form . '/' . $status );
-        // return response()->download(storage_path('/app/Waiting/' . $year . '/' . $term . '/' . $file));
+       
         // return response()->json($form);
         return response()->download(storage_path("/app/{$form}/{$status}/{$file}"));
     }

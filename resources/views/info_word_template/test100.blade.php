@@ -10,8 +10,7 @@
             <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ100</h3>
             <br />
            
-            {{-- {!! Form::open(['action' => ['projectControllers@wordExport_test100',$datas[0]->id], 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!} --}}
+          
 
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -103,49 +102,44 @@
             @endif
 
             <div class="my4">
-                {!! Form::label('date_test100', 'จะขอสอบ 100 % ในวันที่ ') !!}
-                {!! Form::datetimeLocal('date_test100', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
+                {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
+                {!! Form::text('date_test50', formatDateThai($tableTest100_id->date_test100), ['readonly', 'class' =>
+                'form-control col-5']) !!}
 
             </div>
+            <div class="my4">
+                {!! Form::label('date_test50', 'เวลา ') !!}
+                {!! Form::text('date_test50', formatDateThai_time($tableTest100_id->date_test100), ['readonly',
+                'class' => 'form-control col-5']) !!}
+
+            </div>
+
+
 
             <div class="my-4">
-                {!! Form::label('room_test100', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test100', null, ['class' => 'form-control col-5']) !!}
+                {!! Form::label('room_test50', 'ห้องสอบ ') !!}
+                {!! Form::text('room_test50', $tableTest100_id->room_test100, ['readonly', 'class' => 'form-control col-5'])
+                !!}
             </div>
             <div class="my-4">
-                {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
-                {!! Form::file('File', ['class' => 'form-control col-5']) !!}
+                {!! Form::label('name_upload_File', 'ที่นำไฟล์เข้า') !!}
+                <a href="{!!  route('InfoWordTemplate.download', ['form' => 'test100', 'status' => $tableTest100_id->status_test100, 'file' => $tableTest100_id->file_test100]) !!}"
+                    download>ดาวน์โหลดเอกสาร</a>
             </div>
-
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                ดาวน์โหลดเอกสาร
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">คำเตือน</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            กรุณาเช็คแบบฟอร์มก่อนสั่งพิมพ์
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ออก</button>
-                            {!! Form::submit('ยืนยัน', ['class' => 'btn btn-danger']) !!}
-                        </div>
-                    </div>
-                </div>
+           
+            <div class="my-2">
+                <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                </a>
             </div>
+            
 
 
 
-            {{-- {!! Form::close() !!} --}}
+        
         </div>
       
     </body>
