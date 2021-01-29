@@ -16,8 +16,8 @@
     <script src="{{ asset('js/bonus.js') }}" defer></script>
     <script src="{{ asset('js/Project.js') }}" defer></script>
     {{-- <script src="{{ asset('js/login.js') }}" defer></script> --}}
-    <script src="{{ asset('js/sb-admin-2.min.js') }}" ></script>
-    <script src="{{ asset('js/sb-admin-2.js') }}" ></script>
+    {{-- <script src="{{ asset('js/sb-admin-2.min.js')}}"defer ></script>
+    <script src="{{ asset('js/sb-admin-2.js') }}" defer></script> --}}
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css" integrity="sha512-kJ30H6g4NGhWopgdseRb8wTsyllFUYIx3hiUwmGAkgA9B/JbzUBDQVr2VVlWGde6sdBVOG7oU8AL35ORDuMm8g==" crossorigin="anonymous" />
   <!-- JavaScript Bundle with Popper -->
@@ -35,8 +35,8 @@
     <link href="{{ asset('css/nav.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/table.css') }}" rel="stylesheet"> --}}
-    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet"> --}}
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
@@ -50,7 +50,6 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-<body>
    
     <body id="page-top">
        @if (Auth::user())  
@@ -242,8 +241,8 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                @if( count(Auth::user()->notifications) !== 0)
-                                    <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                                @if( count(Auth::user()->unreadNotifications) !== 0)
+                                    <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->unreadNotifications)}}</span>
                                  @else
                                  @endif
                             </a>
@@ -256,7 +255,7 @@
                                 </h6>
                                 @foreach(Auth::user()->unreadNotifications as $key => $value)                      
                                 {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
-                                     <a class="dropdown-item d-flex align-items-center" href="#">
+                                     <a class="dropdown-item d-flex align-items-center" href="{!! route('InfoWordTemplate.checkForm',['form'=>$value->data['form'],'formId'=>$value->data['form_id'],'id_Notifications'=>$value->id]) !!}">
                                          <div class="mr-3">
                                              <div class="icon-circle bg-primary">
                                                  <i class="fas fa-file-alt text-white"></i>
@@ -286,8 +285,8 @@
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <i class="fas fa-bell fa-fw"></i>
                                  <!-- Counter - Alerts -->
-                                 @if( count(Auth::user()->notifications) !== 0)
-                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                                 @if( count(Auth::user()->unreadNotifications) !== 0)
+                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->unreadNotifications)}}</span>
                               @else
                              @endif
                              </a>
@@ -299,7 +298,7 @@
                                  </h6>
                                  @foreach(Auth::user()->unreadNotifications as $key => $value)                      
                             {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
-                                 <a class="dropdown-item d-flex align-items-center" href="#">
+                                 <a class="dropdown-item d-flex align-items-center"  href="{!! route('InfoWordTemplate.checkForm',['form'=>$value->data['form'],'formId'=>$value->data['form_id'],'id_Notifications'=>$value->id]) !!}">
                                      <div class="mr-3">
                                          <div class="icon-circle bg-primary">
                                              <i class="fas fa-file-alt text-white"></i>
@@ -328,8 +327,8 @@
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <i class="fas fa-bell fa-fw"></i>
                                  <!-- Counter - Alerts -->
-                                 @if( count(Auth::user()->notifications) !== 0)
-                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->notifications)}}</span>
+                                 @if( count(Auth::user()->unreadNotifications) !== 0)
+                                 <span class="badge badge-danger badge-counter">+{{ count(Auth::user()->unreadNotifications)}}</span>
                               @else
                              @endif
                              </a>
@@ -342,7 +341,7 @@
                                  </h6>
                                  @foreach(Auth::user()->unreadNotifications as $key => $value)                      
                             {{-- <a href="">{{$value->data['read_notification']}}</a> --}}                                             
-                                 <a class="dropdown-item d-flex align-items-center" href="#">
+                                 <a class="dropdown-item d-flex align-items-center" href="{!! route('InfoWordTemplate.checkForm',['form'=>$value->data['form'],'formId'=>$value->data['form_id'],'id_Notifications'=>$value->id]) !!}">
                                      <div class="mr-3">
                                          <div class="icon-circle bg-primary">
                                              <i class="fas fa-file-alt text-white"></i>
@@ -371,7 +370,7 @@
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ Auth::user()->name }}{{__(' (Administration)')}}</span>
                                  <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                 src="{{ asset("img/undraw_profile.svg")}}">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -396,7 +395,7 @@
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (student)')}}</span>
                                  <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
+                                 src="{{ asset("img/undraw_profile.svg")}}">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -428,7 +427,7 @@
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (instructor)')}}</span>
                                  <img class="img-profile rounded-circle"
-                                 src="img/undraw_profile.svg">
+                                 src="{{ asset("img/undraw_profile.svg")}}">
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -552,23 +551,21 @@
  });
 
 </script>
+<link href="{{ asset("vendor/fontawesome-free/css/all.min.css") }}" rel="stylesheet" type="text/css">
+   <!-- Bootstrap core JavaScript-->
+   <script href="{{ asset("vendor/jquery/jquery.min.js") }}"></script>
+   <script href="{{ asset("vendor/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
+
+   <!-- Core plugin JavaScript-->
+   <script href="{{ asset("vendor//jquery-easing/jquery.easing.min.js") }}"></script>
+
+   <!-- Custom scripts for all pages-->
+   <script href="{{ asset("js/sb-admin-2.min.js") }}"></script>
   
-        <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-    
-
-    
-  
-    
-     
-    
+   <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <script src="{{ asset('js/sb-admin-2.min.js')}}" ></script>
+    <script src="{{ asset('js/sb-admin-2.js') }}" ></script>
     </body>
    
 </html>
