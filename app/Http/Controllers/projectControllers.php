@@ -91,7 +91,7 @@ class projectControllers extends Controller
             return view('projects.into_project', compact('term'));
         }
         if ($user->hasRole('Std')) {
-            $user_id = $request->user()->id;
+            $user_id = $request->user()->reg_std_id;
             $term = subject_student::where('student_id',$user_id)->get();
             $term = subject::find($term[0]->subject_id);
             // return response()->json($term);
@@ -321,7 +321,7 @@ class projectControllers extends Controller
             'Project_name_thai' => 'required',
             'Project_name_eg' => 'required',
             'File' => 'required|file|mimes:zip',
-            'subject',
+
         ]);
         $fileModel = new Project_File;
 
@@ -360,32 +360,34 @@ class projectControllers extends Controller
             return view('/projects/list_name', compact("data_nameProject", "name_Instructor"));
         }
         if ($user->hasRole('Std')) {
-            $term = $request->user()->id;
-            $term = subject_student::find($term);
-            $term = subject::find($term);
+            $user_id = $request->user()->reg_std_id;
+            $term = subject_student::where('student_id',$user_id)->get();
+            $term = subject::find($term[0]->subject_id);
             $name = new project();
             $name->name_th = $request['Project_name_thai'];
             $name->name_en = $request['Project_name_eg'];
             $name->status = "Waiting";
-            $name->subject_id = $term[0]->id;
+            $name->subject_id = $term->id;
 
             $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
 
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
-            $term = $request->user()->id;
-            $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
+            
             $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
+            
             Storage::disk('local')->putFileAs(
                 'Waiting/' . $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
             $fileModel->save();
+            $term = $request->user()->id;
+            $term = reg_std::query()->where('user_id', 'LIKE', $term)->get();
             return view('/projects/list_name', compact("data_nameProject", "term", "name_Instructor"));
         } else {
             abort(404);
