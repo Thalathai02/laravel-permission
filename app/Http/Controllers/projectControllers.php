@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Project_Instructor;
+use App\project_instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -531,7 +531,7 @@ class projectControllers extends Controller
             'status_changetopics'=>'Waiting'
         ]);
        
-        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
         $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
@@ -687,7 +687,7 @@ class projectControllers extends Controller
                 'status_CompleteForm'=>'Waiting'
             ]);
            
-            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
            $id_CompleteFormDB = test50::find($CompleteForm_DB->id);           
             $this->notifications_fun(1,5,$id_CompleteFormDB->id,'แบบขอส่งโครงงานฉบับสมบูรณ์');
 
@@ -759,7 +759,7 @@ class projectControllers extends Controller
                 $request->File,
                 $name_file
             );
-            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
             $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
             $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
             $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
@@ -838,7 +838,7 @@ class projectControllers extends Controller
             'status_ChangeBoard'=>'Waiting'
         ]);
        
-        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
         $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
@@ -958,7 +958,7 @@ class projectControllers extends Controller
                 $request->File,
                 $name_file
             );
-            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
             $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
             $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
             $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
@@ -1057,7 +1057,7 @@ class projectControllers extends Controller
                 'status_progress_report_test50'=>'Waiting'
             ]);
           
-            $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+            $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
             $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
             $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
             $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
@@ -1153,7 +1153,7 @@ class projectControllers extends Controller
             'status_progress_report_test100'=>'Waiting'
         ]);
       
-        $Project_id = DB::table('Project_Instructor')->where('Project_id',$id)->get();
+        $Project_id = DB::table('project_instructor')->where('Project_id',$id)->get();
         $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
