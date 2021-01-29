@@ -80,7 +80,7 @@ class CheckProjectController extends Controller
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
                 return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
             } else {
                 $datas_std = DB::table('projects')
@@ -88,7 +88,7 @@ class CheckProjectController extends Controller
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
                 return view('projects.info_project', compact('datas_std', 'datas'));
             }
         
@@ -124,14 +124,14 @@ class CheckProjectController extends Controller
 
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
                     ->join('teachers', 'project_instructor.ID_Instructor', '=', 'teachers.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
                     return view('projects.instructor_project', compact('datas','name_Instructor'));
             } else {
                 $datas = DB::table('projects')
                     ->join('project_user', 'projects.id', '=', 'project_user.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_user.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'not Check']])->get();
+                    ->select('projects.*', 'project_user.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
                     return view('projects.instructor_project', compact('datas','name_Instructor'));
             }
         } else {
@@ -216,7 +216,7 @@ class CheckProjectController extends Controller
         //     $term,
         //    $file ,
         //     ]);
-        return response()->download(storage_path('/app/not Check/' . $year . '/' . $term . '/' . $file));
+        return response()->download(storage_path('/app/Waiting/' . $year . '/' . $term . '/' . $file));
     }
     public function search(Request $request)
     {

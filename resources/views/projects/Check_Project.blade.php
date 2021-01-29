@@ -35,7 +35,7 @@
 
                 <tbody>
                     @foreach ($datas as $row)
-                        @if ($row->status == 'not Check')
+                        @if ($row->status == 'Waiting')
                             <tr>
                                 <td scope="row">{{ $row->id }}</td>
                                 <td>{{ $row->name_th }}</td>

@@ -99,13 +99,13 @@
 
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::datetimeLocal('date_test50', formatDateThai($tableTest50_id->date_test50), ['readonly', 'class' =>
+                {!! Form::text('date_test50', formatDateThai($tableTest50_id->date_test50), ['readonly', 'class' =>
                 'form-control col-5']) !!}
 
             </div>
             <div class="my4">
                 {!! Form::label('date_test50', 'เวลา ') !!}
-                {!! Form::datetimeLocal('date_test50', formatDateThai_time($tableTest50_id->date_test50), ['readonly',
+                {!! Form::text('date_test50', formatDateThai_time($tableTest50_id->date_test50), ['readonly',
                 'class' => 'form-control col-5']) !!}
 
             </div>

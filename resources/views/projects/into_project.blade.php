@@ -15,7 +15,7 @@
       {!! Form::select('subject', $term,['class' => 'md-6'] ) !!}
       @endif
       @if (Auth::user()->hasRole('Std'))
-      {{ __('ปีการศึกษา ') }}{{$term[0]->year_term}}
+      {{ __('ปีการศึกษา ') }}{{$term->year_term}}
       @endif
       <div class="my-2">
          {!! Form::label('name_th','ชื่อโปรเจค(ภาษาไทย)')!!}
