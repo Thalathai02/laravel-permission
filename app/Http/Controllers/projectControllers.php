@@ -859,23 +859,23 @@ class projectControllers extends Controller
             case($user_noti1[0]->id):break;
             case($user_noti2[0]->id):break;
             case($user_noti3[0]->id):break;
-            default: $this->notifications_fun($new_user_noti1,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
+            default: $this->notifications_fun($new_user_noti1[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
             break;
         }
         switch($new_user_noti2[0]->id){
             case($user_noti1[0]->id):break;
             case($user_noti2[0]->id):break;
             case($user_noti3[0]->id):break;
-            default:$this->notifications_fun($new_user_noti2,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
+            default:$this->notifications_fun($new_user_noti2[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
         }
         switch($new_user_noti3[0]->id){
-            default:$this->notifications_fun($new_user_noti3,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
+            default:$this->notifications_fun($new_user_noti3[0]->id,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');break;
             case($user_noti1[0]->id):break;
             case($user_noti2[0]->id):break;
             case($user_noti3[0]->id):break;
         }
         
-            // return response()->json($user_noti1[0]->id);
+            // return response()->json($new_user_noti1[0]->id);
         $this->notifications_fun(1,6,$id_ChangeBoardDB->id,'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์');
 
         $templateProcessor = new TemplateProcessor(storage_path('word-template/07-คำร้องทั่วไป-ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์.docx'));

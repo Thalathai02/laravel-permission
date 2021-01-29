@@ -9,9 +9,6 @@
         <div class="container">
             <h3 align="center">รายงานการสอบความก้าวหน้า (สอบ100)</h3>
             <br />
-           
-            {!! Form::open(['action' => ['projectControllers@wordExport_ProgressReport_test100',$datas[0]->id], 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
 
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -107,35 +104,18 @@
             </div>
 
             
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                ดาวน์โหลดเอกสาร
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">คำเตือน</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            กรุณาเช็คแบบฟอร์มก่อนสั่งพิมพ์
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ออก</button>
-                            {!! Form::submit('ยืนยัน', ['class' => 'btn btn-danger']) !!}
-                        </div>
-                    </div>
-                </div>
+            <div class="my-2">
+                <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                </a>
             </div>
 
 
 
-            {!! Form::close() !!}
+         
         </div>
         <script type="text/javascript">
             $('#datetimepicker').datetimepicker({
