@@ -271,7 +271,7 @@
                                          </div>
                                      </a>
                                      @endforeach
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                             </div>
                         </li>
                          @endif
@@ -314,7 +314,7 @@
                                      </div>
                                  </a>
                                  @endforeach
-                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                 <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                              </div>
                          </li>
                          @endif
@@ -357,7 +357,7 @@
                                      </div>
                                  </a>
                                  @endforeach
-                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                 <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                              </div>
                          </li>
                          @endif

@@ -87,6 +87,7 @@ Route::post('/notification', "projectControllers@notification")->middleware('aut
 Route::get('/checkForm/{form}/{formId}/{id_Notifications}', "InfoWordTemplateController@checkForm")->name('InfoWordTemplate.checkForm')->middleware('auth');
 Route::get('/{form}/{status}/{file}', 'InfoWordTemplateController@download')->name('InfoWordTemplate.download')->middleware('auth');
 Route::get('/markAsRead/{id}', 'InfoWordTemplateController@markAsRead')->name('InfoWordTemplate.markAsRead')->middleware('auth');
+Route::resource('/notification/index','notification')->middleware('auth');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 
