@@ -44,9 +44,9 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($data as $row)
+                    @foreach ($data as $key =>$row)
                         <tr>
-                            <td scope="row">{{ $row->id }}</td>
+                            <td scope="row">{{ $key+1  }}</td>
                             <td>{{ $row->Title_name_Instructor }}{{ $row->name_Instructor }}</td>
                             <td>{{ $row->email_Instructor }}</td>
                             <td>{{ $row->phone_Instructor }}</td>

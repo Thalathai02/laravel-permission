@@ -10,7 +10,7 @@
             <h3 align="center">แก้ไขโปรเจค</h3>
             <br />
           
-            {!! Form::open(['action' => 'projectControllers@createNameProject', 'method' => 'POST', 'enctype' =>
+            {!! Form::open(['action' => ['projectControllers@edit_project',$datas[0]->id], 'method' => 'POST', 'enctype' =>
             'multipart/form-data']) !!}
             
                 <div class="my-2">
@@ -20,10 +20,6 @@
                 <div class="my-4">
                     {!! Form::label('name_eg', 'ชื่อโปรเจค(ภาษาอังกฤษ)') !!}
                     {!! Form::text('Project_name_eg', $datas[0]->name_en, ['class' => 'form-control']) !!}
-                </div>
-                <div class="my-4">
-                    {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
-                    {!! Form::file('File', ['class' => 'form-control col-5']) !!}
                 </div>
                 <div class="my-2 row-1">
                 {!! Form::label('reg_std1', 'รหัสนักศึกษาคนที่ 1') !!}
