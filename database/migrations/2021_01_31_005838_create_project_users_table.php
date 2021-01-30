@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ProjectUser extends Migration
+class CreateProjectUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,9 @@ class ProjectUser extends Migration
      * @return void
      */
     public function up()
-     {
-            Schema::create('project_user', function (Blueprint $table) {
-                $table->id();
+    {
+        Schema::create('project_users', function (Blueprint $table) {
+            $table->id();
                 $table->unsignedInteger('Project_id')->nullable();
                 $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
 
@@ -24,10 +24,7 @@ class ProjectUser extends Migration
                 $table->text('isHead')->default('-');
                 $table->text('name_mentor')->default('-');
                 $table->timestamps();
-                  
-                
-          });
-        
+        });
     }
 
     /**
@@ -35,7 +32,8 @@ class ProjectUser extends Migration
      *
      * @return void
      */
-    public function down(){
-        Schema::dropIfExists('project_user');
+    public function down()
+    {
+        Schema::dropIfExists('project_users');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ProjectInstructor extends Migration
+class CreateProjectInstructorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class ProjectInstructor extends Migration
      */
     public function up()
     {
-        Schema::create('project_instructor', function (Blueprint $table) {
+        Schema::create('project_instructors', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('Project_id')->nullable();
             $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
@@ -34,6 +34,6 @@ class ProjectInstructor extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_instructor');
+        Schema::dropIfExists('project_instructors');
     }
 }
