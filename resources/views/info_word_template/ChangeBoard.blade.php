@@ -9,9 +9,6 @@
         <div class="container">
             <h3 align="center">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</h3>
             <br />
-           
-            {!! Form::open(['action' => ['projectControllers@wordExport_ChangeBoard',$datas[0]->id], 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
 
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -105,13 +102,13 @@
             @if (empty($datas[0]->name_Instructor))
             <div class="my-4">
                 {!! Form::label('new_name_president', 'ชื่อประธาน') !!}
-                {!! Form::select('new_name_president', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
+                {!! Form::text('new_name_president', $new_name_president->Title_name_Instructor .$new_name_president->name_Instructor , ['readonly', 'class' => 'form-control col-5']) !!}
             </div>
         @endif
         @if (empty($datas[1]->name_Instructor))
             <div class="my-4">
                 {!! Form::label('new_name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                {!! Form::select('new_name_director1', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
+                {!! Form::text('new_name_director1', $new_name_director1->Title_name_Instructor .$new_name_director1->name_Instructor , ['readonly', 'class' => 'form-control col-5']) !!}
 
             </div>
         @endif
@@ -119,49 +116,30 @@
             <div class="my-4">
                 <div class="my-4">
                     {!! Form::label('new_name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                    {!! Form::select('new_name_director2', array_merge(['-' => 'Please Select',$name_Instructor]), ['class' => ' col-8']) !!}
+                    {!! Form::text('new_name_director2', $new_name_director2->Title_name_Instructor .$new_name_director2->name_Instructor , ['readonly', 'class' => 'form-control col-5']) !!}
                 </div>
         @endif
         <div class="my-4">
             {!! Form::label('note', 'เนื่องจาก') !!}
-            {!! Form::textarea('note','', ['class' => 'form-control col-8']) !!}
+            {!! Form::textarea('note',$tableChangeBoard_id->note, ['readonly', 'class' => 'form-control col-8']) !!}
         </div>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                ดาวน์โหลดเอกสาร
-            </button>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">คำเตือน</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            กรุณาเช็คแบบฟอร์มก่อนสั่งพิมพ์
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ออก</button>
-                            {!! Form::submit('ยืนยัน', ['class' => 'btn btn-danger']) !!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            {!! Form::close() !!}
+          
         </div>
-        <script type="text/javascript">
-            $('#datetimepicker').datetimepicker({
-                format: 'dd/mm/yyyy'
-            });
-
-        </script>
+        <div class="my-2">
+            <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
+                <span class="icon text-white-50">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="text">รับทราบ(อ่านเเล้ว)</span>
+            </a>
+            <a href="{{ route('project.edit',  $datas[0]->id) }}" class="btn btn-info btn-icon-split" target="_blank">
+                <span class="icon text-white-50">
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                <span class="text">แก้ไขโปรเจด</span>
+            </a>
+        </div>
+        
     </body>
 
     </html>

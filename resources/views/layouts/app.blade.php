@@ -16,8 +16,8 @@
     <script src="{{ asset('js/bonus.js') }}" defer></script>
     <script src="{{ asset('js/Project.js') }}" defer></script>
     {{-- <script src="{{ asset('js/login.js') }}" defer></script> --}}
-    {{-- <script src="{{ asset('js/sb-admin-2.min.js')}}"defer ></script>
-    <script src="{{ asset('js/sb-admin-2.js') }}" defer></script> --}}
+    <script src="{{ asset('js/sb-admin-2.min.js')}}" ></script>
+    <script src="{{ asset('js/sb-admin-2.js') }}" ></script>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/fontawesome.min.css" integrity="sha512-kJ30H6g4NGhWopgdseRb8wTsyllFUYIx3hiUwmGAkgA9B/JbzUBDQVr2VVlWGde6sdBVOG7oU8AL35ORDuMm8g==" crossorigin="anonymous" />
   <!-- JavaScript Bundle with Popper -->
@@ -35,8 +35,8 @@
     <link href="{{ asset('css/nav.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sidebar.css') }}" rel="stylesheet">
     <link href="{{ asset('css/table.css') }}" rel="stylesheet"> --}}
-    {{-- <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet"> --}}
+    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet"> 
+    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet"> 
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
@@ -271,7 +271,7 @@
                                          </div>
                                      </a>
                                      @endforeach
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                             </div>
                         </li>
                          @endif
@@ -314,7 +314,7 @@
                                      </div>
                                  </a>
                                  @endforeach
-                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                 <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                              </div>
                          </li>
                          @endif
@@ -357,7 +357,7 @@
                                      </div>
                                  </a>
                                  @endforeach
-                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                 <a class="dropdown-item text-center small text-gray-500" href="{!! route('index.index') !!}" >Show All Alerts</a>
                              </div>
                          </li>
                          @endif
@@ -557,10 +557,10 @@
    <script href="{{ asset("vendor/bootstrap/js/bootstrap.bundle.min.js") }}"></script>
 
    <!-- Core plugin JavaScript-->
-   <script href="{{ asset("vendor//jquery-easing/jquery.easing.min.js") }}"></script>
+   <script href="{{ asset("vendor/jquery-easing/jquery.easing.min.js") }}"></script>
 
    <!-- Custom scripts for all pages-->
-   <script href="{{ asset("js/sb-admin-2.min.js") }}"></script>
+   {{-- <script href="{{ asset("js/sb-admin-2.min.js") }}"></script> --}}
   
    <link href="{{ asset('css/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
