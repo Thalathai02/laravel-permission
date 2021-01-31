@@ -67,6 +67,7 @@
                             {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor.$datas_instructor[2]->name_Instructor, ['readonly', 'class' =>
                             'form-control col-5']) !!}
                         </div>
+                    </div>
                 @endif
                 @if (!empty($datas[0]->name_mentor))
                     <div class="my-4">
