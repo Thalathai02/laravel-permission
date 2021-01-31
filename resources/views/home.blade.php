@@ -19,18 +19,17 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                ส่งนำเสนอหัวข้อ
+                                                {{$data_topics_Dashboard}}
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">20%</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{$data_progress_Dashboard}}</div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 20%" aria-valuenow="50" aria-valuemin="0"
+                                                            style="width: {{$data_progress_Dashboard}}" aria-valuenow="50" aria-valuemin="0"
                                                             aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
@@ -116,6 +115,32 @@
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div
+                                                class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                แบบเสนอขอสอบ50</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
+                                                รอการตรวจสอบ/ผ่าน/ไม่ผ่าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div
+                                                class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                รายงานการสอบความก้าวหน้า(สอบ 50)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
+                                                รอการตรวจสอบ/ผ่าน/ไม่ผ่าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -55,31 +55,50 @@ class HomeController extends Controller
             $data_reg1 = reg_std::where('user_id', $mydata->id)->get();
             $id_stu_project = project_user::query()->where('id_reg_Std', $data_reg1[0]->id)->get();
             if ($id_stu_project == '[]') {
-                return view('home');
+                $data_topics_Dashboard = "ยังไม่ส่งหัวข้อ";
+                $data_progress_Dashboard = "0%";
+                return view('home',compact('data_topics_Dashboard','data_progress_Dashboard'));
                 // return response()->json($id_stu_project );
             }
+            $test_50 = test50::where('Project_id_test50',$id_stu_project[0]->Project_id)->get();
             $datas_instructor = DB::table('projects')
                 ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                 ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id_stu_project[0]->Project_id)->get();
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id_stu_project[0]->Project_id]])->get();
             $user = Auth::user();
-            if (!empty($datas_instructor[0]->id)) {
+            // return response()->json($test_50);
+            if (!empty($test_50[0]->id)) {
+                $data_topics_Dashboard = "เสนอขอสอบ50";
+                $data_progress_Dashboard = "30%";
                 $datas_std = DB::table('projects')
                     ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
                     ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id_stu_project[0]->Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
-                return view('home', compact('datas', 'datas_std', 'datas_instructor'));
+                return view('home', compact('data_topics_Dashboard','data_progress_Dashboard','datas', 'datas_std', 'datas_instructor'));
+            }
+            elseif (!empty($datas_instructor[0]->id)) {
+                $data_topics_Dashboard = "แต่งตั้งประธานและกรรมการแล้ว";
+                $data_progress_Dashboard = "20%";
+                $datas_std = DB::table('projects')
+                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+                    ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
+                    ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id_stu_project[0]->Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+                return view('home', compact('data_topics_Dashboard','data_progress_Dashboard','datas', 'datas_std', 'datas_instructor'));
             } else {
+                $data_topics_Dashboard = "ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ";
+                $data_progress_Dashboard = "10%";
                 $datas_std = DB::table('projects')
                     ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
                     ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
                     ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id_stu_project[0]->Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
-                return view('home', compact('datas_std', 'datas'));
+                return view('home', compact('data_topics_Dashboard','data_progress_Dashboard','datas_std', 'datas'));
             }
         }
         return view('home');
