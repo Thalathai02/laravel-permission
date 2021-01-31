@@ -57,19 +57,19 @@
                 @endif
                 @if (!empty($status))
                     @if ($status[0]->status == 'reject')
-                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2"
+                        <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-danger my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
 
                     @endif
 
                     @if ($status[0]->status == 'Waiting')
-                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
+                        <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-primary my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
 
                     @endif
 
                     @if ($status[0]->status == 'Check')
-                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-primary my-2"
+                        <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-primary my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
 
 

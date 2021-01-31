@@ -27,7 +27,7 @@
                     {!! Form::text('reg_std1', $datas_std[0]->std_code, ['class' => 'form-control col-3']) !!}
                     <div id="name_reg1" class="col-3"></div>
                 </div>
-                </div>
+            </div>
                    
 
                 @if (!empty($datas_std[1]->name))

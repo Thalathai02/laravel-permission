@@ -90,6 +90,7 @@ Route::get('/markAsRead/{id}', 'InfoWordTemplateController@markAsRead')->name('I
 Route::resource('/notification/index','notification')->middleware('auth');
 
 Route::post('/edit_project/{id}',"projectControllers@edit_project" )->middleware('auth');
+Route::GET('/info_project/{id}','projectControllers@info_project')->name('info_project')->middleware('auth');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 
