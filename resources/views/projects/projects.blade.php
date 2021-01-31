@@ -44,8 +44,9 @@
                                         </tr>
                                     @endif
                                 @endforeach
+                               
                             </tbody>
-                        </table>
+                        </table> {!! $datas->links() !!}
                     </div>
                 </div>
             @endif
@@ -160,6 +161,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {!! $datas->links() !!}
                     </div>
                 </div>
             @endif
@@ -191,9 +193,10 @@
                                             </td>
                                         </tr>
                                     @endif
-                                @endforeach
+                                @endforeach                               
                             </tbody>
                         </table>
+                        {!! $datas->links() !!}
                     </div>
                 </div>
             @endif
