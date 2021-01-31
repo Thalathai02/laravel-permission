@@ -45,11 +45,11 @@ class projectControllers extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            $datas = project::all();
+            $datas = project::orderBy('id', 'ASC')->paginate(10);
             return view('projects.projects', compact('datas'));
         }
         if ($user->hasRole('Tea')) {
-            $datas = project::all();
+            $datas = project::orderBy('id', 'ASC')->paginate(10);
 
             return view('projects.projects', compact('datas'));
         }
@@ -59,7 +59,7 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std1[0]->id)->select('project_users.*')->get();
             if (!empty($data_std[0]->id)) {
                 $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
-                $datas = project::all();
+                $datas = project::orderBy('id', 'ASC')->paginate(10);
                 if ($status[0]->status == "reject") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } elseif ($status[0]->status == "Waiting") {
@@ -73,7 +73,7 @@ class projectControllers extends Controller
             } else {
                 $data_std = null;
                 $status = null;
-                $datas = project::all();
+                $datas = project::orderBy('id', 'ASC')->paginate(10);
                 return view('projects.projects', compact('datas', 'data_std', 'status'));
             }
         }
@@ -520,7 +520,8 @@ class projectControllers extends Controller
         $user_noti1 = User::where('reg_tea_id',$Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id',$Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id',$Project_id[2]->id_instructor)->get();
-       $id_ChangeTopicDB = test50::find($ChangeTopic_DB->id);
+        
+       $id_ChangeTopicDB = changetopic::find($ChangeTopic_DB->id);
         $this->notifications_fun($user_noti1[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
         $this->notifications_fun($user_noti2[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
         $this->notifications_fun($user_noti3[0]->id,7,$id_ChangeTopicDB->id,'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์');
@@ -1230,7 +1231,8 @@ class projectControllers extends Controller
             $name_president[2]->id_instructor = $request->name_director2;
             $name_president[2]->save();
         }
-        return back()->with('success', 'Contacts edit successfully.');
+        $datas = project::orderBy('id', 'ASC')->paginate(10);
+        return view('projects.projects', compact('datas'));
        
     }
     public function info_project($id){
