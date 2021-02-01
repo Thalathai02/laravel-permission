@@ -368,9 +368,27 @@ class InfoWordTemplateController extends Controller
                     ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
                 // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
                
-                    return view('/info_word_template/changetopic', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tablechangetopic_id','id_Notifications'));
+                    return view('/info_word_template/ChangeTopic', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tablechangetopic_id','id_Notifications'));
+                    // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+                }if (Auth::user()->hasRole('Tea')) {
+                    $datas_instructor = DB::table('projects')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tablechangetopic_id->Project_id_changetopics)->get();
+    
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
+    
+                $datas_std = DB::table('projects')
+                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
+                // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+               
+                    return view('/info_word_template/ChangeTopic', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tablechangetopic_id','id_Notifications'));
                     // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
                 }
+                
                else {
                     abort(404);
                 }
