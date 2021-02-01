@@ -4,7 +4,8 @@
        
         {!! Form::open(['action' => ['ImportExcel\ImportExcelController@update', $data->id], 'method' => 'PUT']) !!}
         @if (Auth::user()->hasRole('Admin'))
-            <div class="row">
+        <br><br><br>
+            <div class="row ">
                 <div class="form-group col-4">
                     {!! Form::label('std_code', 'รหัสนักศึกษา') !!}
                     {!! Form::text('std_code', $data->std_code, ['class' => 'form-control']) !!}
@@ -22,6 +23,10 @@
                 <div class="form-group col-6">
                     {!! Form::label('email', 'อีเมล') !!}
                     {!! Form::email('email', $data->email, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group col-6">
+                    {!! Form::label('phone', 'เบอร์มือถือ') !!}
+                    {!! Form::text('phone', $data->phone, ['class' => 'form-control']) !!}
                 </div>
             </div>
             <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
@@ -45,6 +50,10 @@
                 <div class="form-group col-6">
                     {!! Form::label('email', 'อีเมล') !!}
                     {!! Form::email('email', $data->email, ['class' => 'form-control']) !!}
+                </div>
+                <div class="form-group col-6">
+                    {!! Form::label('phone', 'เบอร์มือถือ') !!}
+                    {!! Form::text('phone', $data->phone, ['class' => 'form-control']) !!}
                 </div>
             </div>
             <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">

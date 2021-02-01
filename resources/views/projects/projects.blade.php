@@ -53,13 +53,12 @@
             @if (Auth::user()->hasRole('Std'))
 
                 @if ($data_std == null)
-
                     <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
                 @endif
                 @if (!empty($status))
                     @if ($status[0]->status == 'reject')
-                        <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-danger my-2"
-                            align="left">ดูข้อมูลโปรเจด</a>
+                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2"
+                            align="left">แก้ไขไฟล์</a>
 
                     @endif
 
