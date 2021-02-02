@@ -10,7 +10,7 @@ class project_instructor extends Model
         'id',
         'Project_id',
         'id_instructor',
-'Is_president'
+        'Is_president'
       
     ];
 }

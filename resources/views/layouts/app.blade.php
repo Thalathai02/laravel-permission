@@ -193,7 +193,10 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>                       
+                        <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a> 
+                        <h6 class="collapse-header">Project Advisor:</h6> 
+                        <a class="collapse-item" href="/president">{{ __('โปรเจดที่เป็นประธาน') }}</a>  
+                        <a class="collapse-item" href="/director">{{ __('โปรเจดที่เป็นกรรมการ') }}</a>                     
                     </div>
                 </div>
             </li>
