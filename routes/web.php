@@ -91,6 +91,12 @@ Route::resource('/notification/index','notification')->middleware('auth');
 
 Route::post('/edit_project/{id}',"projectControllers@edit_project" )->middleware('auth');
 Route::GET('/info_project/{id}','projectControllers@info_project')->name('info_project')->middleware('auth');
+
+
+Route::GET('/president','projectControllers@president_page')->name('president_page')->middleware('auth');
+Route::Post('/president','projectControllers@president_show')->middleware('auth');
+Route::GET('/director','projectControllers@director_page')->name('director_page')->middleware('auth');
+Route::Post('/director','projectControllers@director_show')->middleware('auth');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 
