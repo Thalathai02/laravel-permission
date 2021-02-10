@@ -7,7 +7,11 @@
         <br />
 
         <div class="container">
-            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ50</h3>
+            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ100</h3>
+            <br />
+           
+          
+
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -99,13 +103,13 @@
 
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::text('date_test50', formatDateThai($tableTest50_id->date_test50), ['readonly', 'class' =>
+                {!! Form::text('date_test50', formatDateThai($tableTest100_id->date_test100), ['readonly', 'class' =>
                 'form-control col-5']) !!}
 
             </div>
             <div class="my4">
                 {!! Form::label('date_test50', 'เวลา ') !!}
-                {!! Form::text('date_test50', formatDateThai_time($tableTest50_id->date_test50), ['readonly',
+                {!! Form::text('date_test50', formatDateThai_time($tableTest100_id->date_test100), ['readonly',
                 'class' => 'form-control col-5']) !!}
 
             </div>
@@ -114,12 +118,12 @@
 
             <div class="my-4">
                 {!! Form::label('room_test50', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test50', $tableTest50_id->room_test50, ['readonly', 'class' => 'form-control col-5'])
+                {!! Form::text('room_test50', $tableTest100_id->room_test100, ['readonly', 'class' => 'form-control col-5'])
                 !!}
             </div>
             <div class="my-4">
                 {!! Form::label('name_upload_File', 'ที่นำไฟล์เข้า') !!}
-                <a href="{!!  route('InfoWordTemplate.download', ['form' => 'test50', 'status' => $tableTest50_id->status_test50, 'file' => $tableTest50_id->file_test50]) !!}"
+                <a href="{!!  route('InfoWordTemplate.download', ['form' => 'test100', 'status' => $tableTest100_id->status_test100, 'file' => $tableTest100_id->file_test100]) !!}"
                     download>ดาวน์โหลดเอกสาร</a>
             </div>
            
@@ -128,13 +132,16 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อนุญาต)</span>
+                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
                 </a>
             </div>
+            
 
 
+
+        
         </div>
-
+      
     </body>
 
     </html>

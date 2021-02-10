@@ -59,44 +59,7 @@
                         ]) !!}
                     </div>
                 </div>
-            @endif
-            @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
-                <div class="my-4">
-                    {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                    {!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor .
-                    $datas_instructor[0]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
-                </div>
-            @endif
-            @if (!empty($datas_instructor[1]->name_Instructor))
-                <div class="my-4">
-                    {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                    {!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor .
-                    $datas_instructor[1]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
-                </div>
-            @endif
-            @if (!empty($datas_instructor[2]->name_Instructor))
-                <div class="my-4">
-                    <div class="my-4">
-                        {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                        {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor .
-                        $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control col-5']) !!}
-                    </div>
-            @endif
-            @if (!empty($datas[0]->name_mentor))
-                <div class="my-4">
-                    {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
-                    {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
-                </div>
-            @endif
-
+            @endif           
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
                 {!! Form::text('date_test50', formatDateThai($tableTest50_id->date_test50), ['readonly', 'class' =>
@@ -128,7 +91,7 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อนุญาต)</span>
+                    <span class="text">ผ่าน(อนุญาต)</span>
                 </a>
             </div>
 

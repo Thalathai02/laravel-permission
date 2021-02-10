@@ -27,9 +27,22 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use App\Notifications\InvoicePaid;
 use App\changetopic;
 use App\ChangeBoard;
+use App\Http\Controllers\DataTableController;
 
 class InfoWordTemplateController extends Controller
 {
+    protected $DataTableController;
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(DataTableController $DataTableController)
+    {
+        $this->DataTableController = $DataTableController;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -120,11 +133,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+                    $datas_std = $this->DataTableController->data_project($tableTest50_id->Project_id_test50);
 
                     
                     return view('info_word_template.test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications'));
@@ -137,12 +146,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
-
+                    $datas_std = $this->DataTableController->data_project($tableTest50_id->Project_id_test50);
 
                     return view('info_word_template.test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications'));
                 }
@@ -163,11 +167,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+                    $datas_std = $this->DataTableController->data_project($tableTest50_id->Project_id_test50);
                         $time_test50 = test50::where('Project_id_test50',$datas[0]->id)->get();
                     
                     return view('/info_word_template/ProgressReport_test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications','time_test50'));
@@ -181,11 +181,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
+                $datas_std = $this->DataTableController->data_project($tableTest50_id->Project_id_test50);
                     $time_test50 = test50::where('Project_id_test50',$datas[0]->id)->get();
                 
                 return view('/info_word_template/ProgressReport_test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest50_id','id_Notifications','time_test50'));
@@ -205,11 +201,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                    $datas_std = $this->DataTableController->data_project($tableTest100_id->Project_id_test100);
 
                     
                     return view('info_word_template.test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications'));
@@ -222,11 +214,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                    $datas_std = $this->DataTableController->data_project($tableTest100_id->Project_id_test100);
 
 
                     return view('info_word_template.test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications'));
@@ -247,11 +235,7 @@ class InfoWordTemplateController extends Controller
         
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
         
-                    $datas_std = DB::table('projects')
-                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                    $datas_std = $this->DataTableController->data_project($tableTest100_id->Project_id_test100);
                         $time_test100 = test100::where('Project_id_test100',$datas[0]->id)->get();
                     
                     return view('/info_word_template/ProgressReport_test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications','time_test100'));
@@ -265,11 +249,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
+                $datas_std = $this->DataTableController->data_project($tableTest100_id->Project_id_test100);
                     $time_test100 = test100::where('Project_id_test100',$datas[0]->id)->get();
                 
                 return view('/info_word_template/ProgressReport_test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableTest100_id','id_Notifications','time_test100'));
@@ -290,11 +270,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
+              $datas_std = $this->DataTableController->data_project($tableCompleteForm_id->Project_id_CompleteForm);
                     
                     return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tableCompleteForm_id','id_Notifications'));
                     // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
@@ -314,11 +290,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
+                $datas_std = $this->DataTableController->data_project($tableChangeBoard_id->Project_id_ChangeBoard);
                 // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
                $new_name_president = Teacher::find($tableChangeBoard_id->new_name_president);
                $new_name_director1 = Teacher::find($tableChangeBoard_id->new_name_director1);
@@ -334,11 +306,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
+                $datas_std = $this->DataTableController->data_project($tableChangeBoard_id->Project_id_ChangeBoard);
                 // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
                $new_name_president = Teacher::find($tableChangeBoard_id->new_name_president);
                $new_name_director1 = Teacher::find($tableChangeBoard_id->new_name_director1);
@@ -361,11 +329,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
+                $datas_std = $this->DataTableController->data_project($tablechangetopic_id->Project_id_changetopics);
                 // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
                
                     return view('/info_word_template/ChangeTopic', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tablechangetopic_id','id_Notifications'));
@@ -378,11 +342,7 @@ class InfoWordTemplateController extends Controller
     
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
     
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
+                $datas_std = $this->DataTableController->data_project($tablechangetopic_id->Project_id_changetopics);
                 // return view('/word-template/ChangeBoard', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
                
                     return view('/info_word_template/ChangeTopic', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor','tablechangetopic_id','id_Notifications'));
