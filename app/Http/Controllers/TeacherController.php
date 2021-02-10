@@ -184,4 +184,9 @@ class TeacherController extends Controller
             abort(404);
         }
     }
+    public function info_tea($id){
+        $data_Instructor = Teacher::find($id);
+        // return response()->json($data_Instructor);
+        return view('Teacher.tea_info',compact('data_Instructor'));
+    }
 }

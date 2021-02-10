@@ -18,9 +18,21 @@ use Illuminate\Support\Facades\Storage;
 use App\Project_File;
 use http\Env\Response;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
+use App\Http\Controllers\DataTableController;
 
 class CheckProjectController extends Controller
 {
+    protected $DataTableController;
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(DataTableController $DataTableController)
+    {
+        $this->DataTableController = $DataTableController;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -74,20 +86,10 @@ class CheckProjectController extends Controller
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
             if (!empty($datas_instructor[0]->id)) {
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+                $datas_std = $this->DataTableController->data_project($id);
                 return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
             } else {
-                $datas_std = DB::table('projects')
-                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                    ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+                $datas_std = $this->DataTableController->data_project($id);
                     // return response()->json($datas_std);
                 return view('projects.info_project', compact('datas_std', 'datas'));
             }

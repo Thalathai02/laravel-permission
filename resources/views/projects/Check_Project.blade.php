@@ -9,8 +9,6 @@
         <div class="container">
             <h3 align="center">Check Projects</h3>
             <br />
-           
-
             <div class="progress ">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
                     aria-valuemin="20" aria-valuemax="100" style="width: 25%">นำเสนอหัวข้อ</div>
@@ -31,8 +29,6 @@
 
                     </tr>
                 </thead>
-
-
                 <tbody>
                     @foreach ($datas as $row)
                         @if ($row->status == 'Waiting')
@@ -44,7 +40,7 @@
                                 <td><a href="{{ route('Check_Project.show', $row->id) }}"
                                         class="btn btn-info">รายละเอียด</a></td>
                                 <td><a href="{{ route('Check_Project.edit', $row->id) }}"
-                                        class="btn btn-success">แต่งตั้งประธาน</a>
+                                        class="btn btn-success">ผ่าน/แต่งตั้งประธาน</a>
                                 </td>
                                 <td>
                                     <form action="{{ route('Check_Project.destroy', $row->id) }}" method="POST">

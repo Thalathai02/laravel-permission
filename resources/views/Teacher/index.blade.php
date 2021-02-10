@@ -38,6 +38,7 @@
                         <th scope="col">ชื่อ</th>
                         <th scope="col">อีเมล</th>
                         <th scope="col">เบอร์โทร</th>
+                        <th scope="col">ดูข้อมูล</th>
                         <th scope="col">แก้ไข</th>
                         <th scope="col">ลบ</th>
                     </tr>
@@ -50,6 +51,7 @@
                             <td>{{ $row->Title_name_Instructor }}{{ $row->name_Instructor }}</td>
                             <td>{{ $row->email_Instructor }}</td>
                             <td>{{ $row->phone_Instructor }}</td>
+                            <td><a href="{{ route('Teacher.info_tea', $row->id) }}" class="btn btn-info">ดูข้อมูล</a></td>
                             <td><a href="{{ route('Teacher.edit', $row->id) }}" class="btn btn-success">แก้ไข</a></td>
                             <td>
                                 <form action="{{ route('Teacher.destroy', $row->id) }}" method="POST">

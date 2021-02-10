@@ -42,9 +42,9 @@ Route::resource('/Check_Project','CheckProjectController')->middleware('auth');
 Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
-    Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
-    Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
-    Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
+Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
+Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
+Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
 Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
 Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');
 
@@ -54,6 +54,7 @@ Route::post('/User/Search', 'UserController@Search')->middleware('auth');
     
 Route::post('/Teacher/create', 'TeacherController@store')->middleware('auth');
 Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
+Route::GET('/Teacher/info/{id}', 'TeacherController@info_tea')->name('Teacher.info_tea')->middleware('auth');
 
 Route::post('/system/index','systemController@show')->middleware('auth');
 
@@ -97,6 +98,8 @@ Route::GET('/president','projectControllers@president_page')->name('president_pa
 Route::Post('/president','projectControllers@president_show')->middleware('auth');
 Route::GET('/director','projectControllers@director_page')->name('director_page')->middleware('auth');
 Route::Post('/director','projectControllers@director_show')->middleware('auth');
+
+// Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 

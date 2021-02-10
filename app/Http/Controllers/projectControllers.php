@@ -29,12 +29,23 @@ use App\changetopic;
 use App\ChangeBoard;
 use App\Permission;
 use App\Role;
-
+use App\Http\Controllers\DataTableController;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 
 class projectControllers extends Controller
 {
 
+    protected $DataTableController;
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(DataTableController $DataTableController)
+    {
+        $this->DataTableController = $DataTableController;
+    }
 
     /**
      * Display a listing of the resource.
@@ -144,11 +155,12 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
+            // $datas_std = $this->DataTableController->data_project($id);
             $datas_std = DB::table('projects')
                 ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
             return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($user->hasRole('Std')) {
@@ -162,6 +174,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
 
+            // $datas_std = $this->DataTableController->data_project($id_reg_Std[0]->id);
             $datas_std = DB::table('projects')
                 ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
@@ -408,11 +421,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            $datas_std = $this->DataTableController->data_project($id);
             return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
@@ -427,11 +436,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             return view('/word-template/test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
@@ -450,11 +455,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            $datas_std = $this->DataTableController->data_project($id);
             return view('/word-template/ChangeBoard', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
@@ -469,11 +470,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             return view('/word-template/ChangeBoard', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
@@ -492,11 +489,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            $datas_std = $this->DataTableController->data_project($id);
             return view('/word-template/ChangeTopic', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
@@ -511,11 +504,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             return view('/word-template/ChangeTopic', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
@@ -618,11 +607,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            $datas_std = $this->DataTableController->data_project($id);
             return view('/word-template/CompleteForm', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
@@ -637,11 +622,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             return view('/word-template/CompleteForm', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
@@ -660,11 +641,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+            $datas_std = $this->DataTableController->data_project($id);
             return view('/word-template/test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($id_user == $id) {
@@ -679,11 +656,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             return view('/word-template/test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         } else {
             abort(404);
@@ -1063,11 +1036,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
 
             $time_test50 = test50::where('Project_id_test50', $datas[0]->id)->get();
             return view('/word-template/ProgressReport_test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'time_test50'));
@@ -1165,11 +1134,7 @@ class projectControllers extends Controller
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
 
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
+            $datas_std = $this->DataTableController->data_project($data_std[0]->Project_id);
             $time_test100 = test100::where('Project_id_test100', $datas[0]->id)->get();
             return view('/word-template/ProgressReport_test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'time_test100'));
         } else {
@@ -1426,20 +1391,10 @@ class projectControllers extends Controller
 
 
         if (!empty($datas_instructor[0]->id)) {
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                ->select('reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id_stu_project[0]->Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+            $datas_std = $this->DataTableController->data_project( $id_stu_project[0]->Project_id);
             return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
         } else {
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-                ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $id_stu_project[0]->Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+            $datas_std = $this->DataTableController->data_project( $id_stu_project[0]->Project_id);
             return view('projects.info_project', compact('datas_std', 'datas'));
         }
     }
@@ -1462,7 +1417,7 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id],['Is_president', 'LIKE', 1]])->paginate(10);
+            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->paginate(10);
             $datas = project::query()->where('id', 'LIKE', $data_subject[0]->Project_id)->paginate(10);
             // return response()->json( $datas);
             return view('projects.ProjectAdvisor.president_show', compact('term', 'datas'));
@@ -1489,7 +1444,7 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id],['Is_director', 'LIKE', 1]])->paginate(10);
+            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->paginate(10);
             $datas = project::query()->where('id', 'LIKE', $data_subject[0]->Project_id)->paginate(10);
             // return response()->json( $datas);
             return view('projects.ProjectAdvisor.director_show', compact('term', 'datas'));
