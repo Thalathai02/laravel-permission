@@ -7,7 +7,7 @@
         <br />
 
         <div class="container">
-            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ50</h3>
+            <h3 align="center">ประเมินการสอบ 50</h3>
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -59,7 +59,7 @@
                         ]) !!}
                     </div>
                 </div>
-            @endif           
+            @endif
             <div class="my4">
                 {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
                 {!! Form::text('date_test50', formatDateThai($tableTest50_id->date_test50), ['readonly', 'class' =>
@@ -68,12 +68,10 @@
             </div>
             <div class="my4">
                 {!! Form::label('date_test50', 'เวลา ') !!}
-                {!! Form::text('date_test50', formatDateThai_time($tableTest50_id->date_test50), ['readonly',
-                'class' => 'form-control col-5']) !!}
+                {!! Form::text('date_test50_time', formatDateThai_time($tableTest50_id->date_test50), ['readonly', 'class'
+                => 'form-control col-5']) !!}
 
             </div>
-
-
 
             <div class="my-4">
                 {!! Form::label('room_test50', 'ห้องสอบ ') !!}
@@ -81,17 +79,23 @@
                 !!}
             </div>
             <div class="my-4">
-                {!! Form::label('name_upload_File', 'ที่นำไฟล์เข้า') !!}
-                <a href="{!!  route('InfoWordTemplate.download', ['form' => 'test50', 'status' => $tableTest50_id->status_test50, 'file' => $tableTest50_id->file_test50]) !!}"
-                    download>ดาวน์โหลดเอกสาร</a>
+                {!! Form::label('commemt', 'ความคิดเห็น') !!}
+                {!! Form::textarea('note', '', ['class' => 'form-control col-8']) !!}
             </div>
-           
+
             <div class="my-2">
-                <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
+                <a class="btn btn-success btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
                     <span class="text">ผ่าน(อนุญาต)</span>
+                </a>
+
+                <a class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
                 </a>
             </div>
 

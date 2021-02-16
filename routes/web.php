@@ -99,6 +99,10 @@ Route::Post('/president','projectControllers@president_show')->middleware('auth'
 Route::GET('/director','projectControllers@director_page')->name('director_page')->middleware('auth');
 Route::Post('/director','projectControllers@director_show')->middleware('auth');
 
+Route::GET('/comment_test50','projectControllers@comment_test50_page')->middleware('auth');
+Route::GET('/comment_test50/{id}','projectControllers@comment_test50')->name('comment_test50_id')->middleware('auth');
+
+
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

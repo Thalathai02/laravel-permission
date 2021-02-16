@@ -197,7 +197,7 @@
                         <h6 class="collapse-header">Project Advisor:</h6> 
                         <a class="collapse-item" href="/president">{{ __('โปรเจดที่เป็นประธาน') }}</a>  
                         <a class="collapse-item" href="/director">{{ __('โปรเจดที่เป็นกรรมการ') }}</a>   
-                        <a class="collapse-item" href="">{{ __('ประเมินสอบ 50') }}</a> 
+                        <a class="collapse-item" href="/comment_test50">{{ __('ประเมินสอบ 50') }}</a> 
                         <a class="collapse-item" href="">{{ __('ประเมินสอบ 100') }}</a>                   
                     </div>
                 </div>

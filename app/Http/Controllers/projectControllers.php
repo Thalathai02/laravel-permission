@@ -36,7 +36,7 @@ class projectControllers extends Controller
 {
 
     protected $DataTableController;
-    
+
     /**
      * Create a new controller instance.
      *
@@ -1391,10 +1391,10 @@ class projectControllers extends Controller
 
 
         if (!empty($datas_instructor[0]->id)) {
-            $datas_std = $this->DataTableController->data_project( $id_stu_project[0]->Project_id);
+            $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
             return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
         } else {
-            $datas_std = $this->DataTableController->data_project( $id_stu_project[0]->Project_id);
+            $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
             return view('projects.info_project', compact('datas_std', 'datas'));
         }
     }
@@ -1450,6 +1450,43 @@ class projectControllers extends Controller
             return view('projects.ProjectAdvisor.director_show', compact('term', 'datas'));
         } else {
             abort(404);
+        }
+    }
+    public function comment_test50($id)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+            $tableTest50_id = test50::where('Project_id_test50', '=', $id)->first();
+            $datas_std = $this->DataTableController->data_project($id);
+            return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas','tableTest50_id'));
+        }
+    }
+    public function comment_test50_page()
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $data_user = user::find($user->id);
+            $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
+     
+            foreach ($data_project_instructors as $key => $data_test50s) {
+                $check_test50 = test50::where('Project_id_test50', $data_test50s->Project_id)->first();
+                if(isset($check_test50)){
+                  $data_project[] = test50::where('Project_id_test50', $data_test50s->Project_id)->first();   
+                }
+                // $data_project = $this->DataTableController->data_project($data_test50s->id);
+            }
+            foreach ($data_project as $key => $data_project_instructor) {
+            $data_test50[] = project::where('id',$data_project_instructor->Project_id_test50)->first();
+            // $data_test50[] =$data_project_instructor;
+            }
+            
+            // return response()->json($data_project);
+            return view('projects.ProjectAdvisor.test50_page', compact('data_test50'));
         }
     }
 }
