@@ -24,6 +24,7 @@ class CreateChangetopicsTable extends Migration
             $table->text('note');    
             $table->text('status_changetopics');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

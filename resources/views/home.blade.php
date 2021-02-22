@@ -132,6 +132,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 {{ $data_topics_Dashboard }}</div>
+                                                <div><a href="{{ route('ResultsTest50',Auth::user()->id) }}">ผลประเมินการสอบ</a></div>
                                             @if ($notification == 0)
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
                                                     รอการตรวจสอบ</div>

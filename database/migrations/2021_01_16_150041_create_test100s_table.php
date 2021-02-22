@@ -23,6 +23,7 @@ class CreateTest100sTable extends Migration
             $table->string('file_test100');
             $table->text('status_test100');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

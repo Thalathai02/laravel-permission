@@ -20,6 +20,7 @@ class CreateProjectFilesTable extends Migration
             $table->foreign('Project_id_File')->references('id')->on('projects')->onDelete('cascade');
             $table->text('status_file_path')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

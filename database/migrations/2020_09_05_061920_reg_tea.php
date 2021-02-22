@@ -24,6 +24,7 @@ class RegTea extends Migration
             $table->unsignedInteger('user_id_Instructor');
             $table->foreign('user_id_Instructor')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -101,7 +101,9 @@ Route::Post('/director','projectControllers@director_show')->middleware('auth');
 
 Route::GET('/comment_test50','projectControllers@comment_test50_page')->middleware('auth');
 Route::GET('/comment_test50/{id}','projectControllers@comment_test50')->name('comment_test50_id')->middleware('auth');
+Route::post('/comment_test50/{id}','projectControllers@comment_test50_Datas')->name('comment_test50_Datas')->middleware('auth');
 
+Route::GET('/ResultsTest50/{id}','projectControllers@ResultsTest50')->name('ResultsTest50')->middleware('auth');
 
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');

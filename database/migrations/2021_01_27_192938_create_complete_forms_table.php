@@ -19,6 +19,7 @@ class CreateCompleteFormsTable extends Migration
             $table->foreign('Project_id_CompleteForm')->references('id')->on('projects')->onDelete('cascade');
             $table->text('status_CompleteForm');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

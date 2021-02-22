@@ -16,9 +16,10 @@ class UserRegStd extends Migration
         Schema::create('user_regStd', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->unsignedBigInteger('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');;
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
             $table->unsignedBigInteger('reg_std_id')->unsigned()->index();
-            $table->foreign('reg_std_id')->references('id')->on('reg_stds')->onDelete('cascade');;
+            $table->foreign('reg_std_id')->references('id')->on('reg_stds')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

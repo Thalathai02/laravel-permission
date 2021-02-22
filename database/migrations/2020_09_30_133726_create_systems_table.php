@@ -21,6 +21,7 @@ class CreateSystemsTable extends Migration
             $table->unsignedInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

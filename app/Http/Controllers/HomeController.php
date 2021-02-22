@@ -116,6 +116,7 @@ class HomeController extends Controller
                     $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(4);
                     return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
+                
                 return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
             } elseif (!empty($datas_instructor[0]->id)) {
                 $notification = 3;

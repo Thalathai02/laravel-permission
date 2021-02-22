@@ -24,6 +24,7 @@ class CreateProjectUsersTable extends Migration
                 $table->text('isHead')->default('-');
                 $table->text('name_mentor')->default('-');
                 $table->timestamps();
+                $table->softDeletes();
         });
     }
 

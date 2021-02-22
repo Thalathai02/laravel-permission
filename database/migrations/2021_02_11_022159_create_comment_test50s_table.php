@@ -24,6 +24,7 @@ class CreateCommentTest50sTable extends Migration
             $table->text('text_comemt_test50');
             $table->integer('action_comemt_test50');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

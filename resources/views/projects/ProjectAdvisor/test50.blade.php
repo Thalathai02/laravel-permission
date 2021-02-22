@@ -8,6 +8,7 @@
 
         <div class="container">
             <h3 align="center">ประเมินการสอบ 50</h3>
+            {!! Form::open(['action' => ['projectControllers@comment_test50_Datas',$datas[0]->id], 'method' => 'POST']) !!}
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -79,27 +80,47 @@
                 !!}
             </div>
             <div class="my-4">
+                {!! Form::label('selecttopic', 'กรุณาเลือก ') !!}
+                {!! Form::select('selecttopic', [ '1' => 'ผ่าน', '2' => 'ไม่ผ่าน'], '0', ['class' =>
+                'form-select col-5']) !!}
+
+
+            </div>
+            <div class="my-4">
                 {!! Form::label('commemt', 'ความคิดเห็น') !!}
-                {!! Form::textarea('note', '', ['class' => 'form-control col-8']) !!}
+                {!! Form::textarea('commemt', '', ['class' => 'form-control col-8']) !!}
             </div>
 
             <div class="my-2">
-                <a class="btn btn-success btn-icon-split">
+                <a class="btn btn-success btn-icon-split" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">ผ่าน(อนุญาต)</span>
-                </a>
-
-                <a class="btn btn-danger btn-icon-split">
-                    <span class="icon text-white-50">
-                        <i class="fas fa-times"></i>
-                    </span>
-                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
+                    <span class="text">ยืนยัน</span>
                 </a>
             </div>
 
-
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
+                            <p>ถ้าเลือก ผ่าน/ไม่ผ่าน จะไม่สามารถแก้ไขได้</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {!! Form::close() !!}
         </div>
 
     </body>

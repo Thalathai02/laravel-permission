@@ -61,28 +61,28 @@
                                     <th scope="col">ลำดับโครงงาน</th>
                                     <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
                                     <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                    <th scope="col">หมายเหตุ</th>
-                                    <th scope="col">รายละเอียด</th>
+                                    
                                     <th scope="col">ประเมินการสอบ</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @if($data_test50==null)
+                                    
+                               @else
                                 @foreach ($data_test50 as $row)
                                     @if ($row->status == 'Check')
                                         <tr>
                                             <th scope="row">{{ $row->id }}</th>
                                             <td>{{ $row->name_th }}</td>
                                             <td>{{ $row->name_en }}</td>
-                                            <td></td>
-                                            <td><a href="{{ route('Check_Project.show', $row->id) }}"
-                                                    class="btn btn-info">รายละเอียด</a>
-                                            </td>
+                                            
                                             <td><a href="{{ route('comment_test50_id', $row->id) }}"
                                                 class="btn btn-danger">ประเมินการสอบ</a>
                                         </td>
                                         </tr>
                                     @endif
-                                @endforeach                               
+                                @endforeach  
+                                @endif                             
                             </tbody>
                         </table>
                         

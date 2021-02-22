@@ -37,6 +37,7 @@ class CreateSubjectsTable extends Migration
             $table->text('DateComment100');
             $table->text('OutComment100');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

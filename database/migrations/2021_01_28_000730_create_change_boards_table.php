@@ -29,6 +29,7 @@ class CreateChangeBoardsTable extends Migration
             $table->text('note');    
             $table->text('status_ChangeBoard');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -31,6 +31,7 @@ use App\Permission;
 use App\Role;
 use App\Http\Controllers\DataTableController;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
+use App\comment_test50;
 
 class projectControllers extends Controller
 {
@@ -147,6 +148,7 @@ class projectControllers extends Controller
         $id_user = Auth::user()->id;
         $user = $request->user();
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
+
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
                 ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
@@ -160,7 +162,7 @@ class projectControllers extends Controller
                 ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
             return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($user->hasRole('Std')) {
@@ -242,14 +244,14 @@ class projectControllers extends Controller
                 }
             }
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
+            return redirect("/project");
+            // return response()->json([
+            //     'id' => $id,
+            //     'reg_std1' => $data,
+            //     'reg_std2' => $data2,
+            //     'reg_std3' => $data3,
 
-            return response()->json([
-                'id' => $id,
-                'reg_std1' => $data,
-                'reg_std2' => $data2,
-                'reg_std3' => $data3,
-
-            ]);
+            // ]);
         }
         if ($user->hasRole('Std')) {
             $Search = $request->get('reg_std1');
@@ -297,12 +299,7 @@ class projectControllers extends Controller
             }
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
 
-            return response()->json([
-                'id' => $id,
-                'reg_std1' => $data,
-                'reg_std2' => $data2,
-                'reg_std3' => $data3,
-            ]);
+            return redirect("/project");
         } else {
             abort(404);
         }
@@ -1275,10 +1272,10 @@ class projectControllers extends Controller
                 $name_president[2]->id_instructor = $request->name_director2;
                 $name_president[2]->save();
             }
-            $datas = project::orderBy('id', 'ASC')->paginate(10);
+            // $datas = project::orderBy('id', 'ASC')->paginate(10);
 
-
-            return view('projects.projects', compact('datas'));
+            return redirect("/project");
+            // return view('projects.projects', compact('datas'));
         }
         if (Auth::user()->hasRole('Std')) {
             $request->validate([
@@ -1333,28 +1330,29 @@ class projectControllers extends Controller
                 $name_president[2]->id_instructor = $request->name_director2;
                 $name_president[2]->save();
             }
-            $user = $request->user()->id;
-            $data_std1 = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
-            $data_std = DB::table('project_users')->where('id_reg_Std', $data_std1[0]->id)->select('project_users.*')->get();
-            if (!empty($data_std[0]->id)) {
-                $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
-                $datas = project::orderBy('id', 'ASC')->paginate(10);
-                if ($status[0]->status == "reject") {
-                    return view('projects.projects', compact('datas', 'data_std', 'status'));
-                } elseif ($status[0]->status == "Waiting") {
-                    return view('projects.projects', compact('datas', 'data_std', 'status'));
-                } elseif ($status[0]->status == "Check") {
-                    return view('projects.projects', compact('datas', 'data_std', 'status'));
-                } else {
-                    $status = null;
-                    return view('projects.projects', compact('datas', 'data_std', 'status'));
-                }
-            } else {
-                $data_std = null;
-                $status = null;
-                $datas = project::orderBy('id', 'ASC')->paginate(10);
-                return view('projects.projects', compact('datas', 'data_std', 'status'));
-            }
+            return redirect("/project");
+            // $user = $request->user()->id;
+            // $data_std1 = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
+            // $data_std = DB::table('project_users')->where('id_reg_Std', $data_std1[0]->id)->select('project_users.*')->get();
+            // if (!empty($data_std[0]->id)) {
+            //     $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
+            //     $datas = project::orderBy('id', 'ASC')->paginate(10);
+            //     if ($status[0]->status == "reject") {
+            //         return view('projects.projects', compact('datas', 'data_std', 'status'));
+            //     } elseif ($status[0]->status == "Waiting") {
+            //         return view('projects.projects', compact('datas', 'data_std', 'status'));
+            //     } elseif ($status[0]->status == "Check") {
+            //         return view('projects.projects', compact('datas', 'data_std', 'status'));
+            //     } else {
+            //         $status = null;
+            //         return view('projects.projects', compact('datas', 'data_std', 'status'));
+            //     }
+            // } else {
+            //     $data_std = null;
+            //     $status = null;
+            //     $datas = project::orderBy('id', 'ASC')->paginate(10);
+            //     return view('projects.projects', compact('datas', 'data_std', 'status'));
+            // }
         }
     }
     public function info_project($id)
@@ -1418,8 +1416,8 @@ class projectControllers extends Controller
             );
             $term = subject::pluck('year_term', 'id');
             $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->paginate(10);
-            $datas = project::query()->where('id', 'LIKE', $data_subject[0]->Project_id)->paginate(10);
-            // return response()->json( $datas);
+            $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+            // return response()->json( $request->subject);
             return view('projects.ProjectAdvisor.president_show', compact('term', 'datas'));
         } else {
             abort(404);
@@ -1445,7 +1443,7 @@ class projectControllers extends Controller
             );
             $term = subject::pluck('year_term', 'id');
             $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->paginate(10);
-            $datas = project::query()->where('id', 'LIKE', $data_subject[0]->Project_id)->paginate(10);
+            $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // return response()->json( $datas);
             return view('projects.ProjectAdvisor.director_show', compact('term', 'datas'));
         } else {
@@ -1456,14 +1454,13 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
-            $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                 ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+            $datas = project::select('projects.*')->where([['projects.id', '=', $id]])->get();
             $tableTest50_id = test50::where('Project_id_test50', '=', $id)->first();
             $datas_std = $this->DataTableController->data_project($id);
-            return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas','tableTest50_id'));
+            return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest50_id'));
         }
     }
     public function comment_test50_page()
@@ -1472,21 +1469,64 @@ class projectControllers extends Controller
         if ($user->hasRole('Tea')) {
             $data_user = user::find($user->id);
             $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
-     
+            // comment_test50::all();
             foreach ($data_project_instructors as $key => $data_test50s) {
                 $check_test50 = test50::where('Project_id_test50', $data_test50s->Project_id)->first();
-                if(isset($check_test50)){
-                  $data_project[] = test50::where('Project_id_test50', $data_test50s->Project_id)->first();   
+                $comment_test50 = comment_test50::where([['project_id_comemt_test50', $data_test50s->Project_id], ['id_instructor_comemt_test50', $data_user->reg_tea_id]])->first();
+                if (isset($comment_test50)) {
+                } else {
+                    if (isset($check_test50)) {
+                        $data_project[] = $check_test50;
+                    }
                 }
-                // $data_project = $this->DataTableController->data_project($data_test50s->id);
             }
-            foreach ($data_project as $key => $data_project_instructor) {
-            $data_test50[] = project::where('id',$data_project_instructor->Project_id_test50)->first();
-            // $data_test50[] =$data_project_instructor;
+            if (!empty($data_project)) {
+                foreach ($data_project as $key => $data_project_instructor) {
+                    $data_test50[] = project::where('id', $data_project_instructor->Project_id_test50)->first();
+                    // $data_test50[] =$data_project_instructor;
+                }
+            } else {
+                $data_test50 = null;
             }
-            
-            // return response()->json($data_project);
+
+            // return response()->json($data_test50);
             return view('projects.ProjectAdvisor.test50_page', compact('data_test50'));
         }
+    }
+    public function comment_test50_Datas(Request $request, $id)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $id_user=user::find($user->id);
+            $comment_test50 = new comment_test50();
+            $comment_test50->project_id_comemt_test50 = $id;
+            $comment_test50->id_instructor_comemt_test50 =$id_user->reg_tea_id;
+            $comment_test50->text_comemt_test50 = $request->commemt;
+            $comment_test50->action_comemt_test50 = $request->selecttopic;
+            $comment_test50->save();
+
+            return redirect("/comment_test50");
+            // return response()->json([$id,$request->selecttopic,$request->commemt]);
+        }
+    }
+    public function ResultsTest50($id)
+    {
+
+        $data_user = reg_std::where('user_id', $id)->first();
+        $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
+        $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+        $data_comment_test50 = comment_test50::where('project_id_comemt_test50', $data_user_project->Project_id)->get();
+
+        // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+        // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+        // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
+        
+        $data=Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+        ->select('comment_test50s.*','teachers.*','project_instructors.*')
+        ->where('project_id_comemt_test50', $data_user_project->Project_id)->get();
+        
+        // return response()->json($data);
+        return view('info_word_template.ResultsTest50',compact('data'));
     }
 }
