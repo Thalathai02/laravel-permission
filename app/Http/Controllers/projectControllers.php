@@ -1505,13 +1505,23 @@ class projectControllers extends Controller
             $comment_test50->action_comemt_test50 = $request->selecttopic;
             $comment_test50->save();
 
+            $id_user = project_user::where('Project_id',$id)->get();
+            foreach($id_user as $key =>$data){
+                $id_user2[] = user::where('reg_std_id',$data->id_reg_Std)->first();
+            }
+           
+            foreach($id_user2 as $key =>$data){
+                $this->notifications_fun($data->id, 8, $comment_test50->project_id_comemt_test50, 'ผลการประเมินสอบ50');
+            }
+          
+
             return redirect("/comment_test50");
-            // return response()->json([$id,$request->selecttopic,$request->commemt]);
+            // return response()->json($id_user2);
         }
     }
     public function ResultsTest50($id)
     {
-
+        
         $data_user = reg_std::where('user_id', $id)->first();
         $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
         $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
@@ -1521,10 +1531,10 @@ class projectControllers extends Controller
         // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
         // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
         
-        $data=Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+        $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
         ->join('project_instructors','teachers.id','project_instructors.id_instructor')
         ->select('comment_test50s.*','teachers.*','project_instructors.*')
-        ->where('project_id_comemt_test50', $data_user_project->Project_id)->get();
+        ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
         
         // return response()->json($data);
         return view('info_word_template.ResultsTest50',compact('data'));
