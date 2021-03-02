@@ -51,7 +51,7 @@
                             @foreach ($data as $key => $value)
 
                                 @if ($value->Is_president == 1)
-                                    @if ($value->action_comemt_test50 == 1)
+                                    @if ($value->action_comemt_test100 == 1)
                                         <div class="col-xl col-md mb">
                                             <div class="card border-left-success shadow h-100 py-2">
                                                 <div class="card-body">
@@ -65,7 +65,7 @@
                                                                 </span>
                                                             </div>
                                                             <div class="h5 mb-0 font-text-truncate text-gray-800">
-                                                                {{ $value->text_comemt_test50 }}</div>
+                                                                {{ $value->text_comemt_test100 }}</div>
                                                             <div>
                                                                 {{ $value->Title_name_Instructor . $value->name_Instructor }}
                                                             </div>
@@ -91,7 +91,7 @@
                                                                 </span>
                                                             </div>
                                                             <div class="h5 mb-0 font-weight text-gray-800">
-                                                                {{ $value->text_comemt_test50 }}</div>
+                                                                {{ $value->text_comemt_test100 }}</div>
                                                             <div>
                                                                 {{ $value->Title_name_Instructor . $value->name_Instructor }}
                                                             </div>
@@ -104,7 +104,7 @@
                                         <br>
                                     @endif
                                 @elseif($value->Is_president == 0)
-                                    @if ($value->action_comemt_test50 == 1)
+                                    @if ($value->action_comemt_test100 == 1)
                                         <div class="col-xl col-md mb">
                                             <div class="card border-left-success shadow h-100 py-2">
                                                 <div class="card-body">
@@ -118,7 +118,7 @@
                                                                 </span>
                                                             </div>
                                                             <div class="h5 mb-0 font-text-truncate text-gray-800">
-                                                                {{ $value->text_comemt_test50 }}</div>
+                                                                {{ $value->text_comemt_test100 }}</div>
                                                             <div>
                                                                 {{ $value->Title_name_Instructor . $value->name_Instructor }}
                                                             </div>
@@ -142,7 +142,7 @@
                                                                 </span>
                                                             </div>
                                                             <div class="h5 mb-0 font-weight text-gray-800">
-                                                                {{ $value->text_comemt_test50 }}</div>
+                                                                {{ $value->text_comemt_test100 }}</div>
                                                             <div>
                                                                 {{ $value->Title_name_Instructor . $value->name_Instructor }}
                                                             </div>
@@ -161,7 +161,7 @@
                         @if($sumbit > 3)
                             <div class="my-2">
                                                        
-                                <a href="{!! route('remove_comment_test50', ['id1' => $data[0]->id,'id2' => $data[1]->id,'id3' => $data[2]->id] ) !!}" class="btn btn-success btn-icon-split">
+                                <a href="{!! route('remove_comment_test100', ['id1' => $data[0]->id,'id2' => $data[1]->id,'id3' => $data[2]->id] ) !!}" class="btn btn-success btn-icon-split">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-check"></i>
                                     </span>

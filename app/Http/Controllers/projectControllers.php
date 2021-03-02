@@ -32,6 +32,7 @@ use App\Role;
 use App\Http\Controllers\DataTableController;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\comment_test50;
+use App\comment_test100;
 
 class projectControllers extends Controller
 {
@@ -669,9 +670,9 @@ class projectControllers extends Controller
             'status_CompleteForm' => 'Waiting'
         ]);
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
-        $id_CompleteFormDB = test50::find($CompleteForm_DB->id);
-        $this->notifications_fun(1, 5, $id_CompleteFormDB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
+        
+        // return response()->json($CompleteForm_DB->id);
+        $this->notifications_fun(1, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
 
         $templateProcessor = new TemplateProcessor(storage_path('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
@@ -1531,12 +1532,145 @@ class projectControllers extends Controller
         // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
         // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
         
-        $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
-        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-        ->select('comment_test50s.*','teachers.*','project_instructors.*')
-        ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+        // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+        // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+        // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+        // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
         
+        $data = comment_test50::withTrashed()->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
+        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+        ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+        ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+
         // return response()->json($data);
-        return view('info_word_template.ResultsTest50',compact('data'));
+        return view('info_word_template.AllResultsTest50',compact('data'));
+    }
+    public function remove_comment_test50($id1 , $id2 ,$id3){
+        $id1 = comment_test50::find($id1);
+        $test50 = test50::where('Project_id_test50',$id1->project_id_comemt_test50)->first();
+        
+        $id1->delete();
+        $test50->delete();
+
+        $id2 = comment_test50::find($id2);
+        $id2->delete();
+
+        $id3 = comment_test50::find($id3);
+        $id3->delete();
+        
+        // return response()->json($test50);
+        return redirect("/home");
+        // return response()->json([$id1,$id2,$id3,$test50]);
+    }
+    public function comment_test100($id)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+            $datas = project::select('projects.*')->where([['projects.id', '=', $id]])->get();
+            $tableTest100_id = test100::where('Project_id_test100', '=', $id)->first();
+            $datas_std = $this->DataTableController->data_project($id);
+            return view('projects.ProjectAdvisor.test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest100_id'));
+        }
+    }
+    public function comment_test100_page()
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $data_user = user::find($user->id);
+            $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
+            // comment_test50::all();
+            foreach ($data_project_instructors as $key => $data_test100s) {
+                $check_test100 = test100::where('Project_id_test100', $data_test100s->Project_id)->first();
+                $comment_test100 = comment_test100::where([['project_id_comemt_test100', $data_test100s->Project_id], ['id_instructor_comemt_test100', $data_user->reg_tea_id]])->first();
+                if (isset($comment_test100)) {
+                } else {
+                    if (isset($check_test100)) {
+                        $data_project[] = $check_test100;
+                    }
+                }
+            }
+            if (!empty($data_project)) {
+                foreach ($data_project as $key => $data_project_instructor) {
+                    $data_test100[] = project::where('id', $data_project_instructor->Project_id_test100)->first();
+                    // $data_test50[] =$data_project_instructor;
+                }
+            } else {
+                $data_test100 = null;
+            }
+
+            // return response()->json($data_test50);
+            return view('projects.ProjectAdvisor.test100_page', compact('data_test100'));
+        }
+    }
+    public function comment_test100_Datas(Request $request, $id)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('Tea')) {
+            $id_user=user::find($user->id);
+            $comment_test100 = new comment_test100();
+            $comment_test100->project_id_comemt_test100 = $id;
+            $comment_test100->id_instructor_comemt_test100 =$id_user->reg_tea_id;
+            $comment_test100->text_comemt_test100 = $request->commemt;
+            $comment_test100->action_comemt_test100 = $request->selecttopic;
+            $comment_test100->save();
+
+            $id_user = project_user::where('Project_id',$id)->get();
+            foreach($id_user as $key =>$data){
+                $id_user2[] = user::where('reg_std_id',$data->id_reg_Std)->first();
+            }
+           
+            foreach($id_user2 as $key =>$data){
+                $this->notifications_fun($data->id, 9, $comment_test100->project_id_comemt_test100, 'ผลการประเมินสอบ100');
+            }
+          
+
+            return redirect("/comment_test100");
+            // return response()->json($id_user2);
+        }
+    }
+    public function ResultsTest100($id)
+    {
+        
+        $data_user = reg_std::where('user_id', $id)->first();
+        $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
+        $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+        $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $data_user_project->Project_id)->get();
+
+        // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+        // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+        // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
+        
+        // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+        // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+        // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+        // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+        
+        $data = comment_test100::withTrashed()->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
+        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+        ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+        ->where([['project_id_comemt_test100', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+
+        // return response()->json($data);
+        return view('info_word_template.AllResultsTest100',compact('data'));
+    }
+    public function remove_comment_test100($id1 , $id2 ,$id3){
+        $id1 = comment_test100::find($id1);
+        $test100 = test100::where('Project_id_test100',$id1->project_id_comemt_test100)->first();
+        
+        $id1->delete();
+        $test100->delete();
+
+        $id2 = comment_test100::find($id2);
+        $id2->delete();
+
+        $id3 = comment_test100::find($id3);
+        $id3->delete();
+        
+        // return response()->json($test50);
+        return redirect("/home");
+        // return response()->json([$id1,$id2,$id3,$test50]);
     }
 }

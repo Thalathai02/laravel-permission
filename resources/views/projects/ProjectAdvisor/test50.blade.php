@@ -81,7 +81,7 @@
             </div>
             <div class="my-4">
                 {!! Form::label('selecttopic', 'กรุณาเลือก ') !!}
-                {!! Form::select('selecttopic', [ '1' => 'ผ่าน', '2' => 'ไม่ผ่าน'], '0', ['class' =>
+                {!! Form::select('selecttopic', [ '1' => 'ผ่าน', '2' => 'ไม่ผ่าน'], '1', ['class' =>
                 'form-select col-5']) !!}
 
 

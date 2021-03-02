@@ -226,7 +226,7 @@ class DataTableController extends Controller
             $d = 1;
         }
         if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=1;
+           $submit=2;
         }else{
             $submit=0;
         }
@@ -326,9 +326,9 @@ class DataTableController extends Controller
             $d = 1;
         }
         if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=1;
+           $submit = 2;
         }else{
-            $submit=0;
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;

@@ -102,8 +102,14 @@ Route::Post('/director','projectControllers@director_show')->middleware('auth');
 Route::GET('/comment_test50','projectControllers@comment_test50_page')->middleware('auth');
 Route::GET('/comment_test50/{id}','projectControllers@comment_test50')->name('comment_test50_id')->middleware('auth');
 Route::post('/comment_test50/{id}','projectControllers@comment_test50_Datas')->name('comment_test50_Datas')->middleware('auth');
+Route::GET('/allResultsTest50/{id}','projectControllers@ResultsTest50')->name('ResultsTest50')->middleware('auth');
+Route::get('/allowCommentTest50/{id1}/{id2}/{id3}','projectControllers@remove_comment_test50')->name('remove_comment_test50')->middleware('auth');
 
-Route::GET('/ResultsTest50/{id}','projectControllers@ResultsTest50')->name('ResultsTest50')->middleware('auth');
+Route::GET('/comment_test100','projectControllers@comment_test100_page')->middleware('auth');
+Route::GET('/comment_test100/{id}','projectControllers@comment_test100')->name('comment_test100_id')->middleware('auth');
+Route::post('/comment_test100/{id}','projectControllers@comment_test100_Datas')->name('comment_test100_Datas')->middleware('auth');
+Route::GET('/allResultsTest100/{id}','projectControllers@ResultsTest100')->name('ResultsTest100')->middleware('auth');
+Route::get('/allowCommentTest100/{id1}/{id2}/{id3}','projectControllers@remove_comment_test100')->name('remove_comment_test100')->middleware('auth');
 
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');

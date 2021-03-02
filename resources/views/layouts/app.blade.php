@@ -168,7 +168,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Login Screens:</h6>
                         <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
-                        
+                        <a class="collapse-item" href="{{ route('ResultsTest50',Auth::user()->id) }}">ผลประเมินการสอบ50(ทั้งหมด)</a>
+                        <a class="collapse-item" href="{{ route('ResultsTest100',Auth::user()->id) }}">ผลประเมินการสอบ100(ทั้งหมด)</a>
                     </div>
                 </div>
             </li>
@@ -198,7 +199,7 @@
                         <a class="collapse-item" href="/president">{{ __('โปรเจดที่เป็นประธาน') }}</a>  
                         <a class="collapse-item" href="/director">{{ __('โปรเจดที่เป็นกรรมการ') }}</a>   
                         <a class="collapse-item" href="/comment_test50">{{ __('ประเมินสอบ 50') }}</a> 
-                        <a class="collapse-item" href="">{{ __('ประเมินสอบ 100') }}</a>                   
+                        <a class="collapse-item" href="/comment_test100">{{ __('ประเมินสอบ 100') }}</a>                   
                     </div>
                 </div>
             </li>
