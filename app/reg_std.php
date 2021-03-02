@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Permissions\HasPermissionsTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class reg_std extends Model
 {
+    use SoftDeletes;
     use HasPermissionsTrait;
     protected $fillable = [
         'std_code',

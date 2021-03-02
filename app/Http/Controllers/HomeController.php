@@ -106,7 +106,6 @@ class HomeController extends Controller
                         $notification  = $this->DataTableController->noti_data_allow_report_test100s($id_stu_project[0]->Project_id,$datas_instructor[0]->id,$datas_instructor[1]->id,$datas_instructor[2]->id); 
                         $data_topics_Dashboard = "รายงานการสอบความก้าวหน้า (สอบ100)";
                         $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(6);
-                        $notification  = $this->DataTableController->noti_data_allow_test100s($id_stu_project[0]->Project_id,$datas_instructor[0]->id,$datas_instructor[1]->id,$datas_instructor[2]->id); 
                         return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                     }
                     return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
@@ -116,6 +115,7 @@ class HomeController extends Controller
                     $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(4);
                     return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
+                
                 return view('home', compact('notification','data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
             } elseif (!empty($datas_instructor[0]->id)) {
                 $notification = 3;

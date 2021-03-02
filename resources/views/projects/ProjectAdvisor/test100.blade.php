@@ -7,11 +7,8 @@
         <br />
 
         <div class="container">
-            <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ100</h3>
-            <br />
-           
-          
-
+            <h3 align="center">ประเมินการสอบ 100</h3>
+            {!! Form::open(['action' => ['projectControllers@comment_test100_Datas',$datas[0]->id], 'method' => 'POST']) !!}
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
@@ -64,84 +61,68 @@
                     </div>
                 </div>
             @endif
-            @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
-                <div class="my-4">
-                    {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                    {!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor .
-                    $datas_instructor[0]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
-                </div>
-            @endif
-            @if (!empty($datas_instructor[1]->name_Instructor))
-                <div class="my-4">
-                    {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                    {!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor .
-                    $datas_instructor[1]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
-                </div>
-            @endif
-            @if (!empty($datas_instructor[2]->name_Instructor))
-                <div class="my-4">
-                    <div class="my-4">
-                        {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                        {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor .
-                        $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control col-5']) !!}
-                    </div>
-            @endif
-            @if (!empty($datas[0]->name_mentor))
-                <div class="my-4">
-                    {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
-                    {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
-                </div>
-            @endif
-
             <div class="my4">
-                {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::text('date_test50', formatDateThai($tableTest100_id->date_test100), ['readonly', 'class' =>
+                {!! Form::label('date_test100', 'จะขอสอบ 100 % ในวันที่ ') !!}
+                {!! Form::text('date_test100', formatDateThai($tableTest100_id->date_test100), ['readonly', 'class' =>
                 'form-control col-5']) !!}
 
             </div>
             <div class="my4">
-                {!! Form::label('date_test50', 'เวลา ') !!}
-                {!! Form::text('date_test50', formatDateThai_time($tableTest100_id->date_test100), ['readonly',
-                'class' => 'form-control col-5']) !!}
+                {!! Form::label('date_test100', 'เวลา ') !!}
+                {!! Form::text('date_test100_time', formatDateThai_time($tableTest100_id->date_test100), ['readonly', 'class'
+                => 'form-control col-5']) !!}
 
             </div>
 
-
-
             <div class="my-4">
-                {!! Form::label('room_test50', 'ห้องสอบ ') !!}
-                {!! Form::text('room_test50', $tableTest100_id->room_test100, ['readonly', 'class' => 'form-control col-5'])
+                {!! Form::label('room_test100', 'ห้องสอบ ') !!}
+                {!! Form::text('room_test100', $tableTest100_id->room_test100, ['readonly', 'class' => 'form-control col-5'])
                 !!}
             </div>
             <div class="my-4">
-                {!! Form::label('name_upload_File', 'ที่นำไฟล์เข้า') !!}
-                <a href="{!!  route('InfoWordTemplate.download', ['form' => 'test100', 'status' => $tableTest100_id->status_test100, 'file' => $tableTest100_id->file_test100]) !!}"
-                    download>ดาวน์โหลดเอกสาร</a>
+                {!! Form::label('selecttopic', 'กรุณาเลือก ') !!}
+                {!! Form::select('selecttopic', [ '1' => 'ผ่าน', '2' => 'ไม่ผ่าน'], '1', ['class' =>
+                'form-select col-5']) !!}
+
+
             </div>
-           
+            <div class="my-4">
+                {!! Form::label('commemt', 'ความคิดเห็น') !!}
+                {!! Form::textarea('commemt', '', ['class' => 'form-control col-8']) !!}
+            </div>
+
             <div class="my-2">
-                <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
+                <a class="btn btn-success btn-icon-split" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                    <span class="text">ยืนยัน</span>
                 </a>
             </div>
-            
 
-
-
-        
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
+                            <p>ถ้าเลือก ผ่าน/ไม่ผ่าน จะไม่สามารถแก้ไขได้</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                            <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {!! Form::close() !!}
         </div>
-      
+
     </body>
 
     </html>

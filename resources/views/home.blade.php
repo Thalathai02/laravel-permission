@@ -58,13 +58,11 @@
                                     @if (!empty($datas))
                                         <div class="my-2">
                                             {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
-                                            {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' =>
-                                            'form-control']) !!}
+                                            {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
                                         </div>
                                         <div class="my-4">
                                             {!! Form::label('name_eg', 'ชื่อโปรเจค(ภาษาอังกฤษ)') !!}
-                                            {!! Form::text('Project_name_eg', $datas[0]->name_en, ['readonly', 'class' =>
-                                            'form-control']) !!}
+                                            {!! Form::text('Project_name_eg', $datas[0]->name_en, ['readonly', 'class' => 'form-control']) !!}
                                         </div>
                                     @endif
                                     @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
@@ -72,26 +70,23 @@
 
                                             {!! Form::label('name_president', 'ชื่อประธาน') !!}
                                             <a target="_blank"
-                                                href="{{ route('Teacher.info_tea', $datas_instructor[0]->id) }}">{!!
-                                                Form::text('name_president', $datas_instructor[0]->Title_name_Instructor .
-                                                $datas_instructor[0]->name_Instructor, [
-                                                'readonly',
-                                                'class' => 'form-control
+                                                href="{{ route('Teacher.info_tea', $datas_instructor[0]->id) }}">{!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor . $datas_instructor[0]->name_Instructor, [
+    'readonly',
+    'class' => 'form-control
                                                 ',
-                                                ]) !!} </a>
+]) !!}
+                                            </a>
                                         </div>
                                     @endif
                                     @if (!empty($datas_instructor[1]->name_Instructor))
                                         <div class="my-4">
                                             {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
                                             <a target="_blank"
-                                                href="{{ route('Teacher.info_tea', $datas_instructor[1]->id) }}">{!!
-                                                Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor .
-                                                $datas_instructor[1]->name_Instructor, [
-                                                'readonly',
-                                                'class' => 'form-control
+                                                href="{{ route('Teacher.info_tea', $datas_instructor[1]->id) }}">{!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor . $datas_instructor[1]->name_Instructor, [
+    'readonly',
+    'class' => 'form-control
                                                 ',
-                                                ]) !!}</a>
+]) !!}</a>
                                         </div>
                                     @endif
                                     @if (!empty($datas_instructor[2]->name_Instructor))
@@ -99,18 +94,14 @@
                                             <div class="my-4">
                                                 {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
                                                 <a target="_blank"
-                                                    href="{{ route('Teacher.info_tea', $datas_instructor[2]->id) }}">{!!
-                                                    Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor
-                                                    . $datas_instructor[2]->name_Instructor, ['readonly', 'class' =>
-                                                    'form-control ']) !!}</a>
+                                                    href="{{ route('Teacher.info_tea', $datas_instructor[2]->id) }}">{!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor . $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control ']) !!}</a>
                                             </div>
                                         </div>
                                     @endif
                                     @if (!empty($datas[0]->name_mentor))
                                         <div class="my-4">
                                             {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
-                                            {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' =>
-                                            'form-control ']) !!}
+                                            {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control ']) !!}
                                         </div>
                                     @endif
 
@@ -132,6 +123,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 {{ $data_topics_Dashboard }}</div>
+
                                             @if ($notification == 0)
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
                                                     รอการตรวจสอบ</div>

@@ -24,6 +24,7 @@ class CreateProjectInstructorsTable extends Migration
             $table->text('Is_director')->default(0);
             $table->text('Is_president')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

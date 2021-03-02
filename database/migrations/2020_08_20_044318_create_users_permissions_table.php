@@ -23,6 +23,7 @@ class CreateUsersPermissionsTable extends Migration
  
             //SETTING THE PRIMARY KEYS
             $table->primary(['user_id','permission_id']);
+            $table->softDeletes();
         });
     }
 
