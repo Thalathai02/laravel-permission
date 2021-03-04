@@ -218,7 +218,7 @@ class CheckProjectController extends Controller
         //     $term,
         //    $file ,
         //     ]);
-        return response()->download(storage_path('/app/Waiting/' . $year . '/' . $term . '/' . $file));
+        return response()->download(storage_path('/app/' . $year . '/' . $term . '/' . $file));
         // return Storage::download($file, $file, '/app/Waiting/' . $year . '/' . $term . '/');
     }
     public function search(Request $request)

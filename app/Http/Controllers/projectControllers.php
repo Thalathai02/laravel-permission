@@ -363,7 +363,7 @@ class projectControllers extends Controller
             // $request->File->store("Waiting");
 
             Storage::disk('local')->putFileAs(
-                'Waiting/' . $term[0]->year_term,
+                $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
@@ -393,7 +393,7 @@ class projectControllers extends Controller
 
 
             Storage::disk('local')->putFileAs(
-                'Waiting/' . $term[0]->year_term,
+                $term[0]->year_term,
                 $request->File,
                 $fileModel->name_file
             );
@@ -738,7 +738,7 @@ class projectControllers extends Controller
             'status_test50' => 'Waiting'
         ]);
         Storage::disk('local')->putFileAs(
-            'test50/Waiting',
+            'test50',
             $request->File,
             $name_file
         );
@@ -952,7 +952,7 @@ class projectControllers extends Controller
             'status_test100' => 'Waiting'
         ]);
         Storage::disk('local')->putFileAs(
-            'test100/Waiting',
+            'test100',
             $request->File,
             $name_file
         );
@@ -1294,7 +1294,7 @@ class projectControllers extends Controller
             $subject = subject::find($project_id->subject_id);
             //  return response()->json($project_id);
             Storage::disk('local')->putFileAs(
-                'Waiting/' . $subject->year_term,
+                 $subject->year_term,
                 $request->File,
                 $fileModel[0]->name_file
             );
