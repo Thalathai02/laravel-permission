@@ -227,6 +227,8 @@ class DataTableController extends Controller
         }
         if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
            $submit=2;
+           $id_Project_id_report_test50[0]->status_progress_report_test50 = 'Successfully';
+           $id_Project_id_report_test50[0]->save();
         }else{
             $submit=0;
         }
@@ -327,6 +329,8 @@ class DataTableController extends Controller
         }
         if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
            $submit = 2;
+           $id_Project_id_report_test100[0]->status_progress_report_test100 = 'Successfully';
+           $id_Project_id_report_test100[0]->save();
         }else{
             $submit = 0;
         }
@@ -377,6 +381,8 @@ class DataTableController extends Controller
         }
         if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
            $submit=2;
+           $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
+           $id_Project_id_CompleteForm[0]->save();
         }else{
             $submit=0;
         }
