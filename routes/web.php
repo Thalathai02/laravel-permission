@@ -30,6 +30,7 @@ Auth::routes();
 
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::POST('/home','HomeController@search_project')->name('searchHome')->middleware('auth');
 
 
 Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
