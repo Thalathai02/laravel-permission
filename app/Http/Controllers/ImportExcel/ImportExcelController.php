@@ -34,7 +34,7 @@ class ImportExcelController extends Controller
         $user = $request->user();
         if ($user->hasRole('Admin')) {
             $data = reg_std::orderBy('id', 'ASC')->get();
-            $term = subject::pluck('year_term', 'id');
+            $term = subject::orderBy('id','desc')->pluck('year_term', 'id');
             $data_subject = subject_student::orderBy('id', 'ASC')->get();
             $subject = subject::find($data_subject);
             $data =  reg_std::join('subject_students', 'reg_stds.id', '=', 'subject_students.student_id')
