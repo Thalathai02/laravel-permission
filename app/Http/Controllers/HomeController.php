@@ -136,14 +136,14 @@ class HomeController extends Controller
             $term_last = subject::orderBy('id','desc')->get();
             $project = project::where([['projects.status', 'check'],['subject_id',$term_last[0]->id]])->get();
 
-            $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$term_last[0]->id]])
-            ->select('test50s.*','projects.subject_id')->get();
+            $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')
+            ->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('test50s.*','projects.*')->get();
 
             $test100 = test100::join('projects','test100s.Project_id_test100','projects.id')
-            ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('test100s.*','projects.subject_id')->get();
+            ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('test100s.*','projects.*')->get();
 
             $CompleteForm = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')
-            ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('complete_forms.*','projects.subject_id')->get();
+            ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('complete_forms.*','projects.*')->get();
 
             $Successfully_project = project::where([['projects.status', 'Successfully'],['subject_id',$term_last[0]->id]])->get();
 
@@ -176,18 +176,18 @@ class HomeController extends Controller
         $term_last = subject::where('id',$request->subject)->get();
         $project = project::where([['projects.status', 'check'],['subject_id',$request->subject]])->get();
 
-        $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$request->subject]])
-        ->select('test50s.*','projects.subject_id')->get();
+        $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')
+        ->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$request->subject]])->select('test50s.*','projects.*')->get();
 
         $test100 = test100::join('projects','test100s.Project_id_test100','projects.id')
-        ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$request->subject]])->select('test100s.*','projects.subject_id')->get();
+        ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$request->subject]])->select('test100s.*','projects.*')->get();
 
         $CompleteForm = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')
-        ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$request->subject]])->select('complete_forms.*','projects.subject_id')->get();
+        ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$request->subject]])->select('complete_forms.*','projects.*')->get();
 
         $Successfully_project = project::where([['projects.status', 'Successfully'],['subject_id',$request->subject]])->get();
 
-        // return response()->json($term_last);
+        // return response()->json($test50);
         return view('home', compact('term','project','test50','test100','CompleteForm','Successfully_project','term_last'));
    }
 }

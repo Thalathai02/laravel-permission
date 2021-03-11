@@ -382,7 +382,7 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-xl-8 col-lg-8">
+                            <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
                                     <div
@@ -401,6 +401,179 @@
                                                     <div id="subject_list"></div>
                                                     
                                                 </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-2">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">รายชื่อโปรเจดที่รับผิดชอบ(รอดำเนินการ)
+                                        </h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            <th scope="col">หมายเหตุ</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($project as $key => $row)
+                                                            @if ($row->status == 'Check')
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td>{{ $row->name_th }}</td>
+                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td>{{ $row->note }}</td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- Area Chart -->
+                            
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">รอประเมินสอบ 50</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($test50 as $key => $row)
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td>{{ $row->name_th }}</td>
+                                                                    <td>{{ $row->name_en }}</td>
+                                                                </tr>
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table> 
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">รอประเมินสอบ 100</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($test100 as $key => $row)
+                                                            @if ($row->status == 'Check')
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td>{{ $row->name_th }}</td>
+                                                                    <td>{{ $row->name_en }}</td>
+                                                                </tr>
+                                                            @endif
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table> 
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">รอส่งแบบขอส่งโครงงานฉบับสมบูรณ์</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($CompleteForm as $key => $row)
+                                                            @if ($row->status == 'Check')
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td>{{ $row->name_th }}</td>
+                                                                    <td>{{ $row->name_en }}</td>
+
+                                                                </tr>
+                                                            @endif
+                                                        @endforeach
+
+                                                    </tbody>
+                                                </table> 
                                             </div>
                                         </div>
                                     </div>
@@ -437,7 +610,7 @@
                     // Optional; add a title and set the width and height of the chart
                     var options = {
 
-                        'width': 550,
+                        'width': 450,
                         'height': 400
                     };
 
