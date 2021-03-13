@@ -103,11 +103,12 @@ class ImportExcelController extends Controller
             'lineId',
             'email' => ['required', 'email'],
             'facebook',
-            'address',
-            'parent_name',
-            'parent_phone',
-            'username',
-            'password',
+            'address' => ['required'],
+            'parent_name' => ['required'],
+            'parent_phone' => ['required'],
+            'username' => ['required'],
+            'password' => ['required'],
+            'note'
         ]);
         $subject = new subject_student();
         $std_role = Role::where('slug', 'std')->first();
@@ -135,6 +136,7 @@ class ImportExcelController extends Controller
         $reg->username  = 'MJU' . $request['username'];
         $reg->password  = Hash::make($request['password']);
         $reg->user_id  = $student->id;
+        $reg->note = $request['note'];
         $reg->save();
         $student->reg_std_id  =  $reg->id;
         $subject->student_id = $reg->id;
@@ -157,11 +159,17 @@ class ImportExcelController extends Controller
         $user = $request->user();
         if ($id_user == $id) {
             $data = reg_std::find($id);
-            return view('STD.edit', compact(['data']));
+            $subject_id = subject_student::where('student_id',$id)->first();
+            $subject = subject::find($subject_id->subject_id);
+            $term = subject::pluck('year_term', 'id');
+            return view('STD.edit', compact(['data','subject']));
         }
         if ($user->hasRole('Admin')) {
+            $term = subject::pluck('year_term', 'id');
             $data = reg_std::find($id);
-            return view('STD.edit', compact(['data']));
+            $subject_id = subject_student::where('student_id',$id)->first();
+            $subject = subject::find($subject_id->subject_id);
+            return view('STD.edit', compact(['data','subject','term']));
         } else {
             abort(404);
         }
@@ -180,11 +188,12 @@ class ImportExcelController extends Controller
                 'lineId',
                 'email' => ['required', 'email'],
                 'facebook',
-                'address',
-                'parent_name',
-                'parent_phone',
+                'address' => ['required'],
+                'parent_name' => ['required'],
+                'parent_phone' => ['required'],
                 'username',
                 'password',
+                
             ]);
             reg_std::find($id)->update($request->all());
             return redirect('/home');
@@ -192,24 +201,31 @@ class ImportExcelController extends Controller
         if ($user->hasRole('Admin')) {
             $request->validate([
                 'std_code' => ['required'],
-                'name',
-                'nick_name',
+                'name' => ['required'],
+                'nick_name' => ['required'],
+                'subject_id'=> ['required'],
                 'phone'=>'required',
                 'lineId',
                 'email' => ['required', 'email'],
                 'facebook',
-                'address',
-                'parent_name',
-                'parent_phone',
+                'address' => ['required'],
+                'parent_name' => ['required'],
+                'parent_phone' => ['required'],
                 'username',
                 'password',
+                'note'
             ]);
             reg_std::find($id)->update($request->all());
             $id_user=reg_std::find($id);
             $user = User::find($id_user->user_id);
+            
             $user->name = $request['name'];
             $user->email=$request['email']; 
             $user->save();
+            $subject = subject_student::where('student_id',$id)->first();
+            $subject->subject_id = $request['subject_id'];
+            // return response()->json($subject);
+            $subject->save();
             return redirect('/STD');
         } else {
             abort(404);

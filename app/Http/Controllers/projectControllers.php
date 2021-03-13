@@ -33,6 +33,7 @@ use App\Http\Controllers\DataTableController;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\comment_test50;
 use App\comment_test100;
+use Doctrine\DBAL\Schema\View;
 
 class projectControllers extends Controller
 {
@@ -1672,5 +1673,17 @@ class projectControllers extends Controller
         // return response()->json($test50);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
+    }
+    public function CollectPoints(){
+        $user = Auth::user();
+        if ($user->hasRole('Admin')) {       
+            $datas = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')->select('projects.*')->
+            where([['complete_forms.status_CompleteForm','Successfully']])->get();
+            
+            return View('word-template.CollectPoints',compact('datas'));
+        }else{
+            abort(404);
+        }
+        
     }
 }
