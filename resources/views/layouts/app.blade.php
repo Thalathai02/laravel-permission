@@ -143,6 +143,7 @@
                          <a class="collapse-item" href="/Check_Project">ตรวจโปรเจค</a>
                          <a class="collapse-item" href="/CollectPoints">ให้คะแนน</a>         
                          <a class="collapse-item" href="/Check_Project">ส่งเกรด</a>
+                         <a class="collapse-item" href="/Check_Project">โปรเจคที่เผยแพร่</a>
                      </div>
                  </div>
              </li>

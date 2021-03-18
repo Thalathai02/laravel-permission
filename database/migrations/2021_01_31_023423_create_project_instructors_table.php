@@ -15,10 +15,10 @@ class CreateProjectInstructorsTable extends Migration
     {
         Schema::create('project_instructors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('Project_id')->nullable();
+            $table->unsignedInteger('Project_id');
             $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->unsignedInteger('id_instructor')->nullable();
+            $table->unsignedInteger('id_instructor');
             $table->foreign('id_instructor')->references('id')->on('teachers')->onDelete('cascade');
 
             $table->text('Is_director')->default(0);

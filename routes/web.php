@@ -112,7 +112,9 @@ Route::post('/comment_test100/{id}','projectControllers@comment_test100_Datas')-
 Route::GET('/allResultsTest100/{id}','projectControllers@ResultsTest100')->name('ResultsTest100')->middleware('auth');
 Route::get('/allowCommentTest100/{id1}/{id2}/{id3}','projectControllers@remove_comment_test100')->name('remove_comment_test100')->middleware('auth');
 
-Route::GET('/CollectPoints','projectControllers@CollectPoints')->name('CollectPoints')->middleware('auth');
+Route::GET('/CollectPoints','projectControllers@CollectPoints')->name('projectControllers.CollectPoints')->middleware('auth');
+Route::GET('/CollectPoints/{id}','projectControllers@CollectPointsForm')->name('projectControllers.collectPointsForm')->middleware('auth');
+
 
 
 // Route::get('/001','data\DataTableController@Calculation');

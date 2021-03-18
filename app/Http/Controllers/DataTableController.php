@@ -31,7 +31,10 @@ use App\Permission;
 use App\Role;
 use App\notification;
 use App\comment_test50;
-
+use App\comment_test100;
+use Doctrine\DBAL\Schema\View;
+use App\point_test50;
+use App\point_test100;
 
 
 class DataTableController extends Controller
@@ -114,13 +117,40 @@ class DataTableController extends Controller
     public function data_project($Project_id)
     {
 
-        $datas_std = DB::table('projects')
-            ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+        $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
             ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
             ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
         return $datas_std;
+    }
+    public function data_project_collectPointsForm($Project_id)
+    {
+
+        // $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+        // ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+        // ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
+        // ->join('point_test50s','project_users.id_reg_Std','point_test50s.reg_id_point_test50')
+        // ->join('point_test100s','project_users.id_reg_Std','point_test100s.reg_id_point_test100')
+        // ->select('reg_stds.std_code','reg_stds.nick_name','point_test50s.*')->where([['projects.id', '=', $Project_id],['project_id_point_test50', '=', $Project_id]])->get();
+
+
+        $data_point50 = point_test50::select('project_id_point_test50')->where([['project_id_point_test50', '=', $Project_id]])->groupBy('project_id_point_test50');
+
+        $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+            ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+            ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
+            ->join('point_test50s', 'project_users.id_reg_Std', 'point_test50s.reg_id_point_test50')
+            ->join('point_test100s', 'project_users.id_reg_Std', 'point_test100s.reg_id_point_test100')
+            ->select('reg_stds.std_code', 'reg_stds.id', 'reg_stds.nick_name', 'point_test50s.project_id_point_test50', 
+            'point_test50s.id_instructor_point_test50', 'point_test50s.point_test50', 
+            'point_test100s.project_id_point_test100', 
+            'point_test100s.id_instructor_point_test100', 'point_test100s.point_test100')
+            ->where([['projects.id', '=', $Project_id], ['project_id_point_test50', '=', $Project_id], ['project_id_point_test100', '=', $Project_id]])->get();
+
+
+        $datas_std2 = $datas_std->groupBy('std_code',);
+        return $datas_std2;
     }
     public function count_data_progress($num_data)
     {
@@ -175,10 +205,10 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=1;
-        }else{
-            $submit=0;
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 1;
+        } else {
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;
@@ -225,12 +255,12 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=2;
-           $id_Project_id_report_test50[0]->status_progress_report_test50 = 'Successfully';
-           $id_Project_id_report_test50[0]->save();
-        }else{
-            $submit=0;
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 2;
+            $id_Project_id_report_test50[0]->status_progress_report_test50 = 'Successfully';
+            $id_Project_id_report_test50[0]->save();
+        } else {
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;
@@ -277,10 +307,10 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=1;
-        }else{
-            $submit=0;
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 1;
+        } else {
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;
@@ -327,11 +357,11 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit = 2;
-           $id_Project_id_report_test100[0]->status_progress_report_test100 = 'Successfully';
-           $id_Project_id_report_test100[0]->save();
-        }else{
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 2;
+            $id_Project_id_report_test100[0]->status_progress_report_test100 = 'Successfully';
+            $id_Project_id_report_test100[0]->save();
+        } else {
             $submit = 0;
         }
         return  $submit;
@@ -379,12 +409,12 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=2;
-           $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
-           $id_Project_id_CompleteForm[0]->save();
-        }else{
-            $submit=0;
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 2;
+            $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
+            $id_Project_id_CompleteForm[0]->save();
+        } else {
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;
@@ -432,10 +462,10 @@ class DataTableController extends Controller
         if (!isset($d)) {
             $d = 1;
         }
-        if ( $a == 1 && $b == 1 && $c==1 && $d==1) {
-           $submit=2;
-        }else{
-            $submit=0;
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 2;
+        } else {
+            $submit = 0;
         }
         return  $submit;
         // return  $id_test50[0]->id;

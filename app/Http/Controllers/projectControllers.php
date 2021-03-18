@@ -34,6 +34,8 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\comment_test50;
 use App\comment_test100;
 use Doctrine\DBAL\Schema\View;
+use App\point_test50;
+use App\point_test100;
 
 class projectControllers extends Controller
 {
@@ -671,7 +673,7 @@ class projectControllers extends Controller
             'status_CompleteForm' => 'Waiting'
         ]);
 
-        
+
         // return response()->json($CompleteForm_DB->id);
         $this->notifications_fun(1, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
 
@@ -1295,7 +1297,7 @@ class projectControllers extends Controller
             $subject = subject::find($project_id->subject_id);
             //  return response()->json($project_id);
             Storage::disk('local')->putFileAs(
-                 $subject->year_term,
+                $subject->year_term,
                 $request->File,
                 $fileModel[0]->name_file
             );
@@ -1499,23 +1501,51 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
-            $id_user=user::find($user->id);
+            $id_user = user::find($user->id);
+            if (isset($request->reg_std1)) {
+                $std_1 = reg_std::where('std_code', $request->reg_std1)->first();
+                $point_test50 = new point_test50();
+                $point_test50->project_id_point_test50 = $id;
+                $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
+                $point_test50->point_test50 = $request->point_reg_std1;
+                $point_test50->reg_id_point_test50 = $std_1->id;
+                $point_test50->save();
+            }
+            if (isset($request->reg_std2)) {
+                $std_2 = reg_std::where('std_code', $request->reg_std2)->first();
+                $point_test50 = new point_test50();
+                $point_test50->project_id_point_test50 = $id;
+                $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
+                $point_test50->point_test50 = $request->point_reg_std2;
+                $point_test50->reg_id_point_test50 = $std_2->id;
+                $point_test50->save();
+            }
+            if (isset($request->reg_std3)) {
+                $std_3 = reg_std::where('std_code', $request->reg_std3)->first();
+                $point_test50 = new point_test50();
+                $point_test50->project_id_point_test50 = $id;
+                $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
+                $point_test50->point_test50 = $request->point_reg_std3;
+                $point_test50->reg_id_point_test50 = $std_3->id;
+                $point_test50->save();
+            }
+            // return response()->json([$request->point_reg_std1,$std_1,$request->point_reg_std2,$std_2,$request->point_reg_std3,$std_3]);
             $comment_test50 = new comment_test50();
             $comment_test50->project_id_comemt_test50 = $id;
-            $comment_test50->id_instructor_comemt_test50 =$id_user->reg_tea_id;
+            $comment_test50->id_instructor_comemt_test50 = $id_user->reg_tea_id;
             $comment_test50->text_comemt_test50 = $request->commemt;
             $comment_test50->action_comemt_test50 = $request->selecttopic;
             $comment_test50->save();
 
-            $id_user = project_user::where('Project_id',$id)->get();
-            foreach($id_user as $key =>$data){
-                $id_user2[] = user::where('reg_std_id',$data->id_reg_Std)->first();
+            $id_user = project_user::where('Project_id', $id)->get();
+            foreach ($id_user as $key => $data) {
+                $id_user2[] = user::where('reg_std_id', $data->id_reg_Std)->first();
             }
-           
-            foreach($id_user2 as $key =>$data){
+
+            foreach ($id_user2 as $key => $data) {
                 $this->notifications_fun($data->id, 8, $comment_test50->project_id_comemt_test50, 'ผลการประเมินสอบ50');
             }
-          
+
 
             return redirect("/comment_test50");
             // return response()->json($id_user2);
@@ -1523,7 +1553,7 @@ class projectControllers extends Controller
     }
     public function ResultsTest50($id)
     {
-        
+
         $data_user = reg_std::where('user_id', $id)->first();
         $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
         $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
@@ -1532,24 +1562,25 @@ class projectControllers extends Controller
         // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
         // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
         // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
-        
+
         // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
         // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
         // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
         // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
-        
+
         $data = comment_test50::withTrashed()->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-        ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-        ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+            ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+            ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+            ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
 
         // return response()->json($data);
-        return view('info_word_template.AllResultsTest50',compact('data'));
+        return view('info_word_template.AllResultsTest50', compact('data'));
     }
-    public function remove_comment_test50($id1 , $id2 ,$id3){
+    public function remove_comment_test50($id1, $id2, $id3)
+    {
         $id1 = comment_test50::find($id1);
-        $test50 = test50::where('Project_id_test50',$id1->project_id_comemt_test50)->first();
-        
+        $test50 = test50::where('Project_id_test50', $id1->project_id_comemt_test50)->first();
+
         $id1->delete();
         $test50->delete();
 
@@ -1558,7 +1589,7 @@ class projectControllers extends Controller
 
         $id3 = comment_test50::find($id3);
         $id3->delete();
-        
+
         // return response()->json($test50);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
@@ -1610,23 +1641,51 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
-            $id_user=user::find($user->id);
+
+            $id_user = user::find($user->id);
+            if (isset($request->reg_std1)) {
+                $std_1 = reg_std::where('std_code', $request->reg_std1)->first();
+                $point_test100 = new point_test100();
+                $point_test100->project_id_point_test100 = $id;
+                $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
+                $point_test100->point_test100 = $request->point_reg_std1;
+                $point_test100->reg_id_point_test100 = $std_1->id;
+                $point_test100->save();
+            }
+            if (isset($request->reg_std2)) {
+                $std_2 = reg_std::where('std_code', $request->reg_std2)->first();
+                $point_test100 = new point_test100();
+                $point_test100->project_id_point_test100 = $id;
+                $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
+                $point_test100->point_test100 = $request->point_reg_std2;
+                $point_test100->reg_id_point_test100 = $std_2->id;
+                $point_test100->save();
+            }
+            if (isset($request->reg_std3)) {
+                $std_3 = reg_std::where('std_code', $request->reg_std3)->first();
+                $point_test100 = new point_test100();
+                $point_test100->project_id_point_test100 = $id;
+                $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
+                $point_test100->point_test100 = $request->point_reg_std3;
+                $point_test100->reg_id_point_test100 = $std_3->id;
+                $point_test100->save();
+            }
             $comment_test100 = new comment_test100();
             $comment_test100->project_id_comemt_test100 = $id;
-            $comment_test100->id_instructor_comemt_test100 =$id_user->reg_tea_id;
+            $comment_test100->id_instructor_comemt_test100 = $id_user->reg_tea_id;
             $comment_test100->text_comemt_test100 = $request->commemt;
             $comment_test100->action_comemt_test100 = $request->selecttopic;
             $comment_test100->save();
 
-            $id_user = project_user::where('Project_id',$id)->get();
-            foreach($id_user as $key =>$data){
-                $id_user2[] = user::where('reg_std_id',$data->id_reg_Std)->first();
+            $id_user = project_user::where('Project_id', $id)->get();
+            foreach ($id_user as $key => $data) {
+                $id_user2[] = user::where('reg_std_id', $data->id_reg_Std)->first();
             }
-           
-            foreach($id_user2 as $key =>$data){
+
+            foreach ($id_user2 as $key => $data) {
                 $this->notifications_fun($data->id, 9, $comment_test100->project_id_comemt_test100, 'ผลการประเมินสอบ100');
             }
-          
+
 
             return redirect("/comment_test100");
             // return response()->json($id_user2);
@@ -1634,7 +1693,7 @@ class projectControllers extends Controller
     }
     public function ResultsTest100($id)
     {
-        
+
         $data_user = reg_std::where('user_id', $id)->first();
         $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
         $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
@@ -1643,24 +1702,25 @@ class projectControllers extends Controller
         // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
         // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
         // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
-        
+
         // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
         // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
         // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
         // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
-        
+
         $data = comment_test100::withTrashed()->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-        ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-        ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-        ->where([['project_id_comemt_test100', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+            ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+            ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+            ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
 
         // return response()->json($data);
-        return view('info_word_template.AllResultsTest100',compact('data'));
+        return view('info_word_template.AllResultsTest100', compact('data'));
     }
-    public function remove_comment_test100($id1 , $id2 ,$id3){
+    public function remove_comment_test100($id1, $id2, $id3)
+    {
         $id1 = comment_test100::find($id1);
-        $test100 = test100::where('Project_id_test100',$id1->project_id_comemt_test100)->first();
-        
+        $test100 = test100::where('Project_id_test100', $id1->project_id_comemt_test100)->first();
+
         $id1->delete();
         $test100->delete();
 
@@ -1669,21 +1729,32 @@ class projectControllers extends Controller
 
         $id3 = comment_test100::find($id3);
         $id3->delete();
-        
+
         // return response()->json($test50);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
     }
-    public function CollectPoints(){
+    public function CollectPoints()
+    {
         $user = Auth::user();
-        if ($user->hasRole('Admin')) {       
-            $datas = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')->select('projects.*')->
-            where([['complete_forms.status_CompleteForm','Successfully']])->get();
-            
-            return View('word-template.CollectPoints',compact('datas'));
-        }else{
+        if ($user->hasRole('Admin')) {
+            $datas = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')->select('projects.*')->where([['complete_forms.status_CompleteForm', 'Successfully']])->get();
+
+            return View('projects.CollectPoints_page', compact('datas'));
+        } else {
             abort(404);
         }
-        
+    }
+    public function CollectPointsForm($id)
+    {
+        $datas_instructor = DB::table('projects')
+            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            ->select('teachers.*')->where('projects.id', '=', $id)->get();
+        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
+        $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
+       
+        // return response()->json($datas_std);
+        return view('word-template.CollectPoints', compact('datas_std','datas_instructor','datas'));
     }
 }

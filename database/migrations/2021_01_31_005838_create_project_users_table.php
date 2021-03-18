@@ -15,10 +15,10 @@ class CreateProjectUsersTable extends Migration
     {
         Schema::create('project_users', function (Blueprint $table) {
             $table->id();
-                $table->unsignedInteger('Project_id')->nullable();
+                $table->unsignedInteger('Project_id');
                 $table->foreign('Project_id')->references('id')->on('projects')->onDelete('cascade');
 
-                $table->unsignedInteger('id_reg_Std')->nullable();
+                $table->unsignedInteger('id_reg_Std');
                 $table->foreign('id_reg_Std')->references('id')->on('reg_stds')->onDelete('cascade');
     
                 $table->text('isHead')->default('-');

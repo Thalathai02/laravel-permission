@@ -273,6 +273,8 @@ class InfoWordTemplateController extends Controller
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
 
                 $datas_std = $this->DataTableController->data_project($tableCompleteForm_id->Project_id_CompleteForm);
+                $tableCompleteForm_id->status_CompleteForm = 'Successfully';
+                $tableCompleteForm_id->save();
 
                 return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableCompleteForm_id', 'id_Notifications'));
                 // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
@@ -449,6 +451,7 @@ class InfoWordTemplateController extends Controller
         //     ]);
 
         // return response()->json($form);
+        
         return response()->download(storage_path("/app/{$form}/{$file}"));
     }
     public function markAsRead($id)

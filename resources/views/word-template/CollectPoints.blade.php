@@ -5,40 +5,77 @@
 
     <body>
         <div class="container">
-            <h3 align="center" class="my-4">ให้คะแนน</h3>
+            <h3 align="center" class="my-4">แบบฟอร์มให้คะแนน</h3>
             @if (Auth::user()->hasRole('Admin'))
                 <div class="mb-4">
+                    {{-- {{$datas_std}} --}}
                     <div class="table-responsive table-striped">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
+                        <table class="table table-bordered table-striped " id="dataTable" width="100%" cellspacing="0">
+                            <tr>
+                                <th scope="col">นักศึกษา</th>
+                                <th scope="col" colspan="3" >สอบ 50% <br>(เต็ม 30)</th>
+                                <th scope="col">สอบ50% ฐานนิยม </th>
+                                <th scope="col">คะแนนฝึกงาน</th>
+                                <th scope="col">สอบในเวลา</th>
+                                <th scope="col" colspan="3" >สอบ100%<br>(เต็ม 40)</th>
+                                <th scope="col">สอบ100% ฐานนิยม</th>
+                                <th scope="col">เสนอผลงานวิชาการ</th>
+                                <th scope="col">คะแนนรวม</th>
+                                <th scope="col">เกรด</th>
+                                <th scope="col">เลือก</th>
+                            </tr>
+                            <tbody >
                                 <tr>
-                                    <th scope="col">ลำดับโครงงาน</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                    <th scope="col">เลือก</th>
+                                    <th scope="row"></th>
+                                    <th scope="row">#1</th>
+                                    <th scope="row">#2</th>
+                                    <th scope="row">#3</th>
+                                    <th scope="row">(30)</th>
+                                    <th scope="row">(10)</th>
+                                    <th scope="row">(5)</th>
+                                    <th scope="row">#1</th>
+                                    <th scope="row">#2</th>
+                                    <th scope="row">#3</th>
+                                    <th scope="row">(40)</th>
+                                    <th scope="row">(15)</th>
+                                    <th scope="row">(100)</th>
+                                    <th scope="row"></th>
+                                    <th scope="row"></th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datas as $key=>$row)
-                                    @if ($row->status == 'Check')
-                                        <tr>
-                                            <th scope="row">{{ $key+1 }}</th>
-                                            <td>{{ $row->name_th }}</td>
-                                            <td>{{ $row->name_en }}</td>
-                                            <td><a href="{{ route('Check_Project.show', $row->id) }}"
-                                                    class="btn btn-info">เลือก</a>
-                                            </td>                                           
-                                        </tr>
-                                    @endif
+                            </tbody>
+                            <tbody >
+                                
+                                @if (!empty($datas_std) && $datas_std->count())
+                                @foreach ($datas_std as $row)
+                                <tr>
+                                    {{-- {{$row}} --}}
+                                    <td scope="row">{{$row[0]->nick_name}}<br> {{substr($row[0]->std_code,-3)}}</td>
+                                    <td scope="row">{{$row[0]->point_test50}}</td>
+                                    <td scope="row">{{$row[1]->point_test50}}</td>
+                                    <td scope="row">{{$row[2]->point_test50}}</td>
+                                    <td scope="row">{{$row[0]->point_test50+$row[1]->point_test50+$row[2]->point_test50}}</td>
+                                    <td>{!! Form::number('Internship_score', null, [ 'class' => 'form-control ']) !!}</td>
+                                    <td>{!! Form::number('Test_in_time', null, [ 'class' => 'form-control ']) !!}</td>
+                                    <td scope="row">{{$row[0]->point_test100}}</td>
+                                    <td scope="row">{{$row[1]->point_test100}}</td>
+                                    <td scope="row">{{$row[2]->point_test100}}</td>
+                                    <td scope="row">{{$row[0]->point_test100+$row[1]->point_test100+$row[2]->point_test100}}</td>
+                                    <td> {!! Form::number('presentations', null, [ 'class' => 'form-control ']) !!}</td>
+                                    <td scope="row">-</td>
+                                    <td scope="row">-</td>
+                                    <th>{!! Form::checkbox('category_id', 35) !!}</th>
+                                </tr>
                                 @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="15">There are no data.</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
             @endif
-
-
-
         </div>
     </body>
 
