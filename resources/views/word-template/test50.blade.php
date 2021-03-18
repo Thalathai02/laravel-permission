@@ -1,9 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <!DOCTYPE html>
-    <html>
-
-    <body>
         <br />
 
         <div class="container">
@@ -102,10 +98,9 @@
                 </div>
             @endif
 
-            <div class="my4">
-                {!! Form::label('date_test50', 'จะขอสอบ 50 % ในวันที่ ') !!}
-                {!! Form::datetimeLocal('date_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
-
+            <div class="my-4">
+                {!! Form::label('date_test', 'จะขอสอบ 50 % ในวันที่ ') !!}
+                {!! Form::datetimelocal('date_test50', \Carbon\Carbon::now(), ['class' => 'form-control col-5']) !!}
             </div>
 
 
@@ -155,8 +150,6 @@
             });
 
         </script>
-    </body>
 
-    </html>
 
 @endsection

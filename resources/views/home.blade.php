@@ -59,7 +59,7 @@
                         <!-- Content Row -->
                         <div class="row">
                             <!-- Area Chart -->
-                            <div class="col-xl-7 col-lg-7">
+                            <div  class="col-xl-7 col-lg-7">
                                 <div class="card shadow mb-2">
                                     <!-- Card Header - Dropdown -->
                                     <div

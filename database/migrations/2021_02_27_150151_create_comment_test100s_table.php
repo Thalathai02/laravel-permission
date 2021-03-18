@@ -15,10 +15,10 @@ class CreateCommentTest100sTable extends Migration
     {
         Schema::create('comment_test100s', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('project_id_comemt_test100')->nullable();
+            $table->unsignedInteger('project_id_comemt_test100');
             $table->foreign('project_id_comemt_test100')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->unsignedInteger('id_instructor_comemt_test100')->nullable();
+            $table->unsignedInteger('id_instructor_comemt_test100');
             $table->foreign('id_instructor_comemt_test100')->references('id')->on('teachers')->onDelete('cascade');
 
             $table->text('text_comemt_test100');

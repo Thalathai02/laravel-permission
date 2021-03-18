@@ -10,6 +10,7 @@ class reg_std extends Model
     use SoftDeletes;
     use HasPermissionsTrait;
     protected $fillable = [
+        'id',
         'std_code',
         'name',
         'nick_name',
@@ -22,6 +23,7 @@ class reg_std extends Model
         'parent_phone',
         'username',
         'password',
+        'note'
         
 ];
 public function user()
