@@ -35,6 +35,7 @@ use App\comment_test100;
 use Doctrine\DBAL\Schema\View;
 use App\point_test50;
 use App\point_test100;
+use App\pointTest;
 
 
 class DataTableController extends Controller
@@ -126,32 +127,58 @@ class DataTableController extends Controller
     }
     public function data_project_collectPointsForm($Project_id)
     {
-
-        // $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
-        // ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-        // ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-        // ->join('point_test50s','project_users.id_reg_Std','point_test50s.reg_id_point_test50')
-        // ->join('point_test100s','project_users.id_reg_Std','point_test100s.reg_id_point_test100')
-        // ->select('reg_stds.std_code','reg_stds.nick_name','point_test50s.*')->where([['projects.id', '=', $Project_id],['project_id_point_test50', '=', $Project_id]])->get();
-
-
-        $data_point50 = point_test50::select('project_id_point_test50')->where([['project_id_point_test50', '=', $Project_id]])->groupBy('project_id_point_test50');
-
-        $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+        $datas_std_test50 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-            ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
             ->join('point_test50s', 'project_users.id_reg_Std', 'point_test50s.reg_id_point_test50')
+            ->join('project_instructors','point_test50s.id_instructor_point_test50','project_instructors.id_instructor')
+            ->select(
+                'reg_stds.std_code',
+                'reg_stds.id',
+                'reg_stds.nick_name',
+                'point_test50s.project_id_point_test50',
+                'point_test50s.id_instructor_point_test50',
+                'point_test50s.point_test50',
+                'project_instructors.Is_president',
+                'project_instructors.Is_director'
+            )->where([
+                ['projects.id', $Project_id],
+                ['point_test50s.deleted_at', NULL],
+                ['point_test50s.project_id_point_test50', $Project_id],
+                ['project_instructors.Project_id',$Project_id]
+            ])->get();
+
+        $datas_std_test100 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+            ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test100s', 'project_users.id_reg_Std', 'point_test100s.reg_id_point_test100')
-            ->select('reg_stds.std_code', 'reg_stds.id', 'reg_stds.nick_name', 'point_test50s.project_id_point_test50', 
-            'point_test50s.id_instructor_point_test50', 'point_test50s.point_test50', 
-            'point_test100s.project_id_point_test100', 
-            'point_test100s.id_instructor_point_test100', 'point_test100s.point_test100')
-            ->where([['projects.id', '=', $Project_id], ['project_id_point_test50', '=', $Project_id], ['project_id_point_test100', '=', $Project_id]])->get();
+            ->join('project_instructors','point_test100s.id_instructor_point_test100','project_instructors.id_instructor')
+            ->select(
+                'reg_stds.std_code',
+                'reg_stds.id',
+                'reg_stds.nick_name',
+                'point_test100s.project_id_point_test100',
+                'point_test100s.id_instructor_point_test100',
+                'point_test100s.point_test100',
+                'project_instructors.Is_president',
+                'project_instructors.Is_director'
+            )->where([
+                ['projects.id', $Project_id],
+                ['point_test100s.project_id_point_test100', $Project_id],
+                ['point_test100s.deleted_at', NULL],
+                ['project_instructors.Project_id',$Project_id]
+            ])->get();
 
+        $id_instructor = project_instructor::where('Project_id', $Project_id)->get();
+        foreach ($datas_std_test50 as $key => $box_50) {
+            $datas_std[] = $box_50;
+        }
+        foreach ($datas_std_test100 as $key => $box_100) {
+            $datas_std[] = $box_100;
+        }
+        $datas_std2 = collect($datas_std)->groupBy(['std_code','Is_director']);
 
-        $datas_std2 = $datas_std->groupBy('std_code',);
         return $datas_std2;
     }
+
     public function count_data_progress($num_data)
     {
         $count = 7;

@@ -44,24 +44,23 @@
                                 </tr>
                             </tbody>
                             <tbody >
-                                
+                                {{-- {{$datas_std["6004101301"]}} --}}
                                 @if (!empty($datas_std) && $datas_std->count())
                                 @foreach ($datas_std as $row)
                                 <tr>
-                                    {{-- {{$row}} --}}
-                                    <td scope="row">{{$row[0]->nick_name}}<br> {{substr($row[0]->std_code,-3)}}</td>
-                                    <td scope="row">{{$row[0]->point_test50}}</td>
-                                    <td scope="row">{{$row[1]->point_test50}}</td>
-                                    <td scope="row">{{$row[2]->point_test50}}</td>
-                                    <td scope="row">{{$row[0]->point_test50+$row[1]->point_test50+$row[2]->point_test50}}</td>
+                                    <td scope="row">{{$row[0][0]->nick_name}}<br> {{substr($row[0][0]->std_code,-3)}}</td>
+                                    <td scope="row">{{$row[0][0]->point_test50}}</td>
+                                    <td scope="row">{{$row[1][0]->point_test50}}</td>
+                                    <td scope="row">{{$row[2][0]->point_test50}}</td>
+                                    <td scope="row">{{$test50 = $row[0][0]->point_test50+$row[1][0]->point_test50+$row[2][0]->point_test50}}</td>
                                     <td>{!! Form::number('Internship_score', null, [ 'class' => 'form-control ']) !!}</td>
                                     <td>{!! Form::number('Test_in_time', null, [ 'class' => 'form-control ']) !!}</td>
-                                    <td scope="row">{{$row[0]->point_test100}}</td>
-                                    <td scope="row">{{$row[1]->point_test100}}</td>
-                                    <td scope="row">{{$row[2]->point_test100}}</td>
-                                    <td scope="row">{{$row[0]->point_test100+$row[1]->point_test100+$row[2]->point_test100}}</td>
+                                    <td scope="row">{{$row[0][1]->point_test100}}</td>
+                                    <td scope="row">{{$row[1][1]->point_test100}}</td>
+                                    <td scope="row">{{$row[2][1]->point_test100}}</td>
+                                    <td scope="row">{{$test100 = $row[0][1]->point_test100+$row[1][1]->point_test100+$row[2][1]->point_test100}}</td>
                                     <td> {!! Form::number('presentations', null, [ 'class' => 'form-control ']) !!}</td>
-                                    <td scope="row">-</td>
+                                    <td scope="row">{{$test50+ $test100}}</td>
                                     <td scope="row">-</td>
                                     <th>{!! Form::checkbox('category_id', 35) !!}</th>
                                 </tr>
@@ -73,6 +72,12 @@
                                 @endif
                             </tbody>
                         </table>
+                    </div>
+                    <div class="row">
+                        {{-- {{$datas_instructor}} --}}
+                        @foreach ($datas_instructor as $key =>$item)
+                            <p class="col-xl-4 col-lg-4">#{{{$key+1 .' '.$item->Title_name_Instructor.$item->name_Instructor}}}</p>
+                        @endforeach
                     </div>
                 </div>
             @endif

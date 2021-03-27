@@ -21,11 +21,12 @@ class CreatePointTest100sTable extends Migration
             $table->unsignedInteger('id_instructor_point_test100');
             $table->foreign('id_instructor_point_test100')->references('id')->on('teachers')->onDelete('cascade');
 
-            $table->int('point_test100');
+            $table->Integer('point_test100');
 
             $table->unsignedInteger('reg_id_point_test100');
             $table->foreign('reg_id_point_test100')->references('id')->on('reg_stds')->onDelete('cascade');
 
+            $table->text('status_point_test100');
             $table->timestamps();
             $table->softDeletes();
         });
