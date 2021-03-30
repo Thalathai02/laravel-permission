@@ -36,6 +36,7 @@ use App\comment_test100;
 use Doctrine\DBAL\Schema\View;
 use App\point_test50;
 use App\point_test100;
+use App\pointTest;
 
 class projectControllers extends Controller
 {
@@ -244,7 +245,7 @@ class projectControllers extends Controller
                 $name_director2 = Teacher::query()->where('id', 'LIKE', "%{$Search_name_director2}%")->get();
                 if ($Search_name_director2 === "-") {
                 } else {
-                    $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 1);
+                    $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 2);
                 }
             }
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
@@ -298,7 +299,7 @@ class projectControllers extends Controller
                 $name_director2 = Teacher::query()->where('name_Instructor', 'LIKE', "%{$Search_name_director2}%")->get();
                 if ($Search_name_director2 === "-") {
                 } else {
-                    $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 1);
+                    $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 2);
                 }
             }
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
@@ -1446,7 +1447,7 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->paginate(10);
+            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->orWhere([['Is_director', 2]])->paginate(10);
             $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // return response()->json( $datas);
             return view('projects.ProjectAdvisor.director_show', compact('term', 'datas'));
@@ -1509,6 +1510,7 @@ class projectControllers extends Controller
                 $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
                 $point_test50->point_test50 = $request->point_reg_std1;
                 $point_test50->reg_id_point_test50 = $std_1->id;
+                $point_test50->status_point_test50 = 'Waiting';
                 $point_test50->save();
             }
             if (isset($request->reg_std2)) {
@@ -1518,6 +1520,7 @@ class projectControllers extends Controller
                 $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
                 $point_test50->point_test50 = $request->point_reg_std2;
                 $point_test50->reg_id_point_test50 = $std_2->id;
+                $point_test50->status_point_test50 = 'Waiting';
                 $point_test50->save();
             }
             if (isset($request->reg_std3)) {
@@ -1527,6 +1530,7 @@ class projectControllers extends Controller
                 $point_test50->id_instructor_point_test50 = $id_user->reg_tea_id;
                 $point_test50->point_test50 = $request->point_reg_std3;
                 $point_test50->reg_id_point_test50 = $std_3->id;
+                $point_test50->status_point_test50 = 'Waiting';
                 $point_test50->save();
             }
             // return response()->json([$request->point_reg_std1,$std_1,$request->point_reg_std2,$std_2,$request->point_reg_std3,$std_3]);
@@ -1580,17 +1584,21 @@ class projectControllers extends Controller
     {
         $id1 = comment_test50::find($id1);
         $test50 = test50::where('Project_id_test50', $id1->project_id_comemt_test50)->first();
-
+        $point_test50_id1 = point_test50::where([['id_instructor_point_test50',$id1->id_instructor_comemt_test50],['project_id_point_test50',$id1->project_id_comemt_test50]])->delete();
         $id1->delete();
         $test50->delete();
+  
 
         $id2 = comment_test50::find($id2);
+        $point_test50_id2 = point_test50::where([['id_instructor_point_test50',$id2->id_instructor_comemt_test50],['project_id_point_test50',$id2->project_id_comemt_test50]])->delete();
         $id2->delete();
 
         $id3 = comment_test50::find($id3);
+        $point_test50_id3 = point_test50::where([['id_instructor_point_test50',$id3->id_instructor_comemt_test50],['project_id_point_test50',$id3->project_id_comemt_test50]])->delete();
         $id3->delete();
+        
 
-        // return response()->json($test50);
+        // return response()->json($point_test50_id1);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
     }
@@ -1650,6 +1658,7 @@ class projectControllers extends Controller
                 $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
                 $point_test100->point_test100 = $request->point_reg_std1;
                 $point_test100->reg_id_point_test100 = $std_1->id;
+                $point_test100->status_point_test100 = 'Waiting';
                 $point_test100->save();
             }
             if (isset($request->reg_std2)) {
@@ -1659,6 +1668,7 @@ class projectControllers extends Controller
                 $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
                 $point_test100->point_test100 = $request->point_reg_std2;
                 $point_test100->reg_id_point_test100 = $std_2->id;
+                $point_test100->status_point_test100 = 'Waiting';
                 $point_test100->save();
             }
             if (isset($request->reg_std3)) {
@@ -1668,6 +1678,7 @@ class projectControllers extends Controller
                 $point_test100->id_instructor_point_test100 = $id_user->reg_tea_id;
                 $point_test100->point_test100 = $request->point_reg_std3;
                 $point_test100->reg_id_point_test100 = $std_3->id;
+                $point_test100->status_point_test100 = 'Waiting';
                 $point_test100->save();
             }
             $comment_test100 = new comment_test100();
@@ -1720,17 +1731,19 @@ class projectControllers extends Controller
     {
         $id1 = comment_test100::find($id1);
         $test100 = test100::where('Project_id_test100', $id1->project_id_comemt_test100)->first();
-
+        $point_test100_id1 = point_test100::where([['id_instructor_point_test100',$id1->id_instructor_comemt_test100],['project_id_point_test100',$id1->project_id_comemt_test100]])->delete();
         $id1->delete();
         $test100->delete();
-
+        
         $id2 = comment_test100::find($id2);
+        $point_test100_id2 = point_test100::where([['id_instructor_point_test100',$id2->id_instructor_comemt_test100],['project_id_point_test100',$id2->project_id_comemt_test100]])->delete();
         $id2->delete();
 
         $id3 = comment_test100::find($id3);
+        $point_test100_id3 = point_test100::where([['id_instructor_point_test100',$id3->id_instructor_comemt_test100],['project_id_point_test100',$id3->project_id_comemt_test100]])->delete();
         $id3->delete();
-
-        // return response()->json($test50);
+        
+        // return response()->json($point_test100_id1);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
     }
@@ -1753,7 +1766,8 @@ class projectControllers extends Controller
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
-       
+        $id_instructor = project_instructor::where('Project_id', $id)->get();
+
         // return response()->json($datas_std);
         return view('word-template.CollectPoints', compact('datas_std','datas_instructor','datas'));
     }
