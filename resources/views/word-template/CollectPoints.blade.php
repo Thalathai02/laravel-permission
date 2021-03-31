@@ -121,10 +121,10 @@
                     grade.text('B');
                 }
                 else if (go >=65 ){
-                    grade.text('c+');
+                    grade.text('C+');
                 }
                 else if (go >=60 ){
-                    grade.text('c');
+                    grade.text('C');
                 }
             });
 

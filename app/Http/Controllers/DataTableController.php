@@ -137,6 +137,7 @@ class DataTableController extends Controller
                 'subjects.year_term',
                 'subject_students.subject_id',
                 'reg_stds.std_code',
+                'reg_stds.name',
                 'reg_stds.id',
                 'reg_stds.nick_name',
                 'point_test50s.project_id_point_test50',

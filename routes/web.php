@@ -116,7 +116,6 @@ Route::GET('/CollectPoints','projectControllers@CollectPoints')->name('projectCo
 Route::GET('/CollectPoints/{id}','projectControllers@CollectPointsForm')->name('projectControllers.collectPointsForm')->middleware('auth');
 
 Route::POST('/CollectPoints/{id}','projectControllers@wordExport_CollectPoints')->name('projectControllers.wordExport_CollectPoints')->middleware('auth');
-// Route::GET('/CollectPoints/Search','projectControllers@autocomplete_CollectPoints')->name('projectControllers.autocomplete_CollectPoints')->middleware('auth');
 
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
