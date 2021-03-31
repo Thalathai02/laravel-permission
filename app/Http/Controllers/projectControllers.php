@@ -45,8 +45,8 @@ class projectControllers extends Controller
 
     /**
      * Create a new controller instance.
-     *
      * @return void
+     *
      */
     public function __construct(DataTableController $DataTableController)
     {
@@ -1784,10 +1784,10 @@ class projectControllers extends Controller
             
         return response()->json($request);
     }
-    public function autocomplete_CollectPoints(Request $request){
-        if ($request->ajax()) {
-            
-            return $request->num_2 + $request->num_1;
-        }
-    }
+    
+    // public function autocomplete_CollectPoints(Request $request){
+    //     if ($request->ajax()) {
+    //         return $request->num_2 + $request->num_1;
+    //     }
+    // }
 }

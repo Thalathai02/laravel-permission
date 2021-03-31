@@ -7,14 +7,8 @@
         <br />
 
         <div class="container">
-            <h3 align="center">Check Projects</h3>
-            <br />
-            <div class="progress ">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
-                    aria-valuemin="20" aria-valuemax="100" style="width: 25%">นำเสนอหัวข้อ</div>
-            </div>
-
-
+            <h3 align="center" class="mb-4">Check Projects</h3>
+           
             <table class="table table-striped">
                 <thead>
                     <tr>
