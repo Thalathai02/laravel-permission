@@ -37,6 +37,7 @@ use Doctrine\DBAL\Schema\View;
 use App\point_test50;
 use App\point_test100;
 use App\pointTest;
+use App\CollectPoints;
 
 class projectControllers extends Controller
 {
@@ -1584,19 +1585,19 @@ class projectControllers extends Controller
     {
         $id1 = comment_test50::find($id1);
         $test50 = test50::where('Project_id_test50', $id1->project_id_comemt_test50)->first();
-        $point_test50_id1 = point_test50::where([['id_instructor_point_test50',$id1->id_instructor_comemt_test50],['project_id_point_test50',$id1->project_id_comemt_test50]])->delete();
+        $point_test50_id1 = point_test50::where([['id_instructor_point_test50', $id1->id_instructor_comemt_test50], ['project_id_point_test50', $id1->project_id_comemt_test50]])->delete();
         $id1->delete();
         $test50->delete();
-  
+
 
         $id2 = comment_test50::find($id2);
-        $point_test50_id2 = point_test50::where([['id_instructor_point_test50',$id2->id_instructor_comemt_test50],['project_id_point_test50',$id2->project_id_comemt_test50]])->delete();
+        $point_test50_id2 = point_test50::where([['id_instructor_point_test50', $id2->id_instructor_comemt_test50], ['project_id_point_test50', $id2->project_id_comemt_test50]])->delete();
         $id2->delete();
 
         $id3 = comment_test50::find($id3);
-        $point_test50_id3 = point_test50::where([['id_instructor_point_test50',$id3->id_instructor_comemt_test50],['project_id_point_test50',$id3->project_id_comemt_test50]])->delete();
+        $point_test50_id3 = point_test50::where([['id_instructor_point_test50', $id3->id_instructor_comemt_test50], ['project_id_point_test50', $id3->project_id_comemt_test50]])->delete();
         $id3->delete();
-        
+
 
         // return response()->json($point_test50_id1);
         return redirect("/home");
@@ -1731,18 +1732,18 @@ class projectControllers extends Controller
     {
         $id1 = comment_test100::find($id1);
         $test100 = test100::where('Project_id_test100', $id1->project_id_comemt_test100)->first();
-        $point_test100_id1 = point_test100::where([['id_instructor_point_test100',$id1->id_instructor_comemt_test100],['project_id_point_test100',$id1->project_id_comemt_test100]])->delete();
+        $point_test100_id1 = point_test100::where([['id_instructor_point_test100', $id1->id_instructor_comemt_test100], ['project_id_point_test100', $id1->project_id_comemt_test100]])->delete();
         $id1->delete();
         $test100->delete();
-        
+
         $id2 = comment_test100::find($id2);
-        $point_test100_id2 = point_test100::where([['id_instructor_point_test100',$id2->id_instructor_comemt_test100],['project_id_point_test100',$id2->project_id_comemt_test100]])->delete();
+        $point_test100_id2 = point_test100::where([['id_instructor_point_test100', $id2->id_instructor_comemt_test100], ['project_id_point_test100', $id2->project_id_comemt_test100]])->delete();
         $id2->delete();
 
         $id3 = comment_test100::find($id3);
-        $point_test100_id3 = point_test100::where([['id_instructor_point_test100',$id3->id_instructor_comemt_test100],['project_id_point_test100',$id3->project_id_comemt_test100]])->delete();
+        $point_test100_id3 = point_test100::where([['id_instructor_point_test100', $id3->id_instructor_comemt_test100], ['project_id_point_test100', $id3->project_id_comemt_test100]])->delete();
         $id3->delete();
-        
+
         // return response()->json($point_test100_id1);
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
@@ -1769,25 +1770,220 @@ class projectControllers extends Controller
         $id_instructor = project_instructor::where('Project_id', $id)->get();
 
         // return response()->json($datas_std);
-        return view('word-template.CollectPoints', compact('datas_std','datas_instructor','datas'));
+        return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas'));
     }
 
-    public function wordExport_CollectPoints(Request $request, $id){
-    
+    public function wordExport_CollectPoints(Request $request, $id)
+    {
+
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
-        $id_instructor = project_instructor::where('Project_id', $id)->get();
+        $id_instructor = project_instructor::join('teachers', 'project_instructors.id_instructor', 'teachers.id')->select('teachers.*')->where('Project_id', $id)->get();
 
-        foreach ($request->input("code_id") as $hobby){
-            $arrays[] = $hobby;
+        $datas_project = project::join('test50s', 'projects.id', '=', 'test50s.Project_id_test50')
+            ->join('test100s', 'projects.id', '=', 'test100s.Project_id_test100')
+            ->select('test50s.date_test50', 'test100s.date_test100')
+            ->where([
+                ['projects.id', $id], ['Project_id_test50', $id],
+                ['Project_id_test100', $id]
+            ])->get();
+
+        foreach ($request->input("code_id") as $hobby) {
+            foreach ($datas_std as $key => $row_data) {
+                foreach ($row_data as $key => $row) {
+                    if ($hobby == $row[0][0]->std_code) {
+                        $arrays[] = $row;
+                    }
+                }
             }
-            
-        return response()->json($request);
+        }
+
+        // return response()->json($arrays);
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/รายงานผลการสอบโครงงานคอมพิวเตอร์.docx'));
+
+
+        $templateProcessor->setValue('std_1', $arrays[0][0][0]->name);
+        $templateProcessor->setValue('std1',  substr($arrays[0][0][0]->std_code, -3));
+        $templateProcessor->setValue('nick_name1', $arrays[0][0][0]->nick_name);
+        $templateProcessor->setValue('code_std1', $arrays[0][0][0]->std_code);
+        $templateProcessor->setValue('year_term1', $arrays[0][0][0]->year_term);
+        $templateProcessor->setValue('pointtest50_11', $arrays[0][0][0]->point_test50);
+        $templateProcessor->setValue('pointtest50_21', $arrays[0][1][0]->point_test50);
+        $templateProcessor->setValue('pointtest50_31', $arrays[0][2][0]->point_test50);
+        $templateProcessor->setValue('pointtest100_11',  $arrays[0][0][1]->point_test100);
+        $templateProcessor->setValue('pointtest100_21',  $arrays[0][1][1]->point_test100);
+        $templateProcessor->setValue('pointtest100_31',  $arrays[0][2][1]->point_test100);
+        $templateProcessor->setValue('meam50_1', $meam50_1 = round(($arrays[0][0][0]->point_test50 + $arrays[0][1][0]->point_test50 + $arrays[0][2][0]->point_test50) / 3));
+        $templateProcessor->setValue('meam100_1', $meam100_1 = round(($arrays[0][0][1]->point_test100 + $arrays[0][1][1]->point_test100 + $arrays[0][2][1]->point_test100) / 3));
+        $templateProcessor->setValue('internship1', $request->Internship_score[0]);
+        $templateProcessor->setValue('testintime1', $request->Test_in_time[0]);
+        $templateProcessor->setValue('pres1', $request->presentations[0]);
+        $templateProcessor->setValue('total1', $total1 =  $meam100_1 + $meam50_1 + $request->presentations[0] + $request->Test_in_time[0] + $request->Internship_score[0]);
+        if ($total1 >= 80) {
+            $templateProcessor->setValue('grade1', $grade = 'A');
+        } else if ($total1 >= 75) {
+            $templateProcessor->setValue('grade1', $grade = 'B+');
+        } else if ($total1 >= 70) {
+            $templateProcessor->setValue('grade1', $grade = 'B');
+        } else if ($total1 >= 65) {
+            $templateProcessor->setValue('grade1', $grade = 'C+');
+        } else if ($total1 >= 60) {
+            $templateProcessor->setValue('grade1', $grade = 'C');
+        }
+
+        $CollectPoints = new CollectPoints;
+        $CollectPoints->Internship_score = $request->Internship_score[0];
+        $CollectPoints->Test_in_time = $request->Test_in_time[0];
+        $CollectPoints->presentations = $request->presentations[0];
+        $CollectPoints->grade = $grade;
+        $CollectPoints->reg_id_collect_points = $arrays[0][0][0]->id;
+        $CollectPoints->project_id_collect_points = $id;
+        $CollectPoints->save();
+
+        if (!empty($arrays[1])) {
+            $templateProcessor->setValue('std2',  substr($arrays[1][0][0]->std_code, -3));
+            $templateProcessor->setValue('nick_name2', $arrays[1][0][0]->nick_name);
+            $templateProcessor->setValue('std_2', $arrays[1][0][0]->name);
+            $templateProcessor->setValue('code_std2', $arrays[1][0][0]->std_code);
+            $templateProcessor->setValue('year_term2', $arrays[1][0][0]->year_term);
+
+            $templateProcessor->setValue('pointtest50_12', $arrays[1][0][0]->point_test50);
+            $templateProcessor->setValue('pointtest50_22', $arrays[1][1][0]->point_test50);
+            $templateProcessor->setValue('pointtest50_32', $arrays[1][2][0]->point_test50);
+
+            $templateProcessor->setValue('pointtest100_12',  $arrays[1][0][1]->point_test100);
+            $templateProcessor->setValue('pointtest100_22',  $arrays[1][1][1]->point_test100);
+            $templateProcessor->setValue('pointtest100_32',  $arrays[1][2][1]->point_test100);
+
+            $templateProcessor->setValue('meam50_2', $meam50_2 = round(($arrays[1][0][0]->point_test50 + $arrays[1][1][0]->point_test50 + $arrays[1][2][0]->point_test50) / 3));
+            $templateProcessor->setValue('meam100_2', $meam100_2 = round(($arrays[1][0][1]->point_test100 + $arrays[1][1][1]->point_test100 + $arrays[1][2][1]->point_test100) / 3));
+
+            $templateProcessor->setValue('internship2', $request->Internship_score[1]);
+            $templateProcessor->setValue('testintime2', $request->Test_in_time[1]);
+
+            $templateProcessor->setValue('pres2', $request->presentations[1]);
+            $templateProcessor->setValue('total2', $total2 = $meam50_2 + $meam100_2 + $request->presentations[1] + $request->Test_in_time[1] + $request->Internship_score[1]);
+            if ($total2 >= 80) {
+                $templateProcessor->setValue('grade2', $grade2 = 'A');
+            } else if ($total2 >= 75) {
+                $templateProcessor->setValue('grade2', $grade2 = 'B+');
+            } else if ($total2 >= 70) {
+                $templateProcessor->setValue('grade2', $grade2 = 'B');
+            } else if ($total2 >= 65) {
+                $templateProcessor->setValue('grade2', $grade2 = 'C+');
+            } else if ($total2 >= 60) {
+                $templateProcessor->setValue('grade2', $grade2 = 'C');
+            }
+            $CollectPoints = new CollectPoints;
+            $CollectPoints->Internship_score = $request->Internship_score[1];
+            $CollectPoints->Test_in_time = $request->Test_in_time[1];
+            $CollectPoints->presentations = $request->presentations[1];
+            $CollectPoints->grade = $grade2;
+            $CollectPoints->reg_id_collect_points = $arrays[1][0][0]->id;
+            $CollectPoints->project_id_collect_points = $id;
+            $CollectPoints->save();
+        } else {
+            $templateProcessor->setValue('std2',  "");
+            $templateProcessor->setValue('nick_name2', "");
+            $templateProcessor->setValue('std_2', "");
+            $templateProcessor->setValue('code_std2', "");
+            $templateProcessor->setValue('year_term2', "");
+
+            $templateProcessor->setValue('pointtest50_12', "");
+            $templateProcessor->setValue('pointtest50_22', "");
+            $templateProcessor->setValue('pointtest50_32', "");
+
+            $templateProcessor->setValue('pointtest100_12',  "");
+            $templateProcessor->setValue('pointtest100_22',  "");
+            $templateProcessor->setValue('pointtest100_32', "");
+
+            $templateProcessor->setValue('meam50_2', "");
+            $templateProcessor->setValue('meam100_2', "");
+
+            $templateProcessor->setValue('internship2', "");
+            $templateProcessor->setValue('testintime2', "");
+
+            $templateProcessor->setValue('pres2', "");
+            $templateProcessor->setValue('total2', "");
+            $templateProcessor->setValue('grade2', '');
+        }
+        if (!empty($arrays[2])) {
+            $templateProcessor->setValue('std3',  substr($arrays[2][0][0]->std_code, -3));
+            $templateProcessor->setValue('nick_name3', $arrays[2][0][0]->nick_name);
+            $templateProcessor->setValue('std_3', $arrays[2][0][0]->name);
+            $templateProcessor->setValue('code_std3', $arrays[2][0][0]->std_code);
+            $templateProcessor->setValue('year_term3', $arrays[2][0][0]->year_term);
+
+            $templateProcessor->setValue('pointtest50_13', $arrays[2][0][0]->point_test50);
+            $templateProcessor->setValue('pointtest50_23', $arrays[2][1][0]->point_test50);
+            $templateProcessor->setValue('pointtest50_33', $arrays[2][2][0]->point_test50);
+
+            $templateProcessor->setValue('pointtest100_13',  $arrays[2][0][1]->point_test100);
+            $templateProcessor->setValue('pointtest100_23',  $arrays[2][1][1]->point_test100);
+            $templateProcessor->setValue('pointtest100_33',  $arrays[2][2][1]->point_test100);
+
+            $templateProcessor->setValue('meam50_3', $meam50_3 = round(($arrays[2][0][0]->point_test50 + $arrays[2][1][0]->point_test50 + $arrays[2][2][0]->point_test50) / 3));
+            $templateProcessor->setValue('meam100_3', $meam100_3 = round(($arrays[2][0][1]->point_test100 + $arrays[2][1][1]->point_test100 + $arrays[2][2][1]->point_test100) / 3));
+
+            $templateProcessor->setValue('internship3', $request->Internship_score[2]);
+            $templateProcessor->setValue('testintime3', $request->Test_in_time[2]);
+
+            $templateProcessor->setValue('pres3', $request->presentations[2]);
+            $templateProcessor->setValue('total3', $total3 = $meam50_3 + $meam100_3 + $request->presentations[2] + $request->Test_in_time[2] + $request->Internship_score[2]);
+            if ($total3 >= 80) {
+                $templateProcessor->setValue('grade3',$grade3= 'A');
+            } else if ($total3 >= 75) {
+                $templateProcessor->setValue('grade3',$grade3= 'B+');
+            } else if ($total3 >= 70) {
+                $templateProcessor->setValue('grade3',$grade3= 'B');
+            } else if ($total3 >= 65) {
+                $templateProcessor->setValue('grade3',$grade3= 'C+');
+            } else if ($total3 >= 60) {
+                $templateProcessor->setValue('grade3',$grade3= 'C');
+            }
+            $CollectPoints = new CollectPoints;
+            $CollectPoints->Internship_score = $request->Internship_score[2];
+            $CollectPoints->Test_in_time = $request->Test_in_time[2];
+            $CollectPoints->presentations = $request->presentations[2];
+            $CollectPoints->grade = $grade3;
+            $CollectPoints->reg_id_collect_points = $arrays[2][0][0]->id;
+            $CollectPoints->project_id_collect_points = $id;
+            $CollectPoints->save();
+        } else {
+            $templateProcessor->setValue('std3',  "");
+            $templateProcessor->setValue('nick_name3', "");
+            $templateProcessor->setValue('std_3', "");
+            $templateProcessor->setValue('code_std3', "");
+            $templateProcessor->setValue('year_term3', "");
+            $templateProcessor->setValue('pointtest50_13', "");
+            $templateProcessor->setValue('pointtest50_23', "");
+            $templateProcessor->setValue('pointtest50_33', "");
+            $templateProcessor->setValue('pointtest100_13',  "");
+            $templateProcessor->setValue('pointtest100_23',  "");
+            $templateProcessor->setValue('pointtest100_33', "");
+            $templateProcessor->setValue('meam50_3', "");
+            $templateProcessor->setValue('meam100_3', "");
+            $templateProcessor->setValue('internship3', "");
+            $templateProcessor->setValue('testintime3', "");
+            $templateProcessor->setValue('pres3', "");
+            $templateProcessor->setValue('total3', "");
+            $templateProcessor->setValue('grade3', '');
+        }
+
+        $templateProcessor->setValue('name_chairman', $id_instructor[0]->Title_name_Instructor . $id_instructor[0]->name_Instructor);
+        $templateProcessor->setValue('name_director1', $id_instructor[1]->Title_name_Instructor . $id_instructor[1]->name_Instructor);
+        $templateProcessor->setValue('name_director2', $id_instructor[2]->Title_name_Instructor . $id_instructor[2]->name_Instructor);
+        $templateProcessor->setValue('name_th', $datas[0]->name_th);
+        $templateProcessor->setValue('name_eng', $datas[0]->name_en);
+
+        $templateProcessor->setValue('date_test50', formatDateThai($datas_project[0]->date_test50));
+        $templateProcessor->setValue('date_test100', formatDateThai($datas_project[0]->date_test100));
+        $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
+
+        $fileName = storage_path("รายงานผลการสอบโครงงานคอมพิวเตอร์" . '.docx');
+        $templateProcessor->saveAs($fileName);
+
+        // return response()->json($datas[0]->name_th);
+        return response()->download($fileName)->deleteFileAfterSend(true);
     }
-    
-    // public function autocomplete_CollectPoints(Request $request){
-    //     if ($request->ajax()) {
-    //         return $request->num_2 + $request->num_1;
-    //     }
-    // }
 }

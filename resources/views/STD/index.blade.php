@@ -31,9 +31,7 @@
             'multipart/form-data']) !!}
             {{ csrf_field() }}
             <div class="form-group2">
-                <h1>
-                    {{ Session::get('subject_id') }}
-                </h1>
+               
 
                 {!! Form::Label('subject_id', 'ปีการศึกษา:') !!}
                 {!! Form::select('subject', $term, ['class' => 'form-control']) !!}
