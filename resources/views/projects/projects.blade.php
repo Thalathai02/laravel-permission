@@ -14,7 +14,7 @@
             @if (Auth::user()->hasRole('Admin'))
                 <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
                 <a href="/Check_Project" class="btn btn-warning my-2" align="left">ตรวจโปรเจค</a>
-                <a href="" class="btn btn-info my-2" align="left">สถานะโปรเจค</a>
+                {{-- <a href="" class="btn btn-info my-2" align="left">สถานะโปรเจค</a> --}}
                 <div class="mb-4">
                     <div class="table-responsive table-striped">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
