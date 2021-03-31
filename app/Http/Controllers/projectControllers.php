@@ -386,8 +386,9 @@ class projectControllers extends Controller
             $name->status = "Waiting";
             $name->subject_id = $term->id;
 
-            $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
+            // $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
 
+            // return response()->json($term); 
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
@@ -398,7 +399,7 @@ class projectControllers extends Controller
 
 
             Storage::disk('local')->putFileAs(
-                $term[0]->year_term,
+                $term->year_term,
                 $request->File,
                 $fileModel->name_file
             );
