@@ -45,8 +45,8 @@ class projectControllers extends Controller
 
     /**
      * Create a new controller instance.
-     *
      * @return void
+     *
      */
     public function __construct(DataTableController $DataTableController)
     {
@@ -1771,4 +1771,23 @@ class projectControllers extends Controller
         // return response()->json($datas_std);
         return view('word-template.CollectPoints', compact('datas_std','datas_instructor','datas'));
     }
+
+    public function wordExport_CollectPoints(Request $request, $id){
+    
+        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
+        $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
+        $id_instructor = project_instructor::where('Project_id', $id)->get();
+
+        foreach ($request->input("code_id") as $hobby){
+            $arrays[] = $hobby;
+            }
+            
+        return response()->json($request);
+    }
+    
+    // public function autocomplete_CollectPoints(Request $request){
+    //     if ($request->ajax()) {
+    //         return $request->num_2 + $request->num_1;
+    //     }
+    // }
 }

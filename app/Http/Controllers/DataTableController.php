@@ -131,7 +131,11 @@ class DataTableController extends Controller
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test50s', 'project_users.id_reg_Std', 'point_test50s.reg_id_point_test50')
             ->join('project_instructors','point_test50s.id_instructor_point_test50','project_instructors.id_instructor')
+            ->join('subject_students','reg_stds.id','subject_students.student_id')
+            ->join('subjects','subject_students.subject_id','subjects.id')
             ->select(
+                'subjects.year_term',
+                'subject_students.subject_id',
                 'reg_stds.std_code',
                 'reg_stds.id',
                 'reg_stds.nick_name',
@@ -151,7 +155,11 @@ class DataTableController extends Controller
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test100s', 'project_users.id_reg_Std', 'point_test100s.reg_id_point_test100')
             ->join('project_instructors','point_test100s.id_instructor_point_test100','project_instructors.id_instructor')
+            ->join('subject_students','reg_stds.id','subject_students.student_id')
+            ->join('subjects','subject_students.subject_id','subjects.id')
             ->select(
+                'subjects.year_term',
+                'subject_students.subject_id',
                 'reg_stds.std_code',
                 'reg_stds.id',
                 'reg_stds.nick_name',
@@ -174,7 +182,7 @@ class DataTableController extends Controller
         foreach ($datas_std_test100 as $key => $box_100) {
             $datas_std[] = $box_100;
         }
-        $datas_std2 = collect($datas_std)->groupBy(['std_code','Is_director']);
+        $datas_std2 = collect($datas_std)->groupBy(['year_term','std_code','Is_director']);
 
         return $datas_std2;
     }

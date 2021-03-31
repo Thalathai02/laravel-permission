@@ -32,7 +32,7 @@
                 </div>
                 <div class="row">
                     <div>
-                        {!! Form::label('point_reg_std1', 'ลงคะแนนให้นักศึกษาคนที่ 1 (เต็ม 30)') !!}
+                        {!! Form::label('point_reg_std1', 'ลงคะแนนให้นักศึกษาคนที่ 1 (เต็ม 40)') !!}
                     </div>
                     <div class="col-xl-3 col-lg-3">
                         {!! Form::number('point_reg_std1', null, [ 'class' => 'form-control ']) !!}
@@ -57,7 +57,7 @@
                     </div>
                     <div class="row">
                         <div>
-                            {!! Form::label('point_reg_std2', 'ลงคะแนนให้นักศึกษาคนที่ 2 (เต็ม 30)') !!}
+                            {!! Form::label('point_reg_std2', 'ลงคะแนนให้นักศึกษาคนที่ 2 (เต็ม 40)') !!}
                         </div>
                         <div class="col-xl-3 col-lg-3">
                             {!! Form::number('point_reg_std2', null, [ 'class' => 'form-control ']) !!}
@@ -82,7 +82,7 @@
                 </div>
                 <div class="row">
                     <div>
-                        {!! Form::label('point_reg_std3', 'ลงคะแนนให้นักศึกษาคนที่ 3 (เต็ม 30)') !!}
+                        {!! Form::label('point_reg_std3', 'ลงคะแนนให้นักศึกษาคนที่ 3 (เต็ม 40)') !!}
                     </div>
                     <div class="col-xl-3 col-lg-3">
                         {!! Form::number('point_reg_std3', null, [ 'class' => 'form-control ']) !!}
