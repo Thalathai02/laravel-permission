@@ -130,12 +130,14 @@
                 </span>
                 <span class="text">รับทราบ(อ่านเเล้ว)</span>
             </a>
+            @if (Auth::user()->hasRole('Admin'))
             <a href="{{ route('project.edit',  $datas[0]->id) }}" class="btn btn-info btn-icon-split" target="_blank">
                 <span class="icon text-white-50">
                     <i class="fas fa-info-circle"></i>
                 </span>
                 <span class="text">แก้ไขโปรเจด</span>
             </a>
+            @endif
         </div>
         
     </div>
