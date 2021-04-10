@@ -75,7 +75,7 @@ class AdminController extends Controller
         $admin->save();
         $User->save();
 
-        return redirect('/admin');
+        return redirect('/Admin');
     }
 
 
@@ -102,11 +102,11 @@ class AdminController extends Controller
         $user = $request->user();
         if ($id_user == $id) {
             $data = admin::find($id);
-            return view('admin.edit', compact(['data']));
+            return view('Admin.edit', compact(['data']));
         }
         if ($user->hasRole('Admin')) {
             $data = admin::find($id);
-            return view('admin.edit', compact(['data']));
+            return view('Admin.edit', compact(['data']));
         } else {
             abort(404);
         }
@@ -177,7 +177,7 @@ class AdminController extends Controller
             $user->name = $request['Title_name_admin'] . $request['name_admin'];
             $user->email = $request['email_admin'];
             $user->save();
-            return redirect('/admin');
+            return redirect('/Admin');
         } else {
             abort(404);
         }
@@ -199,6 +199,6 @@ class AdminController extends Controller
     {
         $data= admin::find($id);
         // return response()->json($data_Instructor);
-        return view('admin.admin_info', compact('data'));
+        return view('Admin.admin_info', compact('data'));
     }
 }
