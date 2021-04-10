@@ -60,6 +60,8 @@ class HomeController extends Controller
         // $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(0);
         // $a = 100;
         // return response()->json($data_progress_Dashboard);
+
+        // return response()->json(Auth::user()->reg_std);
         if (Auth::user()->hasRole('Std')) {
             $id = Auth::user()->id;
             $mydata = User::find($id);

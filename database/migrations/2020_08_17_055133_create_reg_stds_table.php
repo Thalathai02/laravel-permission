@@ -15,8 +15,8 @@ class CreateRegStdsTable extends Migration
     {
         Schema::create('reg_stds', function (Blueprint $table) {
             $table->id('id');
-            $table->string('std_code')->nullable();
-            $table->string('name')->nullable();
+            $table->string('std_code');
+            $table->string('name');
             $table->string('nick_name')->nullable();
             $table->string('phone')->nullable();
             $table->string('lineId')->nullable();
@@ -29,7 +29,10 @@ class CreateRegStdsTable extends Migration
             $table->string('password')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('note')->default('-');
+            $table->text('note')->default('-')->nullable();
+            $table->string('avatar')->nullable();
+            $table->float('gpa')->nullable();
+            $table->float('Internship_score')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

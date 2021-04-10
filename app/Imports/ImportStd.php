@@ -47,7 +47,7 @@ class ImportStd implements ToModel
         } else {
             $student = new User();
             $student->name = $row[2];
-            $student->email = $row[6];
+            // $student->email = $row[7];
             $student->username = 'MJU' . $row[1];
             $student->password =  bcrypt($row[1]);
             $student->save();
@@ -57,14 +57,15 @@ class ImportStd implements ToModel
 
             $reg->std_code = $row[1];
             $reg->name   = $row[2];
-            $reg->nick_name  = $row[3];
-            $reg->phone  = $row[4];
-            $reg->lineId  = $row[5];
-            $reg->email  = $row[6];
-            $reg->facebook  = $row[7];
-            $reg->address  = $row[8];
-            $reg->parent_name  = $row[9];
-            $reg->parent_phone = $row[10];
+            $reg->Internship_score   = $row[3];
+            // $reg->nick_name  = $row[4];
+            // $reg->phone  = $row[5];
+            // $reg->lineId  = $row[6];
+            // $reg->email  = $row[7];
+            // $reg->facebook  = $row[8];
+            // $reg->address  = $row[9];
+            // $reg->parent_name  = $row[10];
+            // $reg->parent_phone = $row[11];
             $reg->username  = 'MJU' . $row[1];
             $reg->password  = Hash::make($row[1]);
             $reg->user_id  = $student->id;
@@ -74,6 +75,26 @@ class ImportStd implements ToModel
             $subject->student_id = $reg->id;
             $subject->subject_id = Session::get('subject_id');
             $subject->save();
+
+            // $reg->std_code = $row[1];
+            // $reg->name   = $row[2];
+            // $reg->nick_name  = $row[3];
+            // $reg->phone  = $row[4];
+            // $reg->lineId  = $row[5];
+            // $reg->email  = $row[6];
+            // $reg->facebook  = $row[7];
+            // $reg->address  = $row[8];
+            // $reg->parent_name  = $row[9];
+            // $reg->parent_phone = $row[10];
+            // $reg->username  = 'MJU' . $row[1];
+            // $reg->password  = Hash::make($row[1]);
+            // $reg->user_id  = $student->id;
+            // $reg->save();
+            // $student->reg_std_id  =  $reg->id;
+            // $student->save();
+            // $subject->student_id = $reg->id;
+            // $subject->subject_id = Session::get('subject_id');
+            // $subject->save();
         }
 
 

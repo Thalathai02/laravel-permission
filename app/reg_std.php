@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class reg_std extends Model
 {
     use SoftDeletes;
@@ -23,12 +24,14 @@ class reg_std extends Model
         'parent_phone',
         'username',
         'password',
-        'note'
-        
-];
-public function user()
-{
-    return $this->belongsToMany(User::class,'reg_stds','user_id');
-}
+        'note',
+        'avatar',
+        'gpa',
+        'Internship_score'
 
+    ];
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'reg_stds', 'user_id');
+    }
 }

@@ -84,6 +84,12 @@
                     {!! Form::text('note', null, ['class' => 'form-control']) !!}
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-xl-6 col-lg-6" >
+                    {!! Form::label('Internship_score','คะแนนฝึกงาน') !!}
+                    {!! Form::number('Internship_score', null, ['class' => 'form-control','step' => '0.1']) !!}
+                </div>
+            </div>
             <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
             <a href="/STD" class="btn btn-success row-2">กลับ</a>
             {!! Form::close() !!}

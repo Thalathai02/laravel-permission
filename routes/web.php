@@ -39,12 +39,16 @@ Route::resource('/Teacher', 'TeacherController')->middleware('auth');
 Route::resource('/system','systemController')->middleware('auth');
 Route::resource('/project','projectControllers')->middleware('auth');
 Route::resource('/Check_Project','CheckProjectController')->middleware('auth');
+Route::resource('/admin','AdminController')->middleware('auth');
+
+Route::GET('/admin/info/{id}', 'AdminController@info_admin')->name('admin.info_admin')->middleware('auth');
 
 Route::resource('/STD/term','subjects')->middleware('auth');
 Route::get('/roles', 'PermissionController@Permission');
 
 Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
 Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
+Route::get('/STD/info/{id}', 'ImportExcel\ImportExcelController@show')->name('std.show')->middleware('auth');
 Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
 Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
 Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');
@@ -93,7 +97,7 @@ Route::resource('/notification/index','notification')->middleware('auth');
 
 Route::post('/edit_project/{id}',"projectControllers@edit_project" )->middleware('auth');
 Route::GET('/info_project/{id}','projectControllers@info_project')->name('info_project')->middleware('auth');
-
+Route::get('/Showinfo_project/{id}', 'CheckProjectController@info_project')->name('CheckProject.info_project')->middleware('auth');
 
 Route::GET('/president','projectControllers@president_page')->name('president_page')->middleware('auth');
 Route::Post('/president','projectControllers@president_show')->middleware('auth');
@@ -116,6 +120,7 @@ Route::GET('/CollectPoints','projectControllers@CollectPoints')->name('projectCo
 Route::GET('/CollectPoints/{id}','projectControllers@CollectPointsForm')->name('projectControllers.collectPointsForm')->middleware('auth');
 
 Route::POST('/CollectPoints/{id}','projectControllers@wordExport_CollectPoints')->name('projectControllers.wordExport_CollectPoints')->middleware('auth');
+
 
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');

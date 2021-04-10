@@ -99,6 +99,7 @@
                          <a class="collapse-item" href="/STD">{{ __('Student information') }}</a>
                          <a class="collapse-item" href="/User">{{ __('User information') }}</a>
                          <a class="collapse-item"href="/Teacher">{{ __('Teacher information') }}</a>
+                         <a class="collapse-item"href="/admin">{{ __('Admin information') }}</a>
                      </div>
                  </div>
              </li>
@@ -377,13 +378,25 @@
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ Auth::user()->name }}{{__(' (Administration)')}}</span>
+                                 @isset(Auth::user()->admin->avatar)
+                                 <img class="img-profile rounded-circle"
+                                 src="{{asset("storage/avatar/".Auth::user()->admin->avatar)}}">
+                                 @else
                                  <img class="img-profile rounded-circle"
                                  src="{{ asset("img/undraw_profile.svg")}}">
+                                 @endisset
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                
+                                 <a class="dropdown-item" href="{{route('User.edit', Auth::user()->id)}}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    {{ __('จัดการผู้ใช้') }}
+                                </a>
+                                <a class="dropdown-item"  href="{{route('admin.edit', Auth::user()->admin->id)}}">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    {{ __('จัดการข้อมูลการติดต่อ') }}
+                                </a>
                                  <a class="dropdown-item" href="{{ route('logout') }}"
                                  onclick="event.preventDefault();
                                                document.getElementById('logout-form').submit();"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -399,12 +412,22 @@
                          @if (Auth::user()->hasRole('Std'))
                          <!-- Nav Item - User Information -->
                          <li class="nav-item dropdown no-arrow">
+                             
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (student)')}}</span>
-                                 <img class="img-profile rounded-circle"
-                                 src="{{ asset("img/undraw_profile.svg")}}">
+                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (student)')}}
+                                <br>รหัสนักศึกษา : {{Auth::user()->reg_std->std_code}}</span>
+                              @isset(Auth::user()->reg_std->avatar)
+                              <img class="img-profile rounded-circle"
+                              src="{{asset("storage/avatar/".Auth::user()->reg_std->avatar)}}">
+                              @else
+                              <img class="img-profile rounded-circle"
+                              src="{{ asset("img/undraw_profile.svg")}}">
+                              @endisset
+                              
+                                 {{-- {{asset("img/storage/1617958204_6004101301.jpg")}} --}}
                              </a>
+                             
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
@@ -434,8 +457,13 @@
                              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                  <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->name }}{{__(' (instructor)')}}</span>
+                                 @isset(Auth::user()->Teacher->avatar)
+                                 <img class="img-profile rounded-circle"
+                                 src="{{asset("storage/avatar/".Auth::user()->Teacher->avatar)}}">
+                                 @else
                                  <img class="img-profile rounded-circle"
                                  src="{{ asset("img/undraw_profile.svg")}}">
+                                 @endisset
                              </a>
                              <!-- Dropdown - User Information -->
                              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

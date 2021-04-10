@@ -15,6 +15,7 @@ class Teacher extends Model
         'lineId_Instructor',
         'email_Instructor',
         'facebook_Instructor',
-        'user_id_Instructor'
+        'user_id_Instructor',
+        'avatar'
     ];
 }

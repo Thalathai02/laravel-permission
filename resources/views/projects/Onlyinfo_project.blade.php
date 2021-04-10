@@ -26,18 +26,18 @@
                 </div>
                 <div class="my-2">
                     {!! Form::label('reg_std1', 'นักศึกษาคนที่ 1*(ตัวแทนกลุ่ม)') !!}
-                    {!! Form::text('reg_std1', $datas_std[0]->name, ['readonly', 'class' => 'form-control col-3']) !!}
+                    <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}"> {!! Form::text('reg_std1', $datas_std[0]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
                 </div>
-
+        
                 @if (!empty($datas_std[1]->name))
                     <div class="my-4">
                         {!! Form::label('reg_std2', 'นักศึกษาคนที่ 2') !!}
-                        {!! Form::text('reg_std2', $datas_std[1]->name, ['readonly', 'class' => 'form-control col-3']) !!}
+                       <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}"> {!! Form::text('reg_std2', $datas_std[1]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
                 @endif
                 @if (!empty($datas_std[2]->name))
                     <div class="my-4">
                         {!! Form::label('reg_std3', 'นักศึกษาคนที่ 3') !!}
-                        {!! Form::text('reg_std3', $datas_std[2]->name, ['readonly', 'class' => 'form-control col-3']) !!}
+                        <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">  {!! Form::text('reg_std3', $datas_std[2]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
                     </div>
                 @endif
                 @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
@@ -76,8 +76,8 @@
                         !!}
                     </div>
                 @endif
-                <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
-                    download>ดาวน์โหลดเอกสาร</a>
+                {{-- <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
+                    download>ดาวน์โหลดเอกสาร</a> --}}
 
 
 
@@ -98,18 +98,18 @@
             </div>
             <div class="my-2">
                 {!! Form::label('reg_std1', 'นักศึกษาคนที่ 1*(ตัวแทนกลุ่ม)') !!}
-               <a href="{{ route('std.show', $datas_std[0]->id) }}"> {!! Form::text('reg_std1', $datas_std[0]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
+                <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}"> {!! Form::text('reg_std1', $datas_std[0]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
             </div>
-
+    
             @if (!empty($datas_std[1]->name))
                 <div class="my-4">
                     {!! Form::label('reg_std2', 'นักศึกษาคนที่ 2') !!}
-                    {!! Form::text('reg_std2', $datas_std[1]->name, ['readonly', 'class' => 'form-control col-3']) !!}
+                   <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}"> {!! Form::text('reg_std2', $datas_std[1]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
             @endif
             @if (!empty($datas_std[2]->name))
                 <div class="my-4">
                     {!! Form::label('reg_std3', 'นักศึกษาคนที่ 3') !!}
-                    {!! Form::text('reg_std3', $datas_std[2]->name, ['readonly', 'class' => 'form-control col-3']) !!}
+                    <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">  {!! Form::text('reg_std3', $datas_std[2]->name, ['readonly', 'class' => 'form-control col-3']) !!}</a>
                 </div>
             @endif
             @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
@@ -148,8 +148,8 @@
                     !!}
                 </div>
             @endif
-            <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
-                download>ดาวน์โหลดเอกสาร</a>
+            {{-- <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
+                download>ดาวน์โหลดเอกสาร</a> --}}
 
 
 
@@ -220,8 +220,8 @@
                 !!}
             </div>
         @endif
-        <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
-            download>ดาวน์โหลดเอกสาร</a>
+        {{-- <a href="{!!  route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}"
+            download>ดาวน์โหลดเอกสาร</a> --}}
 
 
 

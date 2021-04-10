@@ -75,14 +75,14 @@
 
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+                        {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
                             align="left">
                             ยืนแบบคำร้องต่าางๆ
-                        </button>
+                        </button> --}}
 
 
                         <!-- Modal -->
-                        <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        {{-- <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -128,7 +128,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     @endif
 
                 @endif

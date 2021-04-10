@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Permissions\HasPermissionsTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\reg_std;
+use App\Teacher;
+use App\admin;
 
 class User extends Authenticatable
 {
@@ -39,5 +42,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-   
+    public function reg_std()
+    {
+        return $this->hasOne(reg_std::class,'user_id');
+    }
+    public function Teacher()
+    {
+        return $this->hasOne(Teacher::class,'user_id_Instructor');
+    }
+    public function admin()
+    {
+        return $this->hasOne(admin::class,'user_id_admin');
+    }
 }
