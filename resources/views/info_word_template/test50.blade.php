@@ -130,6 +130,12 @@
                     </span>
                     <span class="text">รับทราบ(อนุญาต)</span>
                 </a>
+                <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
+                </a>
             </div>
 
 

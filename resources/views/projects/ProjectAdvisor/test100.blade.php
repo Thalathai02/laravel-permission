@@ -21,10 +21,10 @@
                 {!! Form::label('reg_std1', 'รหัสนักศึกษาคนที่ 1') !!}
                 <div class="row">
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control ']) !!}
+                        <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">  {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control ']) !!}</a>
                     </div>
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control']) !!}
+                        <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">  {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                     </div>
                     <div class="col-xl-3 col-lg-3">
                         {!! Form::text('reg_std1_Phone', $datas_std[0]->phone, ['readonly', 'class' => 'form-control ']) !!}
@@ -35,7 +35,18 @@
                         {!! Form::label('point_reg_std1', 'ลงคะแนนให้นักศึกษาคนที่ 1 (เต็ม 40)') !!}
                     </div>
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::number('point_reg_std1', null, [ 'class' => 'form-control ']) !!}
+                        {!! Form::range('point_reg_std1', null, ['class' => 'form-range ']) !!}
+                        <div id="output_point_reg_std1"></div>
+                        <script>
+                            var slider = document.getElementById("point_reg_std1");
+                            var output = document.getElementById("output_point_reg_std1");
+                            output.innerHTML = slider.value; // Display the default slider value
+
+                            // Update the current slider value (each time you drag the slider handle)
+                            slider.oninput = function() {
+                                output.innerHTML = this.value;
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -46,10 +57,10 @@
                     {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
                     <div class="row">
                         <div class="col-xl-3 col-lg-3">
-                            {!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control']) !!}
+                            <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}">   {!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
-                            {!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control']) !!}
+                            <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}"> {!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
                             {!! Form::text('reg_std2_Phone', $datas_std[1]->phone, ['readonly', 'class' => 'form-control']) !!}
@@ -60,7 +71,18 @@
                             {!! Form::label('point_reg_std2', 'ลงคะแนนให้นักศึกษาคนที่ 2 (เต็ม 40)') !!}
                         </div>
                         <div class="col-xl-3 col-lg-3">
-                            {!! Form::number('point_reg_std2', null, [ 'class' => 'form-control ']) !!}
+                            {!! Form::range('point_reg_std2', null, ['class' => 'form-range ']) !!}
+                            <div id="output_point_reg_std2"></div>
+                            <script>
+                                var slider = document.getElementById("point_reg_std2");
+                                var output = document.getElementById("output_point_reg_std2");
+                                output.innerHTML = slider.value; // Display the default slider value
+    
+                                // Update the current slider value (each time you drag the slider handle)
+                                slider.oninput = function() {
+                                    output.innerHTML = this.value;
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -71,10 +93,10 @@
                 {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3 ') !!}
                 <div class="row">
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control']) !!}
+                        <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}"> {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                     </div>
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control']) !!}
+                        <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}"> {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control']) !!}</a>     
                     </div>
                     <div class="col-xl-3 col-lg-3">
                         {!! Form::text('reg_std3_Phone', $datas_std[2]->phone, ['readonly', 'class' => 'form-control']) !!}
@@ -85,7 +107,18 @@
                         {!! Form::label('point_reg_std3', 'ลงคะแนนให้นักศึกษาคนที่ 3 (เต็ม 40)') !!}
                     </div>
                     <div class="col-xl-3 col-lg-3">
-                        {!! Form::number('point_reg_std3', null, [ 'class' => 'form-control ']) !!}
+                        {!! Form::range('point_reg_std3', null, ['class' => 'form-range ']) !!}
+                        <div id="output_point_reg_std3"></div>
+                        <script>
+                            var slider = document.getElementById("point_reg_std3");
+                            var output = document.getElementById("output_point_reg_std3");
+                            output.innerHTML = slider.value; // Display the default slider value
+
+                            // Update the current slider value (each time you drag the slider handle)
+                            slider.oninput = function() {
+                                output.innerHTML = this.value;
+                            }
+                        </script>
                     </div>
                 </div>
             </div>

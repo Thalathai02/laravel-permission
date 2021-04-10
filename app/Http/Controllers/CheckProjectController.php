@@ -23,7 +23,7 @@ use App\Http\Controllers\DataTableController;
 class CheckProjectController extends Controller
 {
     protected $DataTableController;
-    
+
     /**
      * Create a new controller instance.
      *
@@ -44,7 +44,7 @@ class CheckProjectController extends Controller
 
         if ($user->hasRole('Admin')) {
             $datas = project::orderBy('id', 'ASC')->get();
-            
+
             return view('projects.Check_Project', compact('datas'));
         } else {
             abort(404);
@@ -78,22 +78,21 @@ class CheckProjectController extends Controller
      */
     public function show(Request $request, $id)
     {
-        
+
         $datas_instructor = DB::table('projects')
             ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
             ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
-            if (!empty($datas_instructor[0]->id)) {
-                $datas_std = $this->DataTableController->data_project($id);
-                return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
-            } else {
-                $datas_std = $this->DataTableController->data_project($id);
-                    // return response()->json($datas_std);
-                return view('projects.info_project', compact('datas_std', 'datas'));
-            }
-        
+        if (!empty($datas_instructor[0]->id)) {
+            $datas_std = $this->DataTableController->data_project($id);
+            return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
+        } else {
+            $datas_std = $this->DataTableController->data_project($id);
+            // return response()->json($datas_std);
+            return view('projects.info_project', compact('datas_std', 'datas'));
+        }
     }
 
     /**
@@ -127,14 +126,14 @@ class CheckProjectController extends Controller
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('projects.*', 'project_users.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
-                    return view('projects.instructor_project', compact('datas','name_Instructor'));
+                return view('projects.instructor_project', compact('datas', 'name_Instructor'));
             } else {
                 $datas = DB::table('projects')
                     ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
                     ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
-                    return view('projects.instructor_project', compact('datas','name_Instructor'));
+                return view('projects.instructor_project', compact('datas', 'name_Instructor'));
             }
         } else {
             abort(404);
@@ -153,7 +152,7 @@ class CheckProjectController extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            project::find($id)->update(['status'=>'Check']);
+            project::find($id)->update(['status' => 'Check']);
 
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
@@ -196,7 +195,6 @@ class CheckProjectController extends Controller
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
         DB::table('project_instructors')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
-
     }
     /**
      * Remove the specified resource from storage.
@@ -228,7 +226,7 @@ class CheckProjectController extends Controller
             $output = '';
             if (count($data) > 0) {
                 foreach ($data as $row) {
-                    $output = '<p>' .'ชื่อ ' . $row->name . '</p>';
+                    $output = '<p>' . 'ชื่อ ' . $row->name . '</p>';
                 }
             } else {
                 $output .= '<p>' . 'No results' . '</p>';
@@ -236,7 +234,17 @@ class CheckProjectController extends Controller
             return $output;
         }
     }
+    public function info_project($id)
+    {
+        $datas_instructor = DB::table('projects')
+            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            ->select('teachers.*')->where('projects.id', '=', $id)->get();
+        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
+        $datas_std = $this->DataTableController->data_project($id);
+        return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor'));
+        // return response()->json($id);
 
-    
-   
+
+    }
 }

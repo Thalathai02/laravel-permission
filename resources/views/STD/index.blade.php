@@ -8,7 +8,7 @@
         <br />
 
         <div class="container-fluid">
-            <h3 align="center">Import Student information in Laravel</h3>
+            <h3 align="center">Import Student information in Database</h3>
             <br />
 
 
@@ -20,10 +20,14 @@
             @endif
 
             {!! Form::open(['action' => 'ImportExcel\ImportExcelController@Search', 'method' => 'POST']) !!}
-            <div class="form-group col">
-                {!! Form::label('Search', 'ค้นหา', ['class' => 'form-group']) !!}
-                {!! Form::text('Search', null, ['class' => 'form-group col-6']) !!}
-                <input type="submit" value="ค้นหา" class="btn btn-primary  " name="submit_1" id="">
+            {{ csrf_field() }}
+            <div class="form-group row">
+                <div>
+                    {!! Form::label('Search', 'ค้นหา', ['class' => 'form']) !!}
+                    {!! Form::text('Search', null, ['class' => 'form col-6']) !!}
+                    <input type="submit" value="ค้นหา" class="btn btn-primary col-2 " name="submit_1" id="">
+                </div>
+               
             </div>
             {!! Form::close() !!}
 
@@ -58,6 +62,7 @@
                             <th scope="col">เบอร์โทร</th>
                             <th scope="col">ปีการศึกษา</th>
                             <th scope="col">หมายเหตุ</th>
+                            <th scope="col">ดูข้อมูล</th>
                             <th scope="col">แก้ไข</th>
                             <th scope="col">ลบ</th>
                         </tr>
@@ -72,6 +77,8 @@
                                         <td scope="row">{{ $row->phone }}</td>
                                         <td scope="row">{{ $row->year_term }}</td>
                                         <td scope="row">{{ $row->note }}</td>
+                                        <td scope="row"><a href="{{ route('std.show', $row->id) }}"
+                                            class="btn btn-primary">ดูข้อมูล</a></td>
                                         <td scope="row"><a href="{{ route('STD.edit', $row->id) }}"
                                                 class="btn btn-success">แก้ไข</a></td>
                                         <td scope="row">

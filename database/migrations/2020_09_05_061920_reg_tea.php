@@ -23,6 +23,7 @@ class RegTea extends Migration
             $table->string('facebook_Instructor')->nullable();
             $table->unsignedInteger('user_id_Instructor');
             $table->foreign('user_id_Instructor')->references('id')->on('users')->onDelete('cascade');
+            $table->string('avatar')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -39,7 +39,7 @@
                                 <td>
                                     <form action="{{ route('Check_Project.destroy', $row->id) }}" method="POST">
                                         @csrf @method('DELETE')
-                                        <input type="submit" value=" ส่งคืน" data-name="{{ $row->name_th }}"
+                                        <input type="submit" value="ไม่ผ่าน" data-name="{{ $row->name_th }}"
                                             class="btn btn-danger rejectProject">
                                     </form>
                                 </td>

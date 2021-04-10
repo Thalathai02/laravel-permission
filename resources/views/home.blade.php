@@ -25,6 +25,40 @@
                         <!-- Content Row -->
                         <div class="row">
                             <!-- Earnings (Monthly) Card Example -->
+                            @if ($data_topics_Dashboard == 'ยังไม่ส่งหัวข้อ')
+                                <div>
+                                    <a href="/projects/into_project" class="btn btn-primary my-2"
+                                        align="left">เพิ่มโปรเจค</a>
+                                </div>
+                            @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว')
+                                <div>
+                                    <a class="btn btn-primary my-2"
+                                        href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
+                                </div>
+                            @elseif($data_topics_Dashboard == 'เสนอขอสอบ50')
+                                <div>
+                                    <a class="btn btn-primary my-2"
+                                        href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
+                                        (สอบ50)</a>
+                                </div>
+                            @elseif($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ50)')
+                                <div>
+                                    <a class="btn btn-primary my-2"
+                                        href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>
+                                </div>
+                            @elseif($data_topics_Dashboard == 'เสนอขอสอบ100')
+                                <div>
+                                    <a class="btn btn-primary my-2"
+                                        href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
+                                        (สอบ100)</a>
+                                </div>
+                            @elseif($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ100)')
+                                <div>
+                                    <a class="btn btn-primary my-2"
+                                        href="{{ route('project.CompleteForm', Auth::user()->id) }}">แบบขอส่งโครงงานฉบับสมบูรณ์</a>
+                                </div>
+                            @else
+                            @endif
                             <div class="col-xl-12 col-lg-7 mb-4">
                                 <div class="card border-left-info shadow h-100 py-2">
                                     <div class="card-body">
@@ -39,11 +73,36 @@
                                                             {{ $data_progress_Dashboard . '%' }}</div>
                                                     </div>
                                                     <div class="col">
-                                                        <div class="progress progress-sm mr-2">
-                                                            <div class="progress-bar bg-info" role="progressbar"
-                                                                style="width: {{ $data_progress_Dashboard . '%' }}"
-                                                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                                            </div>
+
+
+                                                        <div class="container-fluid">
+                                                            <ul class="progressbar">
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'ยังไม่ส่งหัวข้อ') class="active" @endif>ยังไม่ส่งหัวข้อ</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ') class="active" @endif>ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว') class="active" @endif>แต่งตั้งประธานและกรรมการแล้ว</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'เสนอขอสอบ50') class="active" @endif>เสนอขอสอบ50</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ50)') class="active" @endif>รายงานการสอบความก้าวหน้า (สอบ50)</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'เสนอขอสอบ100') class="active" @endif>เสนอขอสอบ100</li>
+                                                                </div>
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ100)') class="active" @endif>รายงานการสอบความก้าวหน้า (สอบ100)</li>
+                                                                </div>
+
+                                                                <div>
+                                                                    <li @if ($data_topics_Dashboard == 'แบบขอส่งโครงงานฉบับสมบูรณ์') class="active" @endif>แบบขอส่งโครงงานฉบับสมบูรณ์</li>
+                                                                </div>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -59,7 +118,7 @@
                         <!-- Content Row -->
                         <div class="row">
                             <!-- Area Chart -->
-                            <div  class="col-xl-7 col-lg-7">
+                            <div class="col-xl-7 col-lg-7">
                                 <div class="card shadow mb-2">
                                     <!-- Card Header - Dropdown -->
                                     <div
@@ -127,7 +186,8 @@
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-2"
+                                                    style="font-size:18px">
                                                     {{ $data_topics_Dashboard }}</div>
 
                                                 @if ($notification == 0)
@@ -201,9 +261,10 @@
                                                         @foreach ($datas as $key => $row)
                                                             @if ($row->status == 'Check')
                                                                 <tr>
+                                                                    
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
                                                                     <td>{{ $row->note }}</td>
                                                                 </tr>
                                                             @endif
@@ -234,7 +295,7 @@
                                                             <th scope="col">ลำดับโครงงาน</th>
                                                             <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
                                                             <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                                            <th scope="col">หมายเหตุ</th>
+                                                           
                                                             {{-- <th scope="col">รายละเอียด</th>
                                                         <th scope="col">แก้ไข</th> --}}
                                                         </tr>
@@ -244,8 +305,8 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -287,8 +348,8 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -329,8 +390,8 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
 
                                                                 </tr>
                                                             @endif
@@ -370,24 +431,25 @@
                             <div class="col-xl-5 col-lg-5">
                                 <div class="my-4 row">
                                     <div class="col">
-                                        {!! Form::select('subject', array_merge([$term_last[0]->year_term,$term]),null, ['class' => 'md-6 form-select']) !!}
+                                        {!! Form::select('subject', array_merge([$term_last[0]->year_term, $term]), null, ['class' => 'md-6 form-select']) !!}
                                     </div>
                                     <div class="col">
                                         <button type="submit" class="btn btn-primary">ค้นหา</button>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                             {!! Form::close() !!}
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">สรุปผลรายปี {{$term_last[0]->year_term}}</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">สรุปผลรายปี
+                                            {{ $term_last[0]->year_term }}</h6>
 
 
                                     </div>
@@ -399,7 +461,7 @@
                                                     cellspacing="0">
                                                     <div id="piechart"></div>
                                                     <div id="subject_list"></div>
-                                                    
+
                                                 </table>
                                             </div>
                                         </div>
@@ -436,15 +498,15 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
                                                                     <td>{{ $row->note }}</td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
 
                                                     </tbody>
-                                                </table> 
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -453,7 +515,7 @@
                         </div>
                         <div class="row">
                             <!-- Area Chart -->
-                            
+
                             <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
@@ -478,15 +540,15 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($test50 as $key => $row)
-                                                                <tr>
-                                                                    <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
-                                                                </tr>
+                                                            <tr>
+                                                                <th scope="row">{{ $key + 1 }}</th>
+                                                                <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                            </tr>
                                                         @endforeach
 
                                                     </tbody>
-                                                </table> 
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -520,14 +582,14 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
 
                                                     </tbody>
-                                                </table> 
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -536,7 +598,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            
+
                             <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
@@ -565,15 +627,15 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td>{{ $row->name_th }}</td>
-                                                                    <td>{{ $row->name_en }}</td>
+                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
+                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
 
                                                                 </tr>
                                                             @endif
                                                         @endforeach
 
                                                     </tbody>
-                                                </table> 
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -599,11 +661,13 @@
                 function drawChart() {
                     var data = google.visualization.arrayToDataTable([
                         ['Task', 'Hours per Day'],
-                        ['รอดำเนินการ', {{ count($project)-count($test50)-count($test100)-count($CompleteForm) }}],
-                        ['สอบ 50', {{count($test50)}}],
-                        ['สอบ 100', {{count($test100)}}],
-                        ['ส่งรูปเล่มสมบูรณ์', {{count($CompleteForm)}}],
-                        ['โปรเจคที่สมบูรณ์', {{count($Successfully_project)}}]
+                        ['รอดำเนินการ',
+                            {{ count($project) - count($test50) - count($test100) - count($CompleteForm) }}
+                        ],
+                        ['สอบ 50', {{ count($test50) }}],
+                        ['สอบ 100', {{ count($test100) }}],
+                        ['ส่งรูปเล่มสมบูรณ์', {{ count($CompleteForm) }}],
+                        ['โปรเจคที่สมบูรณ์', {{ count($Successfully_project) }}]
 
                     ]);
 
@@ -621,7 +685,7 @@
                 }
 
             </script>
-            
+
 
         @endif
     @endsection
