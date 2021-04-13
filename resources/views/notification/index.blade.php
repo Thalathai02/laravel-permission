@@ -53,6 +53,7 @@
                                                             </div>
                                                             <div class="h5 mb-0 font-text-truncate text-gray-800">
                                                                 {{ $value->data['Title_form'] }}</div>
+                                                                <p class="text-gray-900">{{$value->created_at}}</p>
                                                         </div>
                                                         <div class="col-auto">
                                                             <i class="fas fa-file-alt fa-2x text-gray-300"></i>
@@ -91,6 +92,7 @@
                                                                 {{ $value->data['userseed']['name'] }}</div>
                                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
                                                                 {{ $value->data['Title_form'] }}</div>
+                                                                <p>{{$value->created_at}}</p>
                                                         </div>
                                                         <div class="col-auto">
                                                             <i class="fas fa-file-alt fa-2x text-gray-300"></i>

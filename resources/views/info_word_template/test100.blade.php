@@ -134,6 +134,41 @@
                     </span>
                     <span class="text">รับทราบ(อ่านเเล้ว)</span>
                 </a>
+                <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
+                </a>
+
+                {!! Form::open(['action' => ['projectControllers@reject_project',$id_Notifications,$datas[0]->id,2], 'method' => 'POST']) !!}
+                <!-- Modal -->
+                <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">คุณต้องการให้โครงการ
+                                    ไม่ผ่านหรือไม่ ?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    {!! Form::label('reject', 'สาเหตุที่ไม่ผ่าน') !!}
+                                    {!! Form::text('reject', null, ['class' => 'form-control']) !!}
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="submit" class="btn btn-danger">ยืนยัน</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
 

@@ -47,15 +47,16 @@
                 {!! Form::text('phone_admin', $data->phone_admin, ['class' => 'form-control']) !!}
             </div>
         </div>
+        @if (Auth::user()->id == $data->user_id_admin )
         <div class="row">
-
             <div class="form-group col-xl-6 col-lg-6">
                 {!! Form::label('note', 'รูปประจำตัว (อัปโหลดได้เป็น .jpg,.png เท่านั้น)') !!}
                 <br>
                 {!! Form::file('avatar', ['class' => 'form-control col-5']) !!}
             </div>
         </div>
-
+        @else
+        @endif
         <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">
 
         @if (Auth::user()->hasRole('Admin'))

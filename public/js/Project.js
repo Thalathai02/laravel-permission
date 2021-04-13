@@ -35,6 +35,7 @@ $(document).ready(function(){
             title:`คุณต้องการส่งคืนโครงการ ${name} หรือไม่ ?`,
               text : "ยืนยันหรือไม่",
               icon:"warning",
+              content: "input",
               buttons:true,
               dangerMode:true
           }).then((willDelete)=>{

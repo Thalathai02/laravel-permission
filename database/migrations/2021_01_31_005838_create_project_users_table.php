@@ -22,7 +22,6 @@ class CreateProjectUsersTable extends Migration
                 $table->foreign('id_reg_Std')->references('id')->on('reg_stds')->onDelete('cascade');
     
                 $table->text('isHead')->default('-');
-                $table->text('name_mentor')->default('-');
                 $table->timestamps();
                 $table->softDeletes();
         });

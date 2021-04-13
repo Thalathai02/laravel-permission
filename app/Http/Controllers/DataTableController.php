@@ -36,7 +36,7 @@ use Doctrine\DBAL\Schema\View;
 use App\point_test50;
 use App\point_test100;
 use App\pointTest;
-
+use App\reject_test;
 
 class DataTableController extends Controller
 {
@@ -122,8 +122,27 @@ class DataTableController extends Controller
             ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('subjects', 'projects.subject_id', '=', 'subjects.id')
-            ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $Project_id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+            ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*', 'subjects.*')->where([['projects.id', '=', $Project_id],['project_users.deleted_at',null], ['project__files.status_file_path', '=', 'Waiting']])->get();
         return $datas_std;
+    }
+    public function data_project_index(){
+       return project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+        ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
+        ->join('subjects', 'subject_students.subject_id', 'subjects.id')
+        ->select(
+            'projects.*',
+            'subjects.year_term',
+            'subject_students.subject_id',
+            'reg_stds.std_code',
+            'reg_stds.name',
+            'reg_stds.nick_name',
+            'project_users.Project_id'
+        )->where([
+            ['projects.deleted_at', null],
+            ['project_users.deleted_at', null],
+            // ['projects.id','project_users.Project_id']
+        ])->get()->groupBy('id');
     }
     public function data_project_collectPointsForm($Project_id)
     {
@@ -149,7 +168,8 @@ class DataTableController extends Controller
                 ['projects.id', $Project_id],
                 ['point_test50s.deleted_at', NULL],
                 ['point_test50s.project_id_point_test50', $Project_id],
-                ['project_instructors.Project_id',$Project_id]
+                ['project_instructors.Project_id',$Project_id],
+                ['project_users.deleted_at',null]
             ])->get();
 
         $datas_std_test100 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
@@ -173,7 +193,9 @@ class DataTableController extends Controller
                 ['projects.id', $Project_id],
                 ['point_test100s.project_id_point_test100', $Project_id],
                 ['point_test100s.deleted_at', NULL],
-                ['project_instructors.Project_id',$Project_id]
+                ['project_instructors.Project_id',$Project_id],
+                ['project_users.deleted_at',null]
+
             ])->get();
 
         $id_instructor = project_instructor::where('Project_id', $Project_id)->get();
@@ -502,6 +524,67 @@ class DataTableController extends Controller
             $submit = 2;
         } else {
             $submit = 0;
+        }
+        return  $submit;
+        // return  $id_test50[0]->id;
+    }
+    public function noti_data_allow_Pretest50s($Project_id, $id_1, $id_2, $id_3,$id_test)
+    {
+        //เช็คก่อนสอบ50 ว่ามีใครให้ผ่านหรือไม่ผ่านแสดงแค่หมดทุกคนที่รับรู้
+        $notif_admin = User::find(1);
+        $id_Project_id_Pretest50 = reject_test::where([['project_id_reject_tests', $Project_id],['test_id',$id_test]])->get();
+        foreach ($notif_admin->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 1) {
+                $a = 0;
+            }
+        }
+        $id_1 = Teacher::find($id_1);
+        $notif_chari = User::find($id_1->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 1) {
+                $b = 0;
+            }
+        }
+        $id_2 = Teacher::find($id_2);
+        $notif_chari = User::find($id_2->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 1) {
+                $c = 0;
+            }
+        }
+        $id_3 = Teacher::find($id_3);
+        $notif_chari = User::find($id_3->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 1) {
+                $d = 0;
+            }
+        }
+        if (!isset($a)) {
+            $a = 1;
+        }
+        if (!isset($b)) {
+            $b = 1;
+        }
+        if (!isset($c)) {
+            $c = 1;
+        }
+        if (!isset($d)) {
+            $d = 1;
+        }
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 2;
+            // $data_reject = reject_test::where([['project_id_reject_tests', $Project_id],['test_id',$id_test]])->get();
+            // if(isset($data_reject)){
+            //     reject_test::where([['project_id_reject_tests', $Project_id],['test_id',$id_test]])->delete();
+            // }
+            // if($id_test==1){
+            //     test50::where('Project_id_test50',$Project_id)->delete();
+            // }elseif($id_test==2){
+            //     test100::where('Project_id_test100',$Project_id)->delete();
+            // }
+        } else {
+            $submit = 0;
+            
         }
         return  $submit;
         // return  $id_test50[0]->id;

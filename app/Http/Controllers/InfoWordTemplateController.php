@@ -30,7 +30,8 @@ use App\ChangeBoard;
 use App\Http\Controllers\DataTableController;
 use App\comment_test50;
 use App\comment_test100;
-
+use App\reject_test;
+use App\notification;
 
 class InfoWordTemplateController extends Controller
 {
@@ -123,8 +124,9 @@ class InfoWordTemplateController extends Controller
     }
     public function checkForm($form, $formId, $id_Notifications)
     {
-
+        // return response()->json($id_Notifications);
         // $this->test50($formId);
+        
 
         if ($form == 1) {
             $tableTest50_id = test50::find($formId);
@@ -139,10 +141,21 @@ class InfoWordTemplateController extends Controller
 
                 $datas_std = $this->DataTableController->data_project($tableTest50_id->Project_id_test50);
 
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
+
 
                 return view('info_word_template.test50', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableTest50_id', 'id_Notifications'));
             }
             if (Auth::user()->hasRole('Tea')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
                 $datas_instructor = DB::table('projects')
                     ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
@@ -163,7 +176,7 @@ class InfoWordTemplateController extends Controller
             $name_Instructor = Teacher::pluck('name_Instructor', 'id');
 
             if (Auth::user()->hasRole('Admin')) {
-                
+
                 $datas_instructor = DB::table('projects')
                     ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
@@ -198,6 +211,11 @@ class InfoWordTemplateController extends Controller
             $tableTest100_id = test100::find($formId);
             $name_Instructor = Teacher::pluck('name_Instructor', 'id');
             if (Auth::user()->hasRole('Admin')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
                 $datas_instructor = DB::table('projects')
                     ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
@@ -211,6 +229,11 @@ class InfoWordTemplateController extends Controller
                 return view('info_word_template.test100', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableTest100_id', 'id_Notifications'));
             }
             if (Auth::user()->hasRole('Tea')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
                 $datas_instructor = DB::table('projects')
                     ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
@@ -357,7 +380,7 @@ class InfoWordTemplateController extends Controller
             }
         }
         if ($form == 8) {
-            
+
             $name_Instructor = Teacher::pluck('name_Instructor', 'id');
             if (Auth::user()->hasRole('Std')) {
                 $id = Auth::user()->id;
@@ -371,31 +394,31 @@ class InfoWordTemplateController extends Controller
                 // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
 
 
-                    
+
                 $data = comment_test50::join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-                    ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-                    ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-                    ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
-            
+                    ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                    ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                    ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
+
 
                 // return response()->json($data);
                 Auth::user()->unreadNotifications->markAsRead();
-                foreach($data as $key => $datas){
+                foreach ($data as $key => $datas) {
                     $dataRaw[] = $datas;
                     // $Results=0;
                     $keys = $key;
                     $Results[] = $datas->action_comemt_test50;
-                    $sumbit =array_sum($Results);
+                    $sumbit = array_sum($Results);
                 }
-                if($key==2){
-                    if($sumbit == 3){
-                        $change_status = test50::where('Project_id_test50',$formId)->first();
+                if ($key == 2) {
+                    if ($sumbit == 3) {
+                        $change_status = test50::where('Project_id_test50', $formId)->first();
                         $change_status->status_test50 = 'Successfully';
                         $change_status->save();
                     }
                 }
                 // return response()->json($dataRaw);
-                return view('info_word_template.ResultsTest50', compact('data','keys','sumbit'));
+                return view('info_word_template.ResultsTest50', compact('data', 'keys', 'sumbit'));
             } else {
                 abort(404);
             }
@@ -409,33 +432,135 @@ class InfoWordTemplateController extends Controller
                 $data_project_instructors = project_instructor::where('Project_id', $formId)->get();
                 $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $formId)->get();
 
-                    
+
                 $data = comment_test100::join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-                    ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-                    ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-                    ->where([['project_id_comemt_test100', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
-            
+                    ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                    ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                    ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
+
 
                 // return response()->json($data);
                 Auth::user()->unreadNotifications->markAsRead();
-                foreach($data as $key => $datas){
+                foreach ($data as $key => $datas) {
                     $dataRaw[] = $datas;
                     // $Results=0;
                     $keys = $key;
                     $Results[] = $datas->action_comemt_test100;
-                    $sumbit =array_sum($Results);
-
-                    
+                    $sumbit = array_sum($Results);
                 }
-                if($key==2){
-                    if($sumbit == 3){
-                        $change_status = test100::where('Project_id_test100',$formId)->first();
+                if ($key == 2) {
+                    if ($sumbit == 3) {
+                        $change_status = test100::where('Project_id_test100', $formId)->first();
                         $change_status->status_test100 = 'Successfully';
                         $change_status->save();
                     }
                 }
                 // return response()->json($dataRaw);
-                return view('info_word_template.ResultsTest100', compact('data','keys','sumbit'));
+                return view('info_word_template.ResultsTest100', compact('data', 'keys', 'sumbit'));
+            } else {
+                abort(404);
+            }
+        }
+        if ($form == 10) {
+            if (Auth::user()->hasRole('Std')) {
+                $id = Auth::user()->id;
+//ส่งคืนเอกสารให้นักศึกษา
+                Auth::user()->unreadNotifications->markAsRead();
+                if (project::where([['status', 'reject'], ['id', $formId]])->first()) {
+                    $id_reg = reg_std::where('user_id', $id)->get();
+                    $id_reg_Std = project_user::where('id_reg_Std',  $formId)->get();
+                    //  return response()->json($id_reg_Std[0]->id);
+                    $datas_instructor = DB::table('projects')
+                        ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                        ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                        ->select('teachers.*')->where('projects.id', '=',  $formId)->get();
+
+                    $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $formId]])->get();
+
+                    // $datas_std = $this->DataTableController->data_project($id_reg_Std[0]->id);
+                    $datas_std = DB::table('projects')
+                        ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+                        ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                        ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+                        ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=',  $formId], ['project_users.deleted_at', null]])->get();
+                    return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas'));
+
+                    // return response()->json($data);
+                } else {
+                    abort(404);
+                }
+            } else {
+                abort(404);
+            }
+        }
+        if ($form == 11) {
+            //เมื่อโปรเจคผ่านเเล้วให้แจ้งเตือนกับนักศึกษา
+            if (Auth::user()->hasRole('Std')) {
+                $id = Auth::user()->id;
+
+                Auth::user()->unreadNotifications->markAsRead();
+                $mydata = User::find($id);
+                $data_reg1 = reg_std::where('user_id', $mydata->id)->get();
+                $id_stu_project = project_user::query()->where('id_reg_Std', $data_reg1[0]->id)->get();       
+                $datas_instructor = DB::table('projects')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=',$formId)->get();
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $formId]])->get();
+                $user = Auth::user();
+        
+                // if( Auth::user()->unreadNotifications->markAsRead()){
+                   
+                //     abort(404);
+                // }
+
+                if (!empty($datas_instructor[0]->id)) {
+                    $datas_std = $this->DataTableController->data_project($formId);
+                    return view('projects.info_project', compact('datas', 'datas_std', 'datas_instructor'));
+                } else {
+                    $datas_std = $this->DataTableController->data_project($formId);
+                    return view('projects.info_project', compact('datas_std', 'datas'));
+                }
+            } else {
+                abort(404);
+            }
+        }
+        if ($form == 12) {
+            //เมื่อโปรเจดไม่ผ่านจะแสดงเป็นเหตุผลว่าทำไมไม่ผ่าน
+            if (Auth::user()->hasRole('Std')) {
+                $id = Auth::user()->id;
+
+                Auth::user()->unreadNotifications->markAsRead();
+              
+                $mydata = User::find($id);
+                $data_reg1 = reg_std::where('user_id', $mydata->id)->first();
+                $data_project = reject_test::join('users','reject_tests.id_user_reject_tests','users.id')
+                ->select('reject_tests.*','users.name')
+                ->where([['reject_tests.project_id_reject_tests',$formId],['reject_tests.deleted_at',null]])
+                ->get();
+                $datas_instructor = project_instructor::where('Project_id',$formId)->get();
+                    // return response()->json($data_project);
+
+                if($data_project == "[]"){
+                    Auth::user()->unreadNotifications->markAsRead();
+                    abort(404);
+                }
+                // return response()->json($data_project[0]->test_id);
+
+                // return response()->json($id_user);
+                if($data_project[0]->test_id == 1){
+                    $test50=test50::where('Project_id_test50',$formId)->first();
+                    // return response()->json($test50->Project_id_test50);
+                    $notification  = $this->DataTableController->noti_data_allow_test50($test50->Project_id_test50, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
+                }elseif($data_project[0]->test_id == 2){
+                    $test100=test100::where('Project_id_test100',$formId)->first();
+                    // return response()->json($test50->Project_id_test50);
+                    $notification  = $this->DataTableController->noti_data_allow_test100s($test100->Project_id_test100, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
+                }
+
+                return view('info_word_template.reject_project_test',compact('data_project','notification'));
+                // return response()->json($notification);
+                
             } else {
                 abort(404);
             }
@@ -451,7 +576,7 @@ class InfoWordTemplateController extends Controller
         //     ]);
 
         // return response()->json($form);
-        
+
         return response()->download(storage_path("/app/{$form}/{$file}"));
     }
     public function markAsRead($id)
