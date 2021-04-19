@@ -35,7 +35,8 @@ class notification extends Controller
      */
     public function index()
     {
-        $notfi = Auth::user()->notifications()->paginate(10);; 
+        $notfi = Auth::user()->notifications()
+        ->paginate(10); 
         // return response()->json($notfi);
         return view('notification.index',compact('notfi'));
     }

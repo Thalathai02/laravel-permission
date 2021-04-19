@@ -62,6 +62,7 @@ Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
 Route::GET('/Teacher/info/{id}', 'TeacherController@info_tea')->name('Teacher.info_tea')->middleware('auth');
 
 Route::post('/system/index','systemController@show')->middleware('auth');
+Route::get('/project/destroy_edit/{id}', 'projectControllers@destroy_edit_name_project')->name('destroy_edit_name_project')->middleware('auth');;
 
 Route::get('/projects/into_project','projectControllers@create')->middleware('auth');
 Route::post('/projects/list_name','projectControllers@createNameProject')->middleware('auth');
@@ -78,6 +79,8 @@ Route::post('/Check_Project/info_project','CheckProjectController@show')->middle
 Route::get('/Check_Project/info_project/{year}/{term}/{file}', 'CheckProjectController@download')->name('download')->middleware('auth');
 Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');
 Route::get('/Check_Project/instructor_projectSearch/Search','CheckProjectController@Search')->name('action')->middleware('auth');
+Route::get('/Selection_yearCheck_Project','CheckProjectController@Selection_year')->name('Selection_year')->middleware('auth');
+Route::get('/success_check/{id}','CheckProjectController@success_check')->name('Check_Project.success_check')->middleware('auth');
 
 
 Route::post('/test50/{id}',"projectControllers@wordExport_test50" )->middleware('auth');
@@ -87,6 +90,8 @@ Route::post('/CompleteForm/{id}', "projectControllers@wordExport_CompleteForm")-
 Route::post('/ChangeTopic/{id}', "projectControllers@wordExport_ChangeTopic")->middleware('auth');
 Route::post('/ProgressReport_test50/{id}', "projectControllers@wordExport_ProgressReport_test50")->middleware('auth');
 Route::post('/ProgressReport_test100/{id}', "projectControllers@wordExport_ProgressReport_test100")->middleware('auth');
+Route::post('/reject_project/{id_Notifications}/{id}/{id_test}', "projectControllers@reject_project")->name('project.reject_project')->middleware('auth');
+Route::get('/reject_allow/{id}/{id_test}','projectControllers@reject_allow' )->name('project.reject_allow')->middleware('auth');
 
 Route::post('/notification', "projectControllers@notification")->middleware('auth');
 

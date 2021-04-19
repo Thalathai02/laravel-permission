@@ -22,7 +22,7 @@ class AdminController extends Controller
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
-            $data = user::join('users_roles','users.id','users_roles.user_id')->select('users.*')->where([['users_roles.role_id',1]])->orderBy('id', 'ASC')->get();
+            $data = admin::orderBy('id', 'ASC')->get();
             return view('Admin.index', compact('data'));
         } else {
             abort(404);

@@ -9,6 +9,7 @@ use App\reg_std;
 use App\project;
 use App\Teacher;
 use App\subject;
+use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\project_instructor;
@@ -19,6 +20,8 @@ use App\Project_File;
 use http\Env\Response;
 use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\Http\Controllers\DataTableController;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\InvoicePaid;
 
 class CheckProjectController extends Controller
 {
@@ -41,10 +44,13 @@ class CheckProjectController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
+        $data_subject = $request->get(
+            'subject'
+        );
 
         if ($user->hasRole('Admin')) {
-            $datas = project::orderBy('id', 'ASC')->get();
-
+            $datas = project::where('subject_id', $data_subject)->orderBy('id', 'ASC')->get();
+            // return response()->json($datas);
             return view('projects.Check_Project', compact('datas'));
         } else {
             abort(404);
@@ -125,14 +131,18 @@ class CheckProjectController extends Controller
 
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-                    ->select('projects.*', 'project_users.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+                    ->select('projects.*', 'project_users.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([
+                        ['projects.id', '=', $id], ['projects.deleted_at', null],
+                        ['project_users.deleted_at', null],
+                        ['project__files.status_file_path', '=', 'Waiting']
+                    ])->get();
                 return view('projects.instructor_project', compact('datas', 'name_Instructor'));
             } else {
                 $datas = DB::table('projects')
                     ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project__files.status_file_path', '=', 'Waiting']])->get();
+                    ->select('projects.*', 'project_users.*', 'reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project_users.deleted_at', null], ['projects.deleted_at', null], ['project__files.status_file_path', '=', 'Waiting']])->get();
                 return view('projects.instructor_project', compact('datas', 'name_Instructor'));
             }
         } else {
@@ -187,7 +197,7 @@ class CheckProjectController extends Controller
             //     'reg_3' => $name_director2 ,
 
             // ]);
-            return redirect('/Check_Project');
+            return redirect('/Selection_yearCheck_Project');
         } else {
             abort(404);
         }
@@ -202,11 +212,21 @@ class CheckProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        DB::table('projects')->where('id', '=', $id)->update(['status' => "reject"]);
+        $request->validate([
+            'reject' => 'required',
+        ]);
+        $id_reg  =  project_user::where([['Project_id',$id],['isHead','1']])->first();
+       
+        project::where('id', '=', $id)->update(['status' => "reject",'because_reject'=> $request->reject]);
         DB::table('project__files')->where('id', '=', $id)->update(['status_file_path' => "reject"]);
-        return redirect('/Check_Project');
+        $sendToUser  =  project_user::where([['Project_id',$id]])->get();
+
+        $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
+        // return response()->json($sendToUser);
+        $sendToUser->notify(new InvoicePaid(10, $id, 'โครงานของคุณไม่ผ่าน กรุณาแก้ไข', Auth::user()));
+        return back();
     }
 
     public function download($year, $term, $file)
@@ -244,7 +264,23 @@ class CheckProjectController extends Controller
         $datas_std = $this->DataTableController->data_project($id);
         return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor'));
         // return response()->json($id);
-
-
+    }
+    public function Selection_year()
+    {
+        $term = subject::orderBy('id', 'desc')->pluck('year_term', 'id');
+        // return response()->json($term);
+        return view('projects.Selection_year_Check_Project', compact('term'));
+    }
+    public function success_check($id)
+    {
+        $sendToUser  =  project_user::where([['Project_id',$id]])->get();
+        // $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
+        foreach($sendToUser as $key =>$itme){
+            $send  = User::where('reg_std_id',$itme->id_reg_Std)->first();
+            $send->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว รอการแต่งตั้งกรรมการ', Auth::user()));
+        }
+        // return response()->json($send);
+        // $sendToUser->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว', Auth::user()));
+        return back();
     }
 }

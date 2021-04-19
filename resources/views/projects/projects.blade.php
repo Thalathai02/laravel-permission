@@ -7,46 +7,58 @@
         <br />
 
         <div class="container">
-            <h3 align="center">Projects</h3>
+            <h3 align="center">โครงานทั้งหมด (ยังไม่ได้เผยแพร่)</h3>
             <br />
-
-
             @if (Auth::user()->hasRole('Admin'))
-                <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
-                <a href="/Check_Project" class="btn btn-warning my-2" align="left">ตรวจโปรเจค</a>
+                {{-- <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
+                <a href="/Selection_yearCheck_Project" class="btn btn-warning my-2" align="left">ตรวจโปรเจค</a> --}}
                 {{-- <a href="" class="btn btn-info my-2" align="left">สถานะโปรเจค</a> --}}
                 <div class="mb-4">
-                    <div class="table-responsive table-striped">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ลำดับโครงงาน</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                    <th scope="col">หมายเหตุ</th>
-                                    <th scope="col">รายละเอียด</th>
-                                    <th scope="col">แก้ไข</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datas as $row)
-                                    @if ($row->status == 'Check')
-                                        <tr>
-                                            <th scope="row">{{ $row->id }}</th>
-                                            <td>{{ $row->name_th }}</td>
-                                            <td>{{ $row->name_en }}</td>
-                                            <td></td>
-                                            <td><a href="{{ route('Check_Project.show', $row->id) }}"
-                                                    class="btn btn-info">รายละเอียด</a>
-                                            </td>
-                                            <td><a href="{{ route('project.edit', $row->id) }}"
-                                                    class="btn btn-warning">แก้ไข</td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                               
-                            </tbody>
-                        </table> {!! $datas->links() !!}
+                    <div class="responsive">
+                        <div class="row">
+                            @foreach ($datas as $key => $row)
+                                @if ($row[0]->status == 'Check')
+                                    <div class="col-xl-6 col-lg-6">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                    {{ $row[0]->name_en }}</h6>
+                                                <div class="dropdown no-arrow">
+                                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                        aria-labelledby="dropdownMenuLink">
+                                                        <div class="dropdown-header">ตัวเลือก:</div>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('project.edit', $row[0]->id) }}">แก้ไข</a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="card-body">
+                                                    <p>จัดทำโดย</p>
+                                                    <p class="mb-0">
+                                                        @foreach ($row as $key => $rows)
+                                                            {{ $rows->name }},
+                                                        @endforeach
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                            @endforeach
+                        </div>
+
+                        {!! $datas->links() !!}
                     </div>
                 </div>
             @endif
@@ -55,13 +67,8 @@
                 @if ($data_std == null)
                     <a href="/projects/into_project" class="btn btn-primary my-2" align="left">เพิ่มโปรเจค</a>
                 @endif
+
                 @if (!empty($status))
-                    @if ($status[0]->status == 'reject')
-                        <a href="{{ route('project.edit', Auth::user()->id) }}" class="btn btn-danger my-2"
-                            align="left">แก้ไขไฟล์</a>
-
-                    @endif
-
                     @if ($status[0]->status == 'Waiting')
                         <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-primary my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
@@ -72,94 +79,51 @@
                         <a href="{{ route('info_project', Auth::user()->id) }}" class="btn btn-primary my-2"
                             align="left">ดูข้อมูลโปรเจด</a>
 
-
-
-                        <!-- Button trigger modal -->
-                        {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
-                            align="left">
-                            ยืนแบบคำร้องต่าางๆ
-                        </button> --}}
-
-
-                        <!-- Modal -->
-                        {{-- <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                            aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">ยืนแบบคำร้อง</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div>
-                                            <a href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
-                                                (สอบ50)</a>
-                                        </div>
-                                        <div>
-                                            <a
-                                                href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>
-                                        </div>
-                                        <div>
-                                            <a href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
-                                                (สอบ100)</a>
-                                        </div>
-                                        <div>
-                                            <a
-                                                href="{{ route('project.CompleteForm', Auth::user()->id) }}">แบบขอส่งโครงงานฉบับสมบูรณ์</a>
-                                        </div>
-                                        <div>
-                                            <a
-                                                href="{{ route('project.ChangeBoard', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
-                                        </div>
-                                        <div>
-                                            <a
-                                                href="{{ route('project.ChangeTopic', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
-                                        </div>
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                     @endif
 
                 @endif
                 <div class="mb-4">
-                    <div class="table-responsive table-striped">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ลำดับโครงงาน</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                    <th scope="col">หมายเหตุ</th>
-                                    <th scope="col">รายละเอียด</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datas as $row)
-                                    @if ($row->status == 'Check')
-                                        <tr>
-                                            <th scope="row">{{ $row->id }}</th>
-                                            <td>{{ $row->name_th }}</td>
-                                            <td>{{ $row->name_en }}</td>
-                                            <td></td>
-                                            <td><a href="{{ route('Check_Project.show', $row->id) }}"
-                                                    class="btn btn-info">รายละเอียด</a>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div class="responsive">
+                        <div class="row">
+                            @foreach ($datas as $key => $row)
+                                @if ($row[0]->status == 'Check')
+                                    <div class="col-xl-6 col-lg-6">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                    {{ $row[0]->name_en }}</h6>
+                                                <div class="dropdown no-arrow">
+                                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                        aria-labelledby="dropdownMenuLink">
+                                                        <div class="dropdown-header">ตัวเลือก :</div>
+
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="card-body">
+                                                    <p>จัดทำโดย</p>
+                                                    <p class="mb-0">
+                                                        @foreach ($row as $key => $rows)
+                                                            {{ $rows->name }},
+                                                        @endforeach
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
                         {!! $datas->links() !!}
                     </div>
                 </div>
@@ -168,33 +132,49 @@
             @if (Auth::user()->hasRole('Tea'))
 
                 <div class="mb-4">
-                    <div class="table-responsive table-striped">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th scope="col">ลำดับโครงงาน</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
-                                    <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                    <th scope="col">หมายเหตุ</th>
-                                    <th scope="col">รายละเอียด</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($datas as $row)
-                                    @if ($row->status == 'Check')
-                                        <tr>
-                                            <th scope="row">{{ $row->id }}</th>
-                                            <td>{{ $row->name_th }}</td>
-                                            <td>{{ $row->name_en }}</td>
-                                            <td></td>
-                                            <td><a href="{{ route('Check_Project.show', $row->id) }}"
-                                                    class="btn btn-info">รายละเอียด</a>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach                               
-                            </tbody>
-                        </table>
+                    <div class="responsive">
+                        <div class="row">
+                            @foreach ($datas as $key => $row)
+                                @if ($row[0]->status == 'Check')
+                                    <div class="col-xl-6 col-lg-6">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                    {{ $row[0]->name_en }}</h6>
+                                                <div class="dropdown no-arrow">
+                                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                        aria-labelledby="dropdownMenuLink">
+                                                        <div class="dropdown-header">ตัวเลือก :</div>
+
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="card-body">
+                                                    <p>จัดทำโดย</p>
+                                                    <p class="mb-0">
+                                                        @foreach ($row as $key => $rows)
+                                                            {{ $rows->name }},
+                                                        @endforeach
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                            @endforeach
+                        </div>
+
                         {!! $datas->links() !!}
                     </div>
                 </div>

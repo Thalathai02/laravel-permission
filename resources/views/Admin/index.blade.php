@@ -42,9 +42,9 @@
                     @foreach ($data as $key =>$row)
                         <tr>
                             <td scope="row">{{ $key+1  }}</td>
-                            <td>{{ $row->name }}</td>
-                            <td>{{ $row->email }}</td>
-                            <td>{{ $row->phone }}</td>
+                            <td>{{ $row->Title_name_admin }}{{$row->name_admin}}</td>
+                            <td>{{ $row->email_admin }}</td>
+                            <td>{{ $row->phone_admin }}</td>
                             <td><a href="{{ route('admin.info_admin', $row->id) }}" class="btn btn-info">ดูข้อมูล</a></td>
                             <td><a href="{{ route('admin.edit', $row->id) }}" class="btn btn-success">แก้ไข</a></td>
                             <td>

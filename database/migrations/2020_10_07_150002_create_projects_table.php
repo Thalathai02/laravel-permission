@@ -21,6 +21,8 @@ class CreateProjectsTable extends Migration
             
             $table->unsignedInteger('subject_id')->nullable();
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+            $table->text('name_mentor')->default('-');
+            $table->text('because_reject')->default('-');
             $table->timestamps();
             $table->softDeletes();
         });

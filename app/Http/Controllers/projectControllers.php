@@ -37,7 +37,11 @@ use Doctrine\DBAL\Schema\View;
 use App\point_test50;
 use App\point_test100;
 use App\pointTest;
+use App\reject_test;
 use App\CollectPoints;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+
 
 class projectControllers extends Controller
 {
@@ -59,17 +63,30 @@ class projectControllers extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function paginate($items, $perPage = 10, $page = null, $options = ['path' => 'http://127.0.0.1:8000/project'])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
     public function index(Request $request)
     {
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            $datas = project::orderBy('id', 'ASC')->paginate(10);
+            // $datas = project::orderBy('id', 'ASC')->paginate(10);
+            $datas = $this->DataTableController->data_project_index();
+            $datas = $this->paginate($datas);
+
+            // $datas = collect($datas);
+            // ->groupBy('id');
+            // return response()->json($datas);
             return view('projects.projects', compact('datas'));
         }
         if ($user->hasRole('Tea')) {
-            $datas = project::orderBy('id', 'ASC')->paginate(10);
-
+            $datas = $this->DataTableController->data_project_index();
+            $datas = $this->paginate($datas);
             return view('projects.projects', compact('datas'));
         }
         if ($user->hasRole('Std')) {
@@ -78,7 +95,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std1[0]->id)->select('project_users.*')->get();
             if (!empty($data_std[0]->id)) {
                 $status = DB::table('projects')->where('id', '=', $data_std[0]->Project_id)->select('projects.status')->get();
-                $datas = project::orderBy('id', 'ASC')->paginate(10);
+                $datas = $this->DataTableController->data_project_index();
+                $datas = $this->paginate($datas);
                 if ($status[0]->status == "reject") {
                     return view('projects.projects', compact('datas', 'data_std', 'status'));
                 } elseif ($status[0]->status == "Waiting") {
@@ -156,39 +174,41 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
 
         if ($user->hasRole('Admin')) {
-            $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                 ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+                ->select('teachers.*')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
 
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+            $datas = project::select('projects.*')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
 
             // $datas_std = $this->DataTableController->data_project($id);
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+            $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
                 ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
                 ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id]])->get();
+                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id], ['project_users.deleted_at', null]])->get();
             return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
         }
         if ($user->hasRole('Std')) {
-            $id_reg = reg_std::where('user_id', $id)->get();
-            $id_reg_Std = project_user::where('id_reg_Std', $id_reg[0]->id)->get();
-            //  return response()->json($id_reg_Std[0]->id);
-            $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id_reg_Std[0]->id)->get();
+            if (project::where([['status', 'reject'], ['id', $id]])->first()) {
+                $id_reg = reg_std::where('user_id', $id)->get();
+                $id_reg_Std = project_user::where('id_reg_Std', $id_reg[0]->id)->get();
+                //  return response()->json($id_reg_Std[0]->id);
+                $datas_instructor = DB::table('projects')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $id_reg_Std[0]->id)->get();
 
-            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
 
-            // $datas_std = $this->DataTableController->data_project($id_reg_Std[0]->id);
-            $datas_std = DB::table('projects')
-                ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
-                ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
-            return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+                // $datas_std = $this->DataTableController->data_project($id_reg_Std[0]->id);
+                $datas_std = DB::table('projects')
+                    ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
+                    ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
+                    ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+                    ->select('reg_stds.*', 'project__files.*')->where([['projects.id', '=', $id_reg_Std[0]->id], ['project_users.deleted_at', null]])->get();
+                return view('projects.Edit_Project.index', compact('id', 'datas_std', 'datas_instructor', 'datas', 'name_Instructor'));
+            } else {
+                abort(404);
+            }
         } else {
             abort(404);
         }
@@ -208,7 +228,8 @@ class projectControllers extends Controller
         if ($user->hasRole('Admin')) {
             $Search = $request->get('reg_std1');
             $data = reg_std::query()->where('std_code', 'LIKE', "{$Search}")->get();
-            DB::table('project_users')->updateOrInsert(['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1, 'name_mentor' => $request->get('name_mentor')]);
+            project::where('id', $id)->update(['name_mentor' => $request->get('name_mentor')]);
+            project_user::updateOrCreate(['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1], ['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1]);
             if (!empty($request->get('reg_std2'))) {
                 $Search2 = $request->get('reg_std2');
                 $data2 = reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
@@ -262,7 +283,8 @@ class projectControllers extends Controller
         if ($user->hasRole('Std')) {
             $Search = $request->get('reg_std1');
             $data = reg_std::query()->where('std_code', 'LIKE', "{$Search}")->get();
-            DB::table('project_users')->updateOrInsert(['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1, 'name_mentor' => $request->get('name_mentor')]);
+            project::where('id', $id)->update(['name_mentor' => $request->get('name_mentor')]);
+            project_user::updateOrCreate(['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1], ['id_reg_Std' => $data[0]->id, "Project_id" => $id, 'isHead' => 1]);
             if (!empty($request->get('reg_std2'))) {
                 $Search2 = $request->get('reg_std2');
                 $data2 = reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
@@ -323,11 +345,19 @@ class projectControllers extends Controller
     }
     public function DataBase($id, $table, $data)
     {
-        DB::table('project_users')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0]);
+        project_user::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0], [$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0]);
     }
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
-        DB::table('project_instructors')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
+        project_instructor::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, $action => $is_action], [$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
+    }
+    public function destroy_edit_name_project($id)
+    {
+        $id_reg = reg_std::where('std_code', $id)->first();
+        // return response()->json($id_reg);
+        project_user::where('id_reg_Std', $id_reg->id)->delete();
+
+        return back()->with('success', 'successfully.');
     }
 
     public function createNameProject(Request $request)
@@ -1226,8 +1256,9 @@ class projectControllers extends Controller
             $project_id = project::find($id);
             $project_id->name_th = $request->Project_name_thai;
             $project_id->name_en = $request->Project_name_eg;
+            $project_id->name_mentor = $request->name_mentor;
             $project_id->save();
-            $id_stu_project = project_user::query()->where('Project_id', $id)->get();
+            $id_stu_project = project_user::where('Project_id', $id)->get();
             if ($request->reg_std1 != 0) {
                 $id_reg1 = reg_std::where('std_code', $request->reg_std1)->get();
                 $id_stu_project[0]->id_reg_Std = $id_reg1[0]->id;
@@ -1235,13 +1266,19 @@ class projectControllers extends Controller
             }
             if ($request->reg_std2 != 0) {
                 $id_reg2 = reg_std::where('std_code', $request->reg_std2)->get();
-                $id_stu_project[1]->id_reg_Std = $id_reg2[0]->id;
-                $id_stu_project[1]->save();
+                project_user::updateOrCreate(
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg2[0]->id],
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg2[0]->id, 'isHead' => 0]
+                );
             }
             if ($request->reg_std3 != 0) {
                 $id_reg3 = reg_std::where('std_code', $request->reg_std3)->get();
-                $id_stu_project[2]->id_reg_Std = $id_reg3[0]->id;
-                $id_stu_project[2]->save();
+                // $id_stu_project[2]->id_reg_Std = $id_reg3[0]->id;
+                // $id_stu_project[2]->save();
+                project_user::updateOrCreate(
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg3[0]->id],
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg3[0]->id, 'isHead' => 0]
+                );
             }
 
             // $id_reg1 = reg_std::where('std_code',$request->reg_std1)->get();
@@ -1279,6 +1316,12 @@ class projectControllers extends Controller
                 $name_president[2]->id_instructor = $request->name_director2;
                 $name_president[2]->save();
             }
+            if ($request->name_mentor != 0) {
+                project::updateOrCreate(
+                    ['Project_id' => $id, 'name_mentor' => $request->name_mentor],
+                    ['Project_id' => $id, 'name_mentor' => $request->name_mentor]
+                );
+            }
             // $datas = project::orderBy('id', 'ASC')->paginate(10);
 
             return redirect("/project");
@@ -1293,6 +1336,8 @@ class projectControllers extends Controller
             $project_id->name_th = $request->Project_name_thai;
             $project_id->name_en = $request->Project_name_eg;
             $project_id->status = 'Waiting';
+            $project_id->because_reject = '-';
+            $project_id->name_mentor = $request->name_mentor;
             $project_id->save();
             $fileModel = Project_File::find(["Project_id_File", $id]);
             $fileModel[0]->name_file = time() . '_' . $request->File->getClientOriginalName();
@@ -1315,14 +1360,21 @@ class projectControllers extends Controller
             }
             if ($request->reg_std2 != 0) {
                 $id_reg2 = reg_std::where('std_code', $request->reg_std2)->get();
-                $id_stu_project[1]->id_reg_Std = $id_reg2[0]->id;
-                $id_stu_project[1]->save();
+                project_user::updateOrCreate(
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg2[0]->id],
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg2[0]->id, 'isHead' => 0]
+                );
             }
             if ($request->reg_std3 != 0) {
                 $id_reg3 = reg_std::where('std_code', $request->reg_std3)->get();
-                $id_stu_project[2]->id_reg_Std = $id_reg3[0]->id;
-                $id_stu_project[2]->save();
+                // $id_stu_project[2]->id_reg_Std = $id_reg3[0]->id;
+                // $id_stu_project[2]->save();
+                project_user::updateOrCreate(
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg3[0]->id],
+                    ['Project_id' => $id, 'id_reg_Std' => $id_reg3[0]->id, 'isHead' => 0]
+                );
             }
+
             $name_president = project_instructor::where('Project_id', $id)->get();
 
             if ($request->name_president != 0) {
@@ -1337,6 +1389,7 @@ class projectControllers extends Controller
                 $name_president[2]->id_instructor = $request->name_director2;
                 $name_president[2]->save();
             }
+
             return redirect("/project");
             // $user = $request->user()->id;
             // $data_std1 = DB::table('reg_stds')->where('user_id', $user)->select('reg_stds.id')->get();
@@ -1932,15 +1985,15 @@ class projectControllers extends Controller
             $templateProcessor->setValue('pres3', $request->presentations[2]);
             $templateProcessor->setValue('total3', $total3 = $meam50_3 + $meam100_3 + $request->presentations[2] + $request->Test_in_time[2] + $request->Internship_score[2]);
             if ($total3 >= 80) {
-                $templateProcessor->setValue('grade3',$grade3= 'A');
+                $templateProcessor->setValue('grade3', $grade3 = 'A');
             } else if ($total3 >= 75) {
-                $templateProcessor->setValue('grade3',$grade3= 'B+');
+                $templateProcessor->setValue('grade3', $grade3 = 'B+');
             } else if ($total3 >= 70) {
-                $templateProcessor->setValue('grade3',$grade3= 'B');
+                $templateProcessor->setValue('grade3', $grade3 = 'B');
             } else if ($total3 >= 65) {
-                $templateProcessor->setValue('grade3',$grade3= 'C+');
+                $templateProcessor->setValue('grade3', $grade3 = 'C+');
             } else if ($total3 >= 60) {
-                $templateProcessor->setValue('grade3',$grade3= 'C');
+                $templateProcessor->setValue('grade3', $grade3 = 'C');
             }
             $CollectPoints = new CollectPoints;
             $CollectPoints->Internship_score = $request->Internship_score[2];
@@ -1986,5 +2039,57 @@ class projectControllers extends Controller
 
         // return response()->json($datas[0]->name_th);
         return response()->download($fileName)->deleteFileAfterSend(true);
+    }
+    public function reject_project(Request $request, $id_Notifications, $id, $id_test)
+    {
+
+        $reject = new reject_test();
+        $reject->project_id_reject_tests = $id;
+        $reject->test_id = $id_test;
+        // return response()->json(Auth::user());
+        $reject->id_user_reject_tests = Auth::user()->id;
+        $reject->comment_reject_tests = $request->reject;
+        $reject->save();
+
+        $sendToUser  =  project_user::where([['Project_id', $id]])->get();
+        // $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
+        foreach ($sendToUser as $key => $itme) {
+            $send  = User::where('reg_std_id', $itme->id_reg_Std)->first();
+            $send->notify(new InvoicePaid(12, $id, 'คำแบบเสนอขอสอบ50ไม่ผ่าน กรุณาแก้ไข', Auth::user()));
+        }
+
+        foreach (Auth::user()->unreadNotifications as $notification) {
+            if ($notification->id == $id_Notifications) {
+                // return response()->json($notification->id );
+                $notification->markAsRead();
+            } else {
+            }
+        }
+        return redirect('/home');
+    }
+    public function reject_allow($id, $id_test)
+    {
+        // return response()->json([$id,$id_test]);
+        $data_reject = reject_test::where([['project_id_reject_tests', $id], ['test_id', $id_test]])->get();
+        if (isset($data_reject)) {
+            reject_test::where([['project_id_reject_tests', $id], ['test_id', $id_test]])->delete();
+        }
+        if ($id_test == 1) {
+            $test50 = test50::where('Project_id_test50', $id);
+            if (isset($test50)) {
+                test50::where('Project_id_test50', $id)->delete();
+                return redirect('/home');
+            } else {
+                return redirect('/home');
+            }
+        } elseif ($id_test == 2) {
+            $test100 = test100::where('Project_id_test100', $id)->delete();
+            if (isset($test100)) {
+                test100::where('Project_id_test100', $id)->delete();
+                return redirect('/home');
+            } else {
+                return redirect('/home');
+            }
+        }
     }
 }
