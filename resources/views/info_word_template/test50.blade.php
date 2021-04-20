@@ -10,7 +10,7 @@
             <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ50</h3>
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
-                
+
                 {!! Form::text('Project_name_thai', $datas[0]->name_th, ['readonly', 'class' => 'form-control']) !!}
             </div>
             <div class="my-4">
@@ -117,17 +117,17 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อนุญาต)</span>
+                    <span class="text">เอกสารผ่าน</span>
                 </a>
 
                 <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
-                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
+                    <span class="text">เอกสารไม่ผ่าน</span>
                 </a>
 
-                {!! Form::open(['action' => ['projectControllers@reject_project',$id_Notifications,$datas[0]->id,1], 'method' => 'POST']) !!}
+                {!! Form::open(['action' => ['projectControllers@reject_project', $id_Notifications, $datas[0]->id, 1], 'method' => 'POST']) !!}
                 <!-- Modal -->
                 <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">

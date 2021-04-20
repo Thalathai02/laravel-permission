@@ -128,8 +128,45 @@
                 <span class="icon text-white-50">
                     <i class="fas fa-check"></i>
                 </span>
-                <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                <span class="text">เอกสารผ่าน</span>
             </a>
+            
+            <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split my-2">
+                <span class="icon text-white-50">
+                    <i class="fas fa-times"></i>
+                </span>
+                <span class="text">เอกสารไม่ผ่าน</span>
+            </a>
+
+            {!! Form::open(['action' => ['projectControllers@reject_project',$id_Notifications,$datas[0]->id,3], 'method' => 'POST']) !!}
+            <!-- Modal -->
+            <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">คุณต้องการให้โครงการ
+                                ไม่ผ่านหรือไม่ ?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div>
+                                {!! Form::label('reject', 'สาเหตุที่ไม่ผ่าน') !!}
+                                {!! Form::text('reject', null, ['class' => 'form-control']) !!}
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-danger">ยืนยัน</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {!! Form::close() !!}
             @if (Auth::user()->hasRole('Admin'))
             <a href="{{ route('project.edit',  $datas[0]->id) }}" class="btn btn-info btn-icon-split" target="_blank">
                 <span class="icon text-white-50">
@@ -137,6 +174,8 @@
                 </span>
                 <span class="text">แก้ไขโปรเจด</span>
             </a>
+            
+           
             @endif
         </div>
         

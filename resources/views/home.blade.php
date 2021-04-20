@@ -30,10 +30,16 @@
                                     <a href="/projects/into_project" class="btn btn-primary my-2"
                                         align="left">เพิ่มโปรเจค</a>
                                 </div>
-                            @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว')
+                            @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' )
                                 <div>
-                                    <a class="btn btn-primary my-2"
+                                    <a class="btn btn-primary my-1"
                                         href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
+
+                                    <a class="btn btn-primary my-1"
+                                        href="{{ route('project.ChangeBoard', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์</a>
+
+                                    <a class="btn btn-primary my-1"
+                                        href="{{ route('project.ChangeTopic', Auth::user()->id) }}">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์</a>
                                 </div>
                             @elseif($data_topics_Dashboard == 'เสนอขอสอบ50')
                                 <div>
@@ -41,6 +47,7 @@
                                         href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
                                         (สอบ50)</a>
                                 </div>
+
                             @elseif($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ50)')
                                 <div>
                                     <a class="btn btn-primary my-2"
@@ -84,7 +91,7 @@
                                                                     <li @if ($data_topics_Dashboard == 'ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ') class="active" @endif>ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ</li>
                                                                 </div>
                                                                 <div>
-                                                                    <li @if ($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว') class="active" @endif>แต่งตั้งประธานและกรรมการแล้ว</li>
+                                                                    <li @if ($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' ) class="active" @endif>แต่งตั้งประธานและกรรมการแล้ว</li>
                                                                 </div>
                                                                 <div>
                                                                     <li @if ($data_topics_Dashboard == 'เสนอขอสอบ50') class="active" @endif>เสนอขอสอบ50</li>
@@ -180,7 +187,7 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">ความคืบหน้าของเอกสาร</h6>
+                                        <h5 class="m-0 font-weight-bold text-primary">ความคืบหน้าของเอกสาร</h5>
                                     </div>
                                     <!-- Card Body -->
                                     <div class="card-body">
@@ -189,28 +196,45 @@
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-2"
                                                     style="font-size:18px">
                                                     {{ $data_topics_Dashboard }}</div>
+                                                @isset($notification)
+                                                    @foreach ($notification as $key => $item)
+                                                        <p>
+                                                            @if ($item[0] == 0)
+                                                                <span style="font-size: 48px; color: Tomato;">
+                                                                    <i class="fas fa-user"></i>
+                                                                </span> {{ $item[1]['name'] }}
+                                                            @elseif ($item[0] == 1)
+                                                                <span style="font-size: 48px; color: Dodgerblue;">
+                                                                    <i class="fas fa-user"></i>
+                                                                </span>
+                                                                {{ $item[1]['name'] }}
+                                                                {{-- {{ $item[0] }} --}}
+                                                            @endif
 
-                                                @if ($notification == 0)
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
-                                                        รอการตรวจสอบ</div>
+                                                        </p>
+                                                    @endforeach
+                                                @endisset
+                                                @isset($notification_id)
+                                                    @if ($notification_id == 0)
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
+                                                            รอการตรวจสอบ</div>
+                                                </div>
+                                            @elseif($notification_id == 1)
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
+                                                    สามารสสอบได้</div>
                                             </div>
-                                        @elseif($notification == 1)
+                                        @elseif($notification_id== 2)
                                             <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
-                                                สามารสสอบได้</div>
+                                                สมบูรณ์</div>
                                         </div>
-                                    @elseif($notification == 2)
+                                    @elseif($notification_id == 3)
                                         <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
-                                            สมบูรณ์</div>
+                                            รอดำเนินการต่อไป</div>
                                     </div>
-                                @elseif($notification == 3)
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800 text-red">
-                                        รอดำเนินการต่อไป</div>
-                                </div>
-        @endif
+            @endif
+        @endisset
 
-        <div class="col-auto">
-            <i class="fas fa-file-alt fa-2x text-gray-300"></i>
-        </div>
+
         </div>
         </div>
 
@@ -261,10 +285,14 @@
                                                         @foreach ($datas as $key => $row)
                                                             @if ($row->status == 'Check')
                                                                 <tr>
-                                                                    
+
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
                                                                     <td>{{ $row->note }}</td>
                                                                 </tr>
                                                             @endif
@@ -295,7 +323,7 @@
                                                             <th scope="col">ลำดับโครงงาน</th>
                                                             <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
                                                             <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
-                                                           
+
                                                             {{-- <th scope="col">รายละเอียด</th>
                                                         <th scope="col">แก้ไข</th> --}}
                                                         </tr>
@@ -305,8 +333,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -348,8 +380,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -390,8 +426,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
 
                                                                 </tr>
                                                             @endif
@@ -498,8 +538,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
                                                                     <td>{{ $row->note }}</td>
                                                                 </tr>
                                                             @endif
@@ -542,8 +586,12 @@
                                                         @foreach ($test50 as $key => $row)
                                                             <tr>
                                                                 <th scope="row">{{ $key + 1 }}</th>
-                                                                <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                <td><a target="_blank"
+                                                                        href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                </td>
+                                                                <td><a target="_blank"
+                                                                        href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                </td>
                                                             </tr>
                                                         @endforeach
 
@@ -582,8 +630,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
                                                                 </tr>
                                                             @endif
                                                         @endforeach
@@ -627,8 +679,12 @@
                                                             @if ($row->status == 'Check')
                                                                 <tr>
                                                                     <th scope="row">{{ $key + 1 }}</th>
-                                                                    <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_th }}</a></td>
-                                                                   <td><a target="_blank"  href="{{ route('CheckProject.info_project', $row->id ) }}">{{ $row->name_en }}</a></td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
 
                                                                 </tr>
                                                             @endif

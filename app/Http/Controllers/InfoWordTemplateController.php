@@ -547,18 +547,35 @@ class InfoWordTemplateController extends Controller
                 }
                 // return response()->json($data_project[0]->test_id);
 
-                // return response()->json($id_user);
+                // return response()->json($data_project[0]->test_id);
                 if($data_project[0]->test_id == 1){
                     $test50=test50::where('Project_id_test50',$formId)->first();
                     // return response()->json($test50->Project_id_test50);
                     $notification  = $this->DataTableController->noti_data_allow_test50($test50->Project_id_test50, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
+                    $notification_check  = $this->DataTableController->noti_data_allow_Pretest50s($test50->Project_id_test50, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,1);
                 }elseif($data_project[0]->test_id == 2){
                     $test100=test100::where('Project_id_test100',$formId)->first();
                     // return response()->json($test50->Project_id_test50);
                     $notification  = $this->DataTableController->noti_data_allow_test100s($test100->Project_id_test100, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
+                    $notification_check =  $this->DataTableController->noti_data_allow_Pretest100s($test100->Project_id_test100, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,2);
+               
+                }elseif($data_project[0]->test_id == 3){
+                    $changetopic=changetopic::where('Project_id_changetopics',$formId)->first();
+                    
+                    $notification_check = $this->DataTableController->noti_data_allow_changetopic_checkBinary($changetopic->Project_id_changetopics, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,3);
+                    $notification = $this->DataTableController->noti_data_allow_changetopic($changetopic->Project_id_changetopics, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,3);
+                    // return response()->json($notification);
+                    // $notification = 0;
+                }elseif($data_project[0]->test_id == 4){
+                    $ChangeBoard=ChangeBoard::where('Project_id_ChangeBoard',$formId)->first();
+                    // return response()->json($ChangeBoard);
+                    $notification_check  = $this->DataTableController->noti_data_allow_ChangeBoard_checkBinary($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
+                    $notification  = $this->DataTableController->noti_data_allow_ChangeBoard($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
+                //    $notification = 1;
+                // return response()->json($notification);
                 }
-
-                return view('info_word_template.reject_project_test',compact('data_project','notification'));
+                // return response()->json($notification);
+                return view('info_word_template.reject_project_test',compact('data_project','notification','notification_check'));
                 // return response()->json($notification);
                 
             } else {
@@ -587,7 +604,7 @@ class InfoWordTemplateController extends Controller
             if ($notification->id == $id) {
                 // return response()->json($notification->id );
                 $notification->markAsRead();
-                return back();
+                return redirect('home');
             } else {
             }
         }

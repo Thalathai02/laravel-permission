@@ -132,13 +132,13 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                    <span class="text">เอกสารผ่าน</span>
                 </a>
                 <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
-                    <span class="text">ไม่ผ่าน(ไม่อนุญาต)</span>
+                    <span class="text">เอกสารไม่ผ่าน</span>
                 </a>
 
                 {!! Form::open(['action' => ['projectControllers@reject_project',$id_Notifications,$datas[0]->id,2], 'method' => 'POST']) !!}

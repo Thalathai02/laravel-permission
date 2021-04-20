@@ -71,9 +71,9 @@ class HomeController extends Controller
 
             if ($id_stu_project == '[]') {
                 $data_topics_Dashboard = "ยังไม่ส่งหัวข้อ";
-                $notification = 3;
+                $notification_id = 3;
                 $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(0);
-                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard'));
+                return view('home', compact('notification_id', 'data_topics_Dashboard', 'data_progress_Dashboard'));
                 // return response()->json($id_stu_project );
             }
             $test_50 = test50::where('Project_id_test50', $id_stu_project[0]->Project_id)->get();
@@ -117,20 +117,35 @@ class HomeController extends Controller
                     $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(4);
                     return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
-
+                // return response()->json($notification);
                 return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
             } elseif (!empty($datas_instructor[0]->id)) {
-                $notification = 3;
+                $notification_id = 3;
                 $data_topics_Dashboard = "แต่งตั้งประธานและกรรมการแล้ว";
                 $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(2);
                 $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
-                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                $ChangeBoard=ChangeBoard::where('Project_id_ChangeBoard',$id_stu_project[0]->Project_id)->first();
+                $changetopic=changetopic::where('Project_id_changetopics',$id_stu_project[0]->Project_id)->first();
+                if(isset($ChangeBoard)){
+                    $data_topics_Dashboard = "ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์";
+                    $notification  = $this->DataTableController->noti_data_allow_ChangeBoard($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
+                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                    // return response()->json($notification);
+                }
+                if(isset($changetopic)){
+                    $data_topics_Dashboard = "ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์";
+                    $notification  = $this->DataTableController->noti_data_allow_changetopic($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id,3);
+                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                }
+                // return response()->json($ChangeBoard);
+                return view('home', compact('notification_id', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                
             } else {
-                $notification = 3;
+                $notification_id = 3;
                 $data_topics_Dashboard = "ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ";
                 $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(1);
                 $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
-                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas_std', 'datas'));
+                return view('home', compact('notification_id', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas_std', 'datas'));
             }
         }
         if (Auth::user()->hasRole('Admin')) {
