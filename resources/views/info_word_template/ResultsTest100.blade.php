@@ -159,7 +159,7 @@
                         </div>
                         @if ($key == 2)
                         @if($sumbit > 3)
-                            <div class="my-2">
+                            {{-- <div class="my-2">
                                                        
                                 <a href="{!! route('remove_comment_test100', ['id1' => $data[0]->id,'id2' => $data[1]->id,'id3' => $data[2]->id] ) !!}" class="btn btn-success btn-icon-split">
                                     <span class="icon text-white-50">
@@ -167,7 +167,7 @@
                                     </span>
                                     <span class="text">รับทราบ</span>
                                 </a>
-                            </div>
+                            </div> --}}
                         @else
                         @endif
                         @else

@@ -24,12 +24,16 @@
                                 <h6 class="m-0 font-weight-bold text-danger">คำแบบเสนอขอสอบ 50 ไม่ผ่าน</h6>
                             @elseif($data_project[0]->test_id == 2)
                                 <h6 class="m-0 font-weight-bold text-danger">คำแบบเสนอขอสอบ 100 ไม่ผ่าน</h6>
+                            @elseif($data_project[0]->test_id == 3)
+                                <h6 class="m-0 font-weight-bold text-danger">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
+                            @elseif($data_project[0]->test_id == 4)
+                                <h6 class="m-0 font-weight-bold text-danger">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
                             @endif
-                            @if ($notification == 0)
+                            @if ($notification_check == 0)
                                 <div class="font-weight-bold text-warning text-uppercase m-0">
                                     รอการประเมิน...
                                 </div>
-                                @elseif($notification == 1)
+                            @elseif($notification_check == 1)
                                 <div class="font-weight-bold text-success text-uppercase m-0">
                                     สิ้นสุดประเมิน
                                 </div>
@@ -57,7 +61,7 @@
                                     </div>
                                 </div>
                             @endforeach
-                            @if ($notification == 1)
+                            @if ($notification_check == 1)
                                 <a href="{!! route('project.reject_allow', ['id' => $data_project[0]->project_id_reject_tests, 'id_test' => $data_project[0]->test_id]) !!}" class="btn btn-primary">รับทราบ</a>
                             @endif
 

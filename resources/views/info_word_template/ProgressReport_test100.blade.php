@@ -109,7 +109,7 @@
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>
                     </span>
-                    <span class="text">รับทราบ(อ่านเเล้ว)</span>
+                    <span class="text">เอกสารผ่าน</span>
                 </a>
             </div>
 

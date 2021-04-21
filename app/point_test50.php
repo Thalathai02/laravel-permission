@@ -14,6 +14,7 @@ class point_test50 extends Model
         'project_id_point_test50',
         'id_instructor_point_test50',
         'point_test50',
+        'status_point_test50',
         'reg_id_point_test50'
        ];
 }
