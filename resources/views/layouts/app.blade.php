@@ -173,6 +173,7 @@
                         <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
                         <a class="collapse-item" href="{{ route('ResultsTest50',Auth::user()->id) }}">ผลประเมินการสอบ50(ทั้งหมด)</a>
                         <a class="collapse-item" href="{{ route('ResultsTest100',Auth::user()->id) }}">ผลประเมินการสอบ100(ทั้งหมด)</a>
+                        <a class="collapse-item" href="{{ route('CheckProject.allreject',Auth::user()->reg_std_id) }}">เอกสารทีส่งไม่ผ่าน(ทั้งหมด)</a>
                     </div>
                 </div>
             </li>

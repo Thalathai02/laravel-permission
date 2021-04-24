@@ -39,11 +39,18 @@ class ImportStd implements ToModel
         // $student = User::all();
         // $student->roles()->attach($std_role);
         // $student->permissions()->attach($std_perm);
-        if (empty($row[0])) {
-            // errors()->add('field', 'Something is wrong with this field!');
-        }
         if (empty($row[1])) {
             // errors()->add('field', 'Something is wrong with this field!');
+            // return back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณากรองใหม่');
+            back()->withErrors('ชื่อผู้ใช้หาย กรุณาตรวจสอบ');
+            // abort(403, 'Unauthorized action.');
+
+        }
+        if (empty($row[2])) {
+            // errors()->add('field', 'Something is wrong with this field!');
+            // return back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณากรองใหม่');
+            back()->withErrors('รหัสนักศึกษาหาย กรุณาตรวจสอบ');
+            // abort(403, 'Unauthorized action.');
         } else {
             $student = new User();
             $student->name = $row[2];

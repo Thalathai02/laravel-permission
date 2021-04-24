@@ -22,6 +22,7 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\Http\Controllers\DataTableController;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\InvoicePaid;
+use App\reject_test;
 
 class CheckProjectController extends Controller
 {
@@ -282,5 +283,19 @@ class CheckProjectController extends Controller
         // return response()->json($send);
         // $sendToUser->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว', Auth::user()));
         return back();
+    }
+    public function allreject($id){
+        $reg_project = project_user::where('id_reg_Std',$id)->first();
+        $reject =reject_test::join('users','reject_tests.id_user_reject_tests','users.id')
+        ->select('reject_tests.*','users.name')
+        ->where([['reject_tests.project_id_reject_tests',$reg_project->Project_id]])->withTrashed()->get();
+        // collect($reject)->groupBy(['test_id']);
+        // $reject->groupBy('test_id');
+        foreach ($reject as $key => $box_data) {
+            $rejects[] = $box_data;
+        }
+        $datas = collect($rejects)->groupBy('test_id');
+        return view('info_word_template.allreject',compact('datas'));
+        return response()->json($datas);
     }
 }

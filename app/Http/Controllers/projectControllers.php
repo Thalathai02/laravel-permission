@@ -392,7 +392,7 @@ class projectControllers extends Controller
             $id =  $name->id;
             $data_nameProject = project::find($id);
 
-            $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
+            $fileModel->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
@@ -424,7 +424,7 @@ class projectControllers extends Controller
             $id =  $name->id;
             $data_nameProject = project::find($id);
 
-            $fileModel->name_file = time() . '_' . $request->File->getClientOriginalName();
+            $fileModel->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
@@ -699,17 +699,36 @@ class projectControllers extends Controller
     }
     public function wordExport_CompleteForm(Request $request, $id)
     {
-
-
+        $request->validate([
+            'File' => 'required|file|mimes:zip',
+            
+        ]);
+        $name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';
         //Database
+        // return response()->json($name_file);
         $CompleteForm_DB = CompleteForm::create([
             'Project_id_CompleteForm' => $id,
-            'status_CompleteForm' => 'Waiting'
+            'status_CompleteForm' => 'Waiting',
+            'file_CompleteForm' => $name_file
         ]);
 
+        Storage::disk('local')->putFileAs(
+            'CompleteForm',
+            $request->File,
+            $name_file
+        );
+        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
+        $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
+        $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
 
+
+        $CompleteForm_DB = CompleteForm::find($CompleteForm_DB->id);
         // return response()->json($CompleteForm_DB->id);
         $this->notifications_fun(1, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
+        $this->notifications_fun($user_noti1[0]->id, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
+        $this->notifications_fun($user_noti2[0]->id, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
+        $this->notifications_fun($user_noti3[0]->id, 5, $CompleteForm_DB->id, 'แบบขอส่งโครงงานฉบับสมบูรณ์');
 
         $templateProcessor = new TemplateProcessor(storage_path('word-template/05-แบบขอส่งโครงงานฉบับสมบูรณ์.docx'));
         $templateProcessor->setValue('id', $request->reg_std1);
@@ -764,14 +783,14 @@ class projectControllers extends Controller
             'room_test50' => 'required',
             'File' => 'required|file|mimes:zip',
         ]);
-        $name_file = time() . '_' . $request->File->getClientOriginalName();
+        $name_file = time() . '_' .Auth::user()->reg_std->std_code.'.zip';;
         //Database
         $test50_DB = test50::create([
             'Project_id_test50' => $id,
             'date_test50' => $request->date_test50,
             'end_date_test50' => formatDateEnd_test($request->date_test50),
             'room_test50' => $request->room_test50,
-            'file_test50' => time() . '_' . $request->File->getClientOriginalName(),
+            'file_test50' => time() . '_' . Auth::user()->reg_std->std_code.'.zip',
             'status_test50' => 'Waiting'
         ]);
         Storage::disk('local')->putFileAs(
@@ -978,7 +997,7 @@ class projectControllers extends Controller
             'room_test100' => 'required',
             'File' => 'required|file|mimes:zip',
         ]);
-        $name_file = time() . '_' . $request->File->getClientOriginalName();
+        $name_file = time() . '_' .Auth::user()->reg_std->std_code.'.zip';;
         //Database
         $test100_DB = test100::create([
             'Project_id_test100' => $id,
@@ -1341,7 +1360,7 @@ class projectControllers extends Controller
             $project_id->name_mentor = $request->name_mentor;
             $project_id->save();
             $fileModel = Project_File::find(["Project_id_File", $id]);
-            $fileModel[0]->name_file = time() . '_' . $request->File->getClientOriginalName();
+            $fileModel[0]->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
             $fileModel[0]->status_file_path = "Waiting";
             $subject = subject::find($project_id->subject_id);
             //  return response()->json($project_id);
@@ -2133,6 +2152,12 @@ class projectControllers extends Controller
                 $send->notify(new InvoicePaid(12, $id, 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน กรุณาแก้ไข', Auth::user()));
             }
         }
+        if($id_test == 5){
+            foreach($sendToUser as $key =>$itme){
+                $send  = User::where('reg_std_id', $itme->id_reg_Std)->first();
+                $send->notify(new InvoicePaid(12, $id, 'แบบขอส่งโครงงานฉบับสมบูรณ์ไม่ผ่าน กรุณาแก้ไข', Auth::user()));
+            }
+        }
 
 
         foreach (Auth::user()->unreadNotifications as $notification) {
@@ -2180,6 +2205,15 @@ class projectControllers extends Controller
             $ChangeBoard = ChangeBoard::where('Project_id_ChangeBoard', $id)->get();
             if (isset($ChangeBoard)) {
                 ChangeBoard::where('Project_id_ChangeBoard', $id)->delete();
+                return redirect('/home');
+            } else {
+                return redirect('/home');
+            }
+            return redirect('/home');
+        }elseif ($id_test == 5) {
+            $CompleteForm = CompleteForm::where('Project_id_CompleteForm', $id)->get();
+            if (isset($CompleteForm)) {
+                CompleteForm::where('Project_id_CompleteForm', $id)->delete();
                 return redirect('/home');
             } else {
                 return redirect('/home');

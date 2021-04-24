@@ -67,9 +67,15 @@ class ImportExcelController extends Controller
             ]);
             $data = $request['subject'];
             $request->session()->flash('subject_id', $data);
-            Excel::import(new ImportStd, request()->file('import_file'));
-            // $request->session()->fluslh();
-            return back()->with('success', 'Contacts imported successfully.');
+           Excel::import(new ImportStd, request()->file('import_file'));
+            
+            // return response()->json( $import);
+            if(session()->has('errors')){
+                return back();
+            }else{
+                return back()->with('success', 'Contacts imported successfully.');
+            }
+            
         } else {
             abort(404);
         }
@@ -111,43 +117,52 @@ class ImportExcelController extends Controller
             'username' => ['required'],
             'password' => ['required'],
             'note',
-            'Internship_score'=> ['required'],
+            'Internship_score' => ['required'],
         ]);
-        $subject = new subject_student();
-        $std_role = Role::where('slug', 'std')->first();
-        $std_perm = Permission::where('slug', 'edit')->first();
-        $student = new User();
-        $reg = new reg_std();
-        $student->name = $request['name'];
-        $student->email = $request['email'];
-        $student->username = $request['username'];
-        $student->password =  Hash::make($request['password']);
-        $student->save();
-        $student->roles()->attach($std_role);
-        $student->permissions()->attach($std_perm);
+        $check_std_code = reg_std::where('std_code', $request['std_code'])->first();
+        $check_username =  User::where('username', $request['username'])->first();
+        if (isset($check_std_code)) {
+            return back()->withErrors('รหัสนักศึกษาซ้ำ กรุณากรองใหม่');
+        } elseif ($check_username) {
+            return back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณากรองใหม่');
+        } else {
+            $subject = new subject_student();
+            $std_role = Role::where('slug', 'std')->first();
+            $std_perm = Permission::where('slug', 'edit')->first();
+            $student = new User();
+            $reg = new reg_std();
+            $student->name = $request['name'];
+            $student->email = $request['email'];
+            $student->username = $request['username'];
+            $student->password =  Hash::make($request['password']);
+            $student->save();
+            $student->roles()->attach($std_role);
+            $student->permissions()->attach($std_perm);
 
-        $reg->std_code = $request['std_code'];
-        $reg->name   = $request['name'];
-        $reg->nick_name  = $request['nick_name'];
-        $reg->phone  = $request['phone'];
-        $reg->lineId  = $request['lineId'];
-        $reg->email  = $request['email'];
-        $reg->facebook  = $request['facebook'];
-        $reg->address  = $request['address'];
-        $reg->parent_name  = $request['parent_name'];
-        $reg->parent_phone = $request['parent_phone'];
-        $reg->Internship_score = $request['Internship_score'];
-        $reg->username  = 'MJU' . $request['username'];
-        $reg->password  = Hash::make($request['password']);
-        $reg->user_id  = $student->id;
-        $reg->note = $request['note'];
-        $reg->save();
-        $student->reg_std_id  =  $reg->id;
-        $subject->student_id = $reg->id;
-        $subject->subject_id = $request['subject_id'];
-        $subject->save();
+            $reg->std_code = $request['std_code'];
+            $reg->name   = $request['name'];
+            $reg->nick_name  = $request['nick_name'];
+            $reg->phone  = $request['phone'];
+            $reg->lineId  = $request['lineId'];
+            $reg->email  = $request['email'];
+            $reg->facebook  = $request['facebook'];
+            $reg->address  = $request['address'];
+            $reg->parent_name  = $request['parent_name'];
+            $reg->parent_phone = $request['parent_phone'];
+            $reg->Internship_score = $request['Internship_score'];
+            $reg->username  = 'MJU' . $request['username'];
+            $reg->password  = Hash::make($request['password']);
+            $reg->user_id  = $student->id;
+            $reg->note = $request['note'];
+            $reg->save();
+            $student->reg_std_id  =  $reg->id;
+            $subject->student_id = $reg->id;
+            $subject->subject_id = $request['subject_id'];
+            $subject->save();
 
-        $student->save();
+            $student->save();
+        }
+
 
         return redirect('/STD');
     }
@@ -163,17 +178,17 @@ class ImportExcelController extends Controller
         $user = $request->user();
         if ($id_user == $id) {
             $data = reg_std::find($id);
-            $subject_id = subject_student::where('student_id',$id)->first();
+            $subject_id = subject_student::where('student_id', $id)->first();
             $subject = subject::find($subject_id->subject_id);
             $term = subject::pluck('year_term', 'id');
-            return view('STD.edit', compact(['data','subject']));
+            return view('STD.edit', compact(['data', 'subject']));
         }
         if ($user->hasRole('Admin')) {
             $term = subject::pluck('year_term', 'id');
             $data = reg_std::find($id);
-            $subject_id = subject_student::where('student_id',$id)->first();
+            $subject_id = subject_student::where('student_id', $id)->first();
             $subject = subject::find($subject_id->subject_id);
-            return view('STD.edit', compact(['data','subject','term']));
+            return view('STD.edit', compact(['data', 'subject', 'term']));
         } else {
             abort(404);
         }
@@ -183,7 +198,15 @@ class ImportExcelController extends Controller
     {
         $id_user = Auth::user()->reg_std_id;
         $user = $request->user();
+        $check_std_code = reg_std::where('std_code', $request['std_code'])->first();
+        $check_username =  User::where('username', $request['username'])->first();
+        if (isset($check_std_code)) {
+            return back()->withErrors('รหัสนักศึกษาซ้ำ กรุณากรองใหม่');
+        } elseif ($check_username) {
+            return back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณากรองใหม่');
+        }
         if ($id_user == $id) {
+
             if ($request->hasFile('avatar')) {
                 $request->validate([
                     'std_code' => ['required'],
@@ -200,7 +223,7 @@ class ImportExcelController extends Controller
                     'password',
                     'avatar' => 'mimes:jpeg,png|max:4096',
                 ]);
-                
+
 
                 reg_std::find($id)->update($request->all());
                 $name =  time() . '_' . $request->std_code . '.jpg';
@@ -273,7 +296,7 @@ class ImportExcelController extends Controller
 
         return redirect('/STD');
     }
-    public function Search(Request $request)
+    public function show(Request $request)
     {
         $user = $request->user();
 
@@ -281,20 +304,25 @@ class ImportExcelController extends Controller
             $Search = $request->get(
                 'Search'
             );
-            $term = subject::pluck('year_term', 'id');
-            $data = reg_std::query()
-                ->where('name', 'LIKE', "%{$Search}%")
+            $term = subject::orderBy('id', 'desc')->pluck('year_term', 'id');
+            $data = reg_std::where('name', 'LIKE', "%{$Search}%")
                 ->orWhere('std_code', 'LIKE', "%{$Search}%")
                 ->paginate(20);
+                // return response()->json($data);
+             $data->appends(['Search' => $Search]);
             return view('STD.index', compact('data', 'term'));
         } else {
             abort(404);
         }
     }
-    public function show($id)
+    // public function show(Request $request,$id){
+    //     return response()->json($request);
+    //     return redirect('/STD');
+    // }
+    public function showinfo($id)
     {
         $id_user = Auth::user()->reg_std_id;
-        
+
         if ($id_user == $id) {
             $data = reg_std::find($id);
             $datasubject_id = subject_student::where('student_id', $id)->first();
@@ -306,10 +334,10 @@ class ImportExcelController extends Controller
             $term = subject::pluck('year_term', 'id');
             $data = reg_std::find($id);
             $datasubject_id = subject_student::where('student_id', $id)->first();
-            
+
             $subject = subject::find($datasubject_id->subject_id);
-            
-            return view('STD.infoStd', compact(['data', 'subject', 'term']));
+
+            return view('STD.infoStd', compact('data', 'subject', 'term'));
         }
         if (Auth::user()->hasRole('Tea')) {
             $term = subject::pluck('year_term', 'id');

@@ -525,20 +525,118 @@ class DataTableController extends Controller
                 $notif = [$a, User::find(1)];
             }
         }
+        $id_1 = Teacher::find($id_1);
+        $notif_chari = User::find($id_1->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $b = 0;
+                $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
+            }
+        }
+        $id_2 = Teacher::find($id_2);
+        $notif_chari = User::find($id_2->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $c = 0;
+                $notif_id_2 = [$c, User::find($id_2->user_id_Instructor)];
+            }
+        }
+        $id_3 = Teacher::find($id_3);
+        $notif_chari = User::find($id_3->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $d = 0;
+                $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
+            }
+        }
 
         if (!isset($a)) {
             $a = 1;
             $notif = [1, User::find(1)];
         }
-
-        if ($a == 1) {
+        if (!isset($b)) {
+            $b = 1;
+            $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
+        }
+        if (!isset($c)) {
+            $c = 1;
+            $notif_id_2 = [$c, User::find($id_2->user_id_Instructor)];
+        }
+        if (!isset($d)) {
+            $d = 1;
+            $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
+        }
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
             // $submit = 2;
             $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
             $id_Project_id_CompleteForm[0]->save();
         } else {
             // $submit = 0;
         }
-        $submit = [$notif];
+        $submit = [$notif, $notif_id_1, $notif_id_2, $notif_id_3];
+        return  $submit;
+        // return  $id_test50[0]->id;
+    }
+
+    public function noti_data_allow_complete_forms_Datas($Project_id, $id_1, $id_2, $id_3)
+    {
+        $notif_admin = User::find(1);
+        $id_Project_id_CompleteForm = CompleteForm::where('Project_id_CompleteForm', $Project_id)->get();
+        foreach ($notif_admin->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $a = 0;
+                // $notif = [$a, User::find(1)];
+            }
+        }
+        $id_1 = Teacher::find($id_1);
+        $notif_chari = User::find($id_1->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $b = 0;
+                // $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
+            }
+        }
+        $id_2 = Teacher::find($id_2);
+        $notif_chari = User::find($id_2->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $c = 0;
+                // $notif_id_2 = [$c, User::find($id_2->user_id_Instructor)];
+            }
+        }
+        $id_3 = Teacher::find($id_3);
+        $notif_chari = User::find($id_3->user_id_Instructor);
+        foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
+            if ($notificationes->data['form_id'] == $id_Project_id_CompleteForm[0]->id && $notificationes->data['form'] == 5) {
+                $d = 0;
+                // $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
+            }
+        }
+
+        if (!isset($a)) {
+            $a = 1;
+            // $notif = [1, User::find(1)];
+        }
+        if (!isset($b)) {
+            $b = 1;
+            // $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
+        }
+        if (!isset($c)) {
+            $c = 1;
+            // $notif_id_2 = [$c, User::find($id_2->user_id_Instructor)];
+        }
+        if (!isset($d)) {
+            $d = 1;
+            // $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
+        }
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $submit = 1;
+            // $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
+            // $id_Project_id_CompleteForm[0]->save();
+        } else {
+            $submit = 0;
+        }
+        // $submit = [$notif, $notif_id_1, $notif_id_2, $notif_id_3];
         return  $submit;
         // return  $id_test50[0]->id;
     }

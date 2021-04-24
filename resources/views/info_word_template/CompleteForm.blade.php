@@ -10,8 +10,7 @@
             <h3 align="center">แบบขอส่งโครงงานฉบับสมบูรณ์</h3>
             <br />
             
-            {!! Form::open(['action' => ['projectControllers@wordExport_CompleteForm',$datas[0]->id], 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
+           
 
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -101,7 +100,10 @@
                     {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
                 </div>
             @endif
-
+            <div class="my-4">
+                {!! Form::label('name_upload_File', 'ที่นำไฟล์เข้า') !!}
+                <a href="{!! route('InfoWordTemplate.download', ['form' => 'CompleteForm', 'status' => $tableCompleteForm_id->status_CompleteForm, 'file' => $tableCompleteForm_id->file_CompleteForm]) !!}" download>ดาวน์โหลดเอกสาร</a>
+            </div>
             
             <div class="my-2">
                 <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
@@ -110,11 +112,44 @@
                     </span>
                     <span class="text">เอกสารผ่าน</span>
                 </a>
+
+                <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">เอกสารไม่ผ่าน</span>
+                </a>
+
+                {!! Form::open(['action' => ['projectControllers@reject_project', $id_Notifications, $datas[0]->id, 5], 'method' => 'POST']) !!}
+                <!-- Modal -->
+                <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">คุณต้องการให้โครงการ
+                                    ไม่ผ่านหรือไม่ ?</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    {!! Form::label('reject', 'สาเหตุที่ไม่ผ่าน') !!}
+                                    {!! Form::text('reject', null, ['class' => 'form-control']) !!}
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                                <button type="submit" class="btn btn-danger">ยืนยัน</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
             </div>
-
-
-
-            {!! Form::close() !!}
         </div>
         <script type="text/javascript">
             $('#datetimepicker').datetimepicker({

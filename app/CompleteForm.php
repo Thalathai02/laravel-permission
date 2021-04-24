@@ -11,5 +11,6 @@ class CompleteForm extends Model
         'id',
         'Project_id_CompleteForm',
         'status_CompleteForm',
+        'file_CompleteForm'
     ];
 }
