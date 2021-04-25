@@ -17,13 +17,13 @@
                     <strong>{{ $message }}</strong>
                 </div>
             @endif
-            {!! Form::open(['action' => 'ImportExcel\ImportExcelController@Search', 'method' => 'POST']) !!}
+            {{-- {!! Form::open(['action' => 'ImportExcel\ImportExcelController@show', 'method' => 'POST']) !!}
             <div class="form-group col">
                 {!! Form::label('Search', 'ค้นหา', ['class' => 'form-group']) !!}
                 {!! Form::text('Search', null, ['class' => 'form-group col-6']) !!}
                 <input type="submit" value="ค้นหา" class="btn btn-primary  " name="" id="">
             </div>
-            {!! Form::close() !!}
+            {!! Form::close() !!} --}}
 
             <a href="/Teacher/create" class="btn btn-primary my-2" align="left">เพิ่มข้อมูล</a>
 

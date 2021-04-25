@@ -55,26 +55,26 @@
                                         @if (!empty($datas_std) && $datas_std->count())
                                             @foreach ($row_data as $key => $row)
                                                 <tr>
-                                                    <td scope="row">{{ $row[0][0]->nick_name }}<br>
+                                                    <td scope="col">{{ $row[0][0]->nick_name }}<br>
                                                         {{ substr($row[0][0]->std_code, -3) }}</td>
-                                                    <td scope="row">{{ $row[0][0]->point_test50 }}</td>
-                                                    <td scope="row">{{ $row[1][0]->point_test50 }}</td>
-                                                    <td scope="row">{{ $row[2][0]->point_test50 }}</td>
+                                                    <td scope="col">{{ $row[0][0]->point_test50 }}</td>
+                                                    <td scope="col">{{ $row[1][0]->point_test50 }}</td>
+                                                    <td scope="col">{{ $row[2][0]->point_test50 }}</td>
                                                     {{-- = round(($row[0][0]->point_test50 + $row[1][0]->point_test50 + $row[2][0]->point_test50) / 3) --}}
-                                                    <td>{!! Form::number('test50[]', $test50=null , ['id' => 'test50', 'class' => 'test50 form-control ']) !!}</td>
-                                                    <td>{!! Form::number('Internship_score[]', null, ['class' => 'form-control Internship_score']) !!}</td>
-                                                    <td>{!! Form::number('Test_in_time[]', null, ['class' => 'form-control Test_in_time']) !!}</td>
-                                                    <td scope="row">{{ $row[0][1]->point_test100 }}</td>
-                                                    <td scope="row">{{ $row[1][1]->point_test100 }}</td>
-                                                    <td scope="row">{{ $row[2][1]->point_test100 }}</td>
+                                                    <td scope="col">{!! Form::number('test50[]', $test50=null , ['id' => 'test50', 'class' => 'test50 form-control','step'=>'0.01']) !!}</td>
+                                                    <td scope="col">{!! Form::number('Internship_score[]', $row[0][0]->Internship_score, ['readonly','class' => 'form-control Internship_score','step'=>'0.01']) !!}</td>
+                                                    <td scope="col">{!! Form::number('Test_in_time[]', null, ['class' => 'form-control Test_in_time','step'=>'0.01']) !!}</td>
+                                                    <td scope="col">{{ $row[0][1]->point_test100 }}</td>
+                                                    <td scope="col">{{ $row[1][1]->point_test100 }}</td>
+                                                    <td scope="col">{{ $row[2][1]->point_test100 }}</td>
                                                     {{-- round(($row[0][1]->point_test100 + $row[1][1]->point_test100 + $row[2][1]->point_test100) / 3) --}}
-                                                    <td>{!! Form::number('test100[]', $test100 = null, ['class' => 'test100 form-control ']) !!}</td>
+                                                    <td scope="col">{!! Form::number('test100[]', $test100 = null, ['class' => 'test100 form-control ','step'=>'0.01']) !!}</td>
                                                     {{-- <td scope="row">{{$test100 = ($row[0][1]->point_test100+$row[1][1]->point_test100+$row[2][1]->point_test100)/3}}</td> --}}
-                                                    <td> {!! Form::number('presentations[]', null, ['class' => 'form-control presentations']) !!}</td>
-                                                    <td scope="row">
+                                                    <td scope="col"> {!! Form::number('presentations[]', null, ['class' => 'form-control presentations','step'=>'0.01']) !!}</td>
+                                                    <td scope="col">
                                                         <div class="net-profit">
                                                     </td>
-                                                    <td scope="row">
+                                                    <td scope="col">
                                                         <div class="grade"></div>
                                                     </td>
                                                     <th>{!! Form::checkbox('code_id[]', $row[0][0]->std_code) !!}</th>
@@ -120,7 +120,7 @@
 
 
                 if (!isNaN(test50) && !isNaN(Internship_score)) {
-                    net_profit.text((test50 + Internship_score + Test_in_time + test100 + presentations));
+                    net_profit.text((test50 + Internship_score + Test_in_time + test100 + presentations).toFixed(2));
 
                 }
                 var go = Number(test50 + Internship_score + Test_in_time + test100 + presentations);
@@ -134,6 +134,10 @@
                     grade.text('C+');
                 } else if (go >= 60) {
                     grade.text('C');
+                }else if (go >= 55) {
+                    grade.text('D+');
+                }else if (go >= 50) {
+                    grade.text('D');
                 }
             });
 

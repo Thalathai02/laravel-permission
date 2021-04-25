@@ -9,9 +9,8 @@
         <div class="container">
             <h3 align="center">ใบคำร้อง แบบเสนอขอสอบ100</h3>
             <br />
-           
-            {!! Form::open(['action' => ['projectControllers@wordExport_test100',$datas[0]->id], 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
+
+            {!! Form::open(['action' => ['projectControllers@wordExport_test100', $datas[0]->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
 
             <div class="my-2">
                 {!! Form::label('name_th', 'ชื่อโปรเจค(ภาษาไทย)') !!}
@@ -24,11 +23,12 @@
             <div class="my-2 row-1">
                 {!! Form::label('reg_std1', 'รหัสนักศึกษาคนที่ 1') !!}
                 <div class="row">
-                    {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control col-3']) !!}
-                    {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control col-3']) !!}
-                    {!! Form::text('reg_std1_Phone', $datas_std[0]->phone, ['readonly', 'class' => 'form-control col-3'])
-                    !!}
+                    <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control']) !!}</div>
+                    <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control ']) !!}</div>
+                    <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std1_Phone', $datas_std[0]->phone, ['readonly', 'class' => 'form-control']) !!}</div>
+                    <div class="col-xl-3 col-lg-3"> {!! Form::text('GPA_reg1', null, ['class' => 'form-control','placeholder'=>'กรุณาใส่เกรด ล่าสุด','step'=>'0.01']) !!} </div>
                 </div>
+
             </div>
 
 
@@ -36,15 +36,10 @@
                 <div class="my-4">
                     {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
                     <div class="row">
-                        {!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control col-3'])
-                        !!}
-                        {!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control col-3'])
-                        !!}
-                        {!! Form::text('reg_std2_Phone', $datas_std[1]->phone, [
-                        'readonly',
-                        'class' => 'form-control
-                        col-3',
-                        ]) !!}
+                        <div class="col-xl-3 col-lg-3">{!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3">{!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3">{!! Form::text('reg_std2_Phone', $datas_std[1]->phone, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3"> {!! Form::text('GPA_reg2', null, ['class' => 'form-control','placeholder'=>'กรุณาใส่เกรด ล่าสุด','step'=>'0.01']) !!}</div>
                     </div>
                 </div>
 
@@ -53,46 +48,31 @@
                 <div class="my-4">
                     {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3') !!}
                     <div class="row">
-                        {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control col-3'])
-                        !!}
-                        {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control col-3'])
-                        !!}
-                        {!! Form::text('reg_std3_Phone', $datas_std[2]->phone, [
-                        'readonly',
-                        'class' => 'form-control
-                        col-3',
-                        ]) !!}
+                        <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3"> {!! Form::text('reg_std3_Phone', $datas_std[2]->phone, ['readonly', 'class' => 'form-control']) !!}</div>
+                        <div class="col-xl-3 col-lg-3"> {!! Form::text('GPA_reg3', null, ['class' => 'form-control','placeholder'=>'กรุณาใส่เกรด ล่าสุด','step'=>'0.01']) !!}</div>
                     </div>
+
                 </div>
             @endif
             @if (!empty($datas_instructor[0]->name_Instructor) && $datas_instructor[0]->name_Instructor)
                 <div class="my-4">
                     {!! Form::label('name_president', 'ชื่อประธาน') !!}
-                    {!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor .
-                    $datas_instructor[0]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
+                    {!! Form::text('name_president', $datas_instructor[0]->Title_name_Instructor . $datas_instructor[0]->name_Instructor, ['readonly','class' => 'form-control col-5',]) !!}
                 </div>
             @endif
             @if (!empty($datas_instructor[1]->name_Instructor))
                 <div class="my-4">
                     {!! Form::label('name_director1', 'ชื่อกรรมการคนที่ 1') !!}
-                    {!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor .
-                    $datas_instructor[1]->name_Instructor, [
-                    'readonly',
-                    'class' => 'form-control
-                    col-5',
-                    ]) !!}
+                    {!! Form::text('name_director1', $datas_instructor[1]->Title_name_Instructor . $datas_instructor[1]->name_Instructor, ['readonly','class' => 'form-control col-5',]) !!}
                 </div>
             @endif
             @if (!empty($datas_instructor[2]->name_Instructor))
                 <div class="my-4">
                     <div class="my-4">
                         {!! Form::label('name_director2', 'ชื่อกรรมการคนที่ 2') !!}
-                        {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor .
-                        $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control col-5']) !!}
+                        {!! Form::text('name_director2', $datas_instructor[2]->Title_name_Instructor . $datas_instructor[2]->name_Instructor, ['readonly', 'class' => 'form-control col-5']) !!}
                     </div>
             @endif
             @if (!empty($datas[0]->name_mentor))
@@ -147,7 +127,7 @@
 
             {!! Form::close() !!}
         </div>
-      
+
     </body>
 
     </html>

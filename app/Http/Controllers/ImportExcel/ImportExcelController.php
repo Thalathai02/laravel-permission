@@ -198,15 +198,8 @@ class ImportExcelController extends Controller
     {
         $id_user = Auth::user()->reg_std_id;
         $user = $request->user();
-        $check_std_code = reg_std::where('std_code', $request['std_code'])->first();
-        $check_username =  User::where('username', $request['username'])->first();
-        if (isset($check_std_code)) {
-            return back()->withErrors('รหัสนักศึกษาซ้ำ กรุณากรองใหม่');
-        } elseif ($check_username) {
-            return back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณากรองใหม่');
-        }
+        
         if ($id_user == $id) {
-
             if ($request->hasFile('avatar')) {
                 $request->validate([
                     'std_code' => ['required'],

@@ -392,7 +392,7 @@ class projectControllers extends Controller
             $id =  $name->id;
             $data_nameProject = project::find($id);
 
-            $fileModel->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
+            $fileModel->name_file = time() . '_' . Auth::user()->name.'.zip';;
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
@@ -1012,6 +1012,7 @@ class projectControllers extends Controller
             $request->File,
             $name_file
         );
+
         $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
@@ -1025,6 +1026,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
+        reg_std::where('std_code',$request->reg_std1)->update(['gpa'=>$request->GPA_reg1]);
 
         if (!empty($request->reg_std2)) {
             $templateProcessor->setValue('id2', $request->reg_std2);
@@ -1032,6 +1034,7 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
             $templateProcessor->setValue('code2', "รหัส ");
             $templateProcessor->setValue('phone_n2', "มือถือ ");
+            reg_std::where('std_code',$request->reg_std2)->update(['gpa'=>$request->GPA_reg2]);
         } else {
             $templateProcessor->setValue('code2', "");
             $templateProcessor->setValue('phone_n2', "");
@@ -1047,6 +1050,7 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
             $templateProcessor->setValue('code3', "รหัส ");
             $templateProcessor->setValue('phone_n3', "มือถือ ");
+            reg_std::where('std_code',$request->reg_std3)->update(['gpa'=>$request->GPA_reg3]);
         } else {
             $templateProcessor->setValue('id3', "");
             $templateProcessor->setValue('name3', "");
@@ -1926,10 +1930,11 @@ class projectControllers extends Controller
                 }
             }
         }
-
-        // return response()->json($arrays);
+        
+        // return response()->json($GPA1->gpa);
         $templateProcessor = new TemplateProcessor(storage_path('word-template/รายงานผลการสอบโครงงานคอมพิวเตอร์.docx'));
 
+        $GPA1=reg_std::where('std_code',$arrays[0][0][0]->std_code)->first();
 
         $templateProcessor->setValue('std_1', $arrays[0][0][0]->name);
         $templateProcessor->setValue('std1',  substr($arrays[0][0][0]->std_code, -3));
@@ -1942,11 +1947,12 @@ class projectControllers extends Controller
         $templateProcessor->setValue('pointtest100_11',  $arrays[0][0][1]->point_test100);
         $templateProcessor->setValue('pointtest100_21',  $arrays[0][1][1]->point_test100);
         $templateProcessor->setValue('pointtest100_31',  $arrays[0][2][1]->point_test100);
-        $templateProcessor->setValue('meam50_1', $meam50_1 = round(($arrays[0][0][0]->point_test50 + $arrays[0][1][0]->point_test50 + $arrays[0][2][0]->point_test50) / 3));
-        $templateProcessor->setValue('meam100_1', $meam100_1 = round(($arrays[0][0][1]->point_test100 + $arrays[0][1][1]->point_test100 + $arrays[0][2][1]->point_test100) / 3));
+        $templateProcessor->setValue('meam50_1', $meam50_1 = $request->test50[0] );
+        $templateProcessor->setValue('meam100_1', $meam100_1 =$request->test100[0]);
         $templateProcessor->setValue('internship1', $request->Internship_score[0]);
         $templateProcessor->setValue('testintime1', $request->Test_in_time[0]);
         $templateProcessor->setValue('pres1', $request->presentations[0]);
+        $templateProcessor->setValue('std1_grade', $GPA1->gpa);
         $templateProcessor->setValue('total1', $total1 =  $meam100_1 + $meam50_1 + $request->presentations[0] + $request->Test_in_time[0] + $request->Internship_score[0]);
         if ($total1 >= 80) {
             $templateProcessor->setValue('grade1', $grade = 'A');
@@ -1958,18 +1964,25 @@ class projectControllers extends Controller
             $templateProcessor->setValue('grade1', $grade = 'C+');
         } else if ($total1 >= 60) {
             $templateProcessor->setValue('grade1', $grade = 'C');
+        } else if ($total1 >= 55) {
+            $templateProcessor->setValue('grade1', $grade = 'D+');
+        } else if ($total1 >= 50) {
+            $templateProcessor->setValue('grade1', $grade = 'D');
         }
-
         $CollectPoints = new CollectPoints;
-        $CollectPoints->Internship_score = $request->Internship_score[0];
+        
         $CollectPoints->Test_in_time = $request->Test_in_time[0];
         $CollectPoints->presentations = $request->presentations[0];
         $CollectPoints->grade = $grade;
         $CollectPoints->reg_id_collect_points = $arrays[0][0][0]->id;
         $CollectPoints->project_id_collect_points = $id;
+        $CollectPoints->Total_point = $total1;
         $CollectPoints->save();
 
         if (!empty($arrays[1])) {
+
+            $GPA2=reg_std::where('std_code',$arrays[1][0][0]->std_code)->first();
+
             $templateProcessor->setValue('std2',  substr($arrays[1][0][0]->std_code, -3));
             $templateProcessor->setValue('nick_name2', $arrays[1][0][0]->nick_name);
             $templateProcessor->setValue('std_2', $arrays[1][0][0]->name);
@@ -1984,12 +1997,12 @@ class projectControllers extends Controller
             $templateProcessor->setValue('pointtest100_22',  $arrays[1][1][1]->point_test100);
             $templateProcessor->setValue('pointtest100_32',  $arrays[1][2][1]->point_test100);
 
-            $templateProcessor->setValue('meam50_2', $meam50_2 = round(($arrays[1][0][0]->point_test50 + $arrays[1][1][0]->point_test50 + $arrays[1][2][0]->point_test50) / 3));
-            $templateProcessor->setValue('meam100_2', $meam100_2 = round(($arrays[1][0][1]->point_test100 + $arrays[1][1][1]->point_test100 + $arrays[1][2][1]->point_test100) / 3));
+            $templateProcessor->setValue('meam50_2', $meam50_2 = $request->test50[1]);
+            $templateProcessor->setValue('meam100_2', $meam100_2 = $request->test100[1]);
 
             $templateProcessor->setValue('internship2', $request->Internship_score[1]);
             $templateProcessor->setValue('testintime2', $request->Test_in_time[1]);
-
+            $templateProcessor->setValue('std2_grade', $GPA2->gpa);
             $templateProcessor->setValue('pres2', $request->presentations[1]);
             $templateProcessor->setValue('total2', $total2 = $meam50_2 + $meam100_2 + $request->presentations[1] + $request->Test_in_time[1] + $request->Internship_score[1]);
             if ($total2 >= 80) {
@@ -2002,14 +2015,18 @@ class projectControllers extends Controller
                 $templateProcessor->setValue('grade2', $grade2 = 'C+');
             } else if ($total2 >= 60) {
                 $templateProcessor->setValue('grade2', $grade2 = 'C');
+            }else if ($total2 >= 55) {
+                $templateProcessor->setValue('grade1', $grade = 'D+');
+            } else if ($total2 >= 50) {
+                $templateProcessor->setValue('grade1', $grade = 'D');
             }
             $CollectPoints = new CollectPoints;
-            $CollectPoints->Internship_score = $request->Internship_score[1];
             $CollectPoints->Test_in_time = $request->Test_in_time[1];
             $CollectPoints->presentations = $request->presentations[1];
             $CollectPoints->grade = $grade2;
             $CollectPoints->reg_id_collect_points = $arrays[1][0][0]->id;
             $CollectPoints->project_id_collect_points = $id;
+            $CollectPoints->Total_point = $total1;
             $CollectPoints->save();
         } else {
             $templateProcessor->setValue('std2',  "");
@@ -2037,6 +2054,8 @@ class projectControllers extends Controller
             $templateProcessor->setValue('grade2', '');
         }
         if (!empty($arrays[2])) {
+            $GPA3=reg_std::where('std_code',$arrays[2][0][0]->std_code)->first();
+
             $templateProcessor->setValue('std3',  substr($arrays[2][0][0]->std_code, -3));
             $templateProcessor->setValue('nick_name3', $arrays[2][0][0]->nick_name);
             $templateProcessor->setValue('std_3', $arrays[2][0][0]->name);
@@ -2051,12 +2070,12 @@ class projectControllers extends Controller
             $templateProcessor->setValue('pointtest100_23',  $arrays[2][1][1]->point_test100);
             $templateProcessor->setValue('pointtest100_33',  $arrays[2][2][1]->point_test100);
 
-            $templateProcessor->setValue('meam50_3', $meam50_3 = round(($arrays[2][0][0]->point_test50 + $arrays[2][1][0]->point_test50 + $arrays[2][2][0]->point_test50) / 3));
-            $templateProcessor->setValue('meam100_3', $meam100_3 = round(($arrays[2][0][1]->point_test100 + $arrays[2][1][1]->point_test100 + $arrays[2][2][1]->point_test100) / 3));
+            $templateProcessor->setValue('meam50_3', $meam50_3 = $request->test50[2]);
+            $templateProcessor->setValue('meam100_3', $meam100_3 = $request->test100[2]);
 
             $templateProcessor->setValue('internship3', $request->Internship_score[2]);
             $templateProcessor->setValue('testintime3', $request->Test_in_time[2]);
-
+            $templateProcessor->setValue('std3_grade', $GPA3->gpa);
             $templateProcessor->setValue('pres3', $request->presentations[2]);
             $templateProcessor->setValue('total3', $total3 = $meam50_3 + $meam100_3 + $request->presentations[2] + $request->Test_in_time[2] + $request->Internship_score[2]);
             if ($total3 >= 80) {
@@ -2069,14 +2088,19 @@ class projectControllers extends Controller
                 $templateProcessor->setValue('grade3', $grade3 = 'C+');
             } else if ($total3 >= 60) {
                 $templateProcessor->setValue('grade3', $grade3 = 'C');
+            }else if ($total3 >= 55) {
+                $templateProcessor->setValue('grade1', $grade = 'D+');
+            } else if ($total3 >= 50) {
+                $templateProcessor->setValue('grade1', $grade = 'D');
             }
             $CollectPoints = new CollectPoints;
-            $CollectPoints->Internship_score = $request->Internship_score[2];
+           
             $CollectPoints->Test_in_time = $request->Test_in_time[2];
             $CollectPoints->presentations = $request->presentations[2];
             $CollectPoints->grade = $grade3;
             $CollectPoints->reg_id_collect_points = $arrays[2][0][0]->id;
             $CollectPoints->project_id_collect_points = $id;
+            $CollectPoints->Total_point = $total3;
             $CollectPoints->save();
         } else {
             $templateProcessor->setValue('std3',  "");

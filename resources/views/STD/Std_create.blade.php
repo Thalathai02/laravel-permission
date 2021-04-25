@@ -87,7 +87,7 @@
             <div class="row">
                 <div class="form-group col-xl-6 col-lg-6" >
                     {!! Form::label('Internship_score','คะแนนฝึกงาน') !!}
-                    {!! Form::number('Internship_score', null, ['class' => 'form-control','step' => '0.1']) !!}
+                    {!! Form::number('Internship_score', null, ['class' => 'form-control','step' => '0.01']) !!}
                 </div>
             </div>
             <input type="submit" value="บันทึก" class="btn btn-primary row-1 " name="" id="">

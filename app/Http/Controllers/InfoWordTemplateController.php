@@ -306,7 +306,26 @@ class InfoWordTemplateController extends Controller
 
                 return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableCompleteForm_id', 'id_Notifications'));
                 // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
-            } else {
+            } if (Auth::user()->hasRole('Tea')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
+                $datas_instructor = DB::table('projects')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm)->get();
+
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
+
+                $datas_std = $this->DataTableController->data_project($tableCompleteForm_id->Project_id_CompleteForm);
+            
+                $tableCompleteForm_id->save();
+
+                return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableCompleteForm_id', 'id_Notifications'));
+                // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+            }  else {
                 abort(404);
             }
         }

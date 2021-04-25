@@ -37,6 +37,7 @@ use App\point_test50;
 use App\point_test100;
 use App\pointTest;
 use App\reject_test;
+use App\CollectPoints;
 
 class DataTableController extends Controller
 {
@@ -147,12 +148,14 @@ class DataTableController extends Controller
     }
     public function data_project_collectPointsForm($Project_id)
     {
+
         $datas_std_test50 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test50s', 'project_users.id_reg_Std', 'point_test50s.reg_id_point_test50')
             ->join('project_instructors', 'point_test50s.id_instructor_point_test50', 'project_instructors.id_instructor')
             ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
             ->join('subjects', 'subject_students.subject_id', 'subjects.id')
+            // ->join('collect_points','reg_stds.id','collect_points.reg_id_collect_points')
             ->select(
                 'subjects.year_term',
                 'subject_students.subject_id',
@@ -160,6 +163,7 @@ class DataTableController extends Controller
                 'reg_stds.name',
                 'reg_stds.id',
                 'reg_stds.nick_name',
+                'reg_stds.Internship_score',
                 'point_test50s.project_id_point_test50',
                 'point_test50s.id_instructor_point_test50',
                 'point_test50s.point_test50',
@@ -170,7 +174,8 @@ class DataTableController extends Controller
                 ['point_test50s.deleted_at', NULL],
                 ['point_test50s.project_id_point_test50', $Project_id],
                 ['project_instructors.Project_id', $Project_id],
-                ['project_users.deleted_at', null]
+                ['project_users.deleted_at', null],
+                // ['collect_points.reg_id_collect_points',null]
             ])->get();
 
         $datas_std_test100 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
@@ -179,12 +184,14 @@ class DataTableController extends Controller
             ->join('project_instructors', 'point_test100s.id_instructor_point_test100', 'project_instructors.id_instructor')
             ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
             ->join('subjects', 'subject_students.subject_id', 'subjects.id')
+            // ->join('collect_points','reg_stds.id','collect_points.reg_id_collect_points')
             ->select(
                 'subjects.year_term',
                 'subject_students.subject_id',
                 'reg_stds.std_code',
                 'reg_stds.id',
                 'reg_stds.nick_name',
+                'reg_stds.Internship_score',
                 'point_test100s.project_id_point_test100',
                 'point_test100s.id_instructor_point_test100',
                 'point_test100s.point_test100',
@@ -195,7 +202,8 @@ class DataTableController extends Controller
                 ['point_test100s.project_id_point_test100', $Project_id],
                 ['point_test100s.deleted_at', NULL],
                 ['project_instructors.Project_id', $Project_id],
-                ['project_users.deleted_at', null]
+                ['project_users.deleted_at', null],
+                // ['collect_points.reg_id_collect_points',null]
 
             ])->get();
 
@@ -206,8 +214,20 @@ class DataTableController extends Controller
         foreach ($datas_std_test100 as $key => $box_100) {
             $datas_std[] = $box_100;
         }
+        $data_CollectPoints = CollectPoints::where('project_id_collect_points', $Project_id)->get();
+        if(isset($data_CollectPoints)){
+            $datas_std[] = null;
+            foreach ($data_CollectPoints as $key => $data_Collect) {
+                // $arrays[] = $datas->id;
+                foreach ($datas_std as $key => $datas) {
+                    if ($data_Collect->reg_id_collect_points != $datas->id) {
+                        $datas_std[] = $datas;
+                    }
+                }
+            }
+        }
+        
         $datas_std2 = collect($datas_std)->groupBy(['year_term', 'std_code', 'Is_director']);
-
         return $datas_std2;
     }
     public function count_data_progress($num_data)
@@ -447,7 +467,6 @@ class DataTableController extends Controller
         }
         if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
             $submit = 1;
-            
         } else {
             $submit = 0;
         }
@@ -719,7 +738,7 @@ class DataTableController extends Controller
         $id_3 = Teacher::find($id_3);
         $notif_chari_id_3 = User::find($id_3->user_id_Instructor);
         foreach ($notif_chari_id_3->unreadNotifications   as $key => $notificationes) {
-            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id&& $notificationes->data['form'] == 1) {
+            if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 1) {
                 $d = 0;
             }
         }
@@ -756,7 +775,7 @@ class DataTableController extends Controller
     {
         //เช็ค ว่ามีใครให้ผ่านหรือไม่ผ่านแสดงแค่หมดทุกคนที่รับรู้ ตอนเปลี่ยนกรรมการ
         $notif_admin = User::find(1);
-        $id_Project_id_Pretest50 = ChangeBoard::where('Project_id_ChangeBoard',$Project_id)->get();
+        $id_Project_id_Pretest50 = ChangeBoard::where('Project_id_ChangeBoard', $Project_id)->get();
         foreach ($notif_admin->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 6) {
                 $a = 0;
@@ -770,9 +789,7 @@ class DataTableController extends Controller
             if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 6) {
                 $b = 0;
                 $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
-               
             }
-            
         }
         $id_2 = Teacher::find($id_2);
         $notif_chari = User::find($id_2->user_id_Instructor);
@@ -837,17 +854,18 @@ class DataTableController extends Controller
         if (!isset($f)) {
             $f = 1;
             $notif_id_5 = [$f, User::find($id_5->id)];
-        }if (!isset($g)) {
+        }
+        if (!isset($g)) {
             $g = 1;
             $notif_id_6 = [$g, User::find($id_6->id)];
         }
 
-        if ($a == 1 && $b == 1 && $c == 1 && $d == 1 && $e == 1&& $f == 1&& $g == 1) {
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1 && $e == 1 && $f == 1 && $g == 1) {
             // $submit = 1;
         } else {
             // $submit = 0;
         }
-        $submit = [$notif, $notif_id_1, $notif_id_2, $notif_id_3,$notif_id_4,$notif_id_5,$notif_id_6];
+        $submit = [$notif, $notif_id_1, $notif_id_2, $notif_id_3, $notif_id_4, $notif_id_5, $notif_id_6];
         return  $submit;
         // return  $id_test50[0]->id;
     }
@@ -856,7 +874,7 @@ class DataTableController extends Controller
     {
         //เช็ค ว่ามีใครให้ผ่านหรือไม่ผ่านแสดงแค่หมดทุกคนที่รับรู้ ตอนเปลี่ยนกรรมการ
         $notif_admin = User::find(1);
-        $id_Project_id_Pretest50 = ChangeBoard::where('Project_id_ChangeBoard',$Project_id)->get();
+        $id_Project_id_Pretest50 = ChangeBoard::where('Project_id_ChangeBoard', $Project_id)->get();
         foreach ($notif_admin->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 6) {
                 $a = 0;
@@ -870,9 +888,8 @@ class DataTableController extends Controller
             if ($notificationes->data['form_id'] == $id_Project_id_Pretest50[0]->id && $notificationes->data['form'] == 6) {
                 $b = 0;
                 // $notif_id_1 = [$b, User::find($id_1->user_id_Instructor)];
-               
+
             }
-            
         }
         $id_2 = Teacher::find($id_2);
         $notif_chari = User::find($id_2->user_id_Instructor);
@@ -937,12 +954,13 @@ class DataTableController extends Controller
         if (!isset($f)) {
             $f = 1;
             // $notif_id_5 = [$f, User::find($id_5->id)];
-        }if (!isset($g)) {
+        }
+        if (!isset($g)) {
             $g = 1;
             // $notif_id_6 = [$g, User::find($id_6->id)];
         }
 
-        if ($a == 1 && $b == 1 && $c == 1 && $d == 1 && $e == 1&& $f == 1&& $g == 1) {
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1 && $e == 1 && $f == 1 && $g == 1) {
             $submit = 1;
         } else {
             $submit = 0;
@@ -956,11 +974,10 @@ class DataTableController extends Controller
     {
         //เช็ค ว่ามีใครให้ผ่านหรือไม่ผ่านแสดงแค่หมดทุกคนที่รับรู้ ตอนเปลี่ยนกรรมการ
         $notif_admin = User::find(1);
-        $changetopic = changetopic::where('Project_id_changetopics',$Project_id)->get();
+        $changetopic = changetopic::where('Project_id_changetopics', $Project_id)->get();
         foreach ($notif_admin->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $changetopic[0]->id && $notificationes->data['form'] == 7) {
                 $a = 0;
-
             }
             // $submit = $Project_id;
         }
@@ -969,16 +986,13 @@ class DataTableController extends Controller
         foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $changetopic[0]->id && $notificationes->data['form'] == 7) {
                 $b = 0;
-               
             }
-            
         }
         $id_2 = Teacher::find($id_2);
         $notif_chari = User::find($id_2->user_id_Instructor);
         foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $changetopic[0]->id && $notificationes->data['form'] == 7) {
                 $c = 0;
-                
             }
         }
         $id_3 = Teacher::find($id_3);
@@ -986,7 +1000,6 @@ class DataTableController extends Controller
         foreach ($notif_chari->unreadNotifications   as $key => $notificationes) {
             if ($notificationes->data['form_id'] == $changetopic[0]->id && $notificationes->data['form'] == 7) {
                 $d = 0;
-                
             }
         }
         if (!isset($a)) {
@@ -994,18 +1007,15 @@ class DataTableController extends Controller
         }
         if (!isset($b)) {
             $b = 1;
-            
         }
         if (!isset($c)) {
             $c = 1;
-            
         }
         if (!isset($d)) {
             $d = 1;
-            
         }
 
-        if ($a == 1 && $b == 1 && $c == 1 && $d == 1 ) {
+        if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
             $submit = 1;
         } else {
             $submit = 0;
@@ -1068,7 +1078,7 @@ class DataTableController extends Controller
         }
         if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
             // $submit = 2;
-            
+
         } else {
             // $submit = 0;
         }

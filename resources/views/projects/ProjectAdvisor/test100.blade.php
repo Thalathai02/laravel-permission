@@ -164,24 +164,25 @@
 
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
-                        <p>ถ้าเลือก ผ่าน/ไม่ผ่าน จะไม่สามารถแก้ไขได้</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-                        <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
-                    </div>
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">สอบ 100</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
+                    <p>ถ้าเลือก ผ่าน จะไม่สามารถแก้ไขได้</p>
+                    <p>หากเลือก ไม่ผ่าน สามารถกลับมาแก้ไขได้</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                    <button type="submit" class="btn btn-primary">บันทึกข้อมูล</button>
                 </div>
             </div>
         </div>
+    </div>
         {!! Form::close() !!}
     </div>
 

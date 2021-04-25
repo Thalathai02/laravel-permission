@@ -85,11 +85,11 @@
             <div class="row">
                 <div class="form-group col-xl-6 col-lg-6" >
                     {!! Form::label('Internship_score','คะแนนฝึกงาน') !!}
-                    {!! Form::number('Internship_score', $data->Internship_score, ['class' => 'form-control','step' => '0.1']) !!}
+                    {!! Form::number('Internship_score', $data->Internship_score, ['class' => 'form-control','step' => '0.01']) !!}
                 </div>
                 <div class="form-group col-xl-6 col-lg-6" >
                     {!! Form::label('gpa','เกรด') !!}
-                    {!! Form::number('gpa', $data->gpa, ['class' => 'form-control','step' => '0.1']) !!}
+                    {!! Form::text('gpa', $data->gpa, ['class' => 'form-control']) !!}
                 </div>
             </div>
             <div class=" row justify-content-md-center">
