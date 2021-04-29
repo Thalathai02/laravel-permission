@@ -288,6 +288,11 @@ class InfoWordTemplateController extends Controller
             $name_Instructor = Teacher::pluck('name_Instructor', 'id');
 
             if (Auth::user()->hasRole('Admin')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
                 $datas_instructor = DB::table('projects')
                     ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
@@ -296,12 +301,31 @@ class InfoWordTemplateController extends Controller
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
 
                 $datas_std = $this->DataTableController->data_project($tableCompleteForm_id->Project_id_CompleteForm);
-                $tableCompleteForm_id->status_CompleteForm = 'Successfully';
+            
                 $tableCompleteForm_id->save();
 
                 return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableCompleteForm_id', 'id_Notifications'));
                 // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
-            } else {
+            } if (Auth::user()->hasRole('Tea')) {
+                $checkReader = notification::where('id',$id_Notifications)->first();
+                // return response()->json($checkReader);
+                if(isset($checkReader->read_at)){
+                    abort(404);
+                }
+                $datas_instructor = DB::table('projects')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->select('teachers.*')->where('projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm)->get();
+
+                $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
+
+                $datas_std = $this->DataTableController->data_project($tableCompleteForm_id->Project_id_CompleteForm);
+            
+                $tableCompleteForm_id->save();
+
+                return view('/info_word_template/CompleteForm', compact('datas_std', 'datas_instructor', 'datas', 'name_Instructor', 'tableCompleteForm_id', 'id_Notifications'));
+                // return view('/info_word_template/ProgressReport_test50', compact( 'datas_std', 'datas_instructor', 'datas', 'name_Instructor','time_test50'));                   
+            }  else {
                 abort(404);
             }
         }
@@ -571,6 +595,13 @@ class InfoWordTemplateController extends Controller
                     // return response()->json($ChangeBoard);
                     $notification_check  = $this->DataTableController->noti_data_allow_ChangeBoard_checkBinary($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
                     $notification  = $this->DataTableController->noti_data_allow_ChangeBoard($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
+                //    $notification = 1;
+                // return response()->json($notification);
+                }elseif($data_project[0]->test_id == 5){
+                    $CompleteForm=CompleteForm::where('Project_id_CompleteForm',$formId)->first();
+                    // return response()->json($ChangeBoard);
+                    $notification_check  = $this->DataTableController->noti_data_allow_complete_forms_Datas($CompleteForm->Project_id_CompleteForm,  $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
+                    $notification  = $this->DataTableController->noti_data_allow_complete_forms($CompleteForm->Project_id_CompleteForm,  $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor);
                 //    $notification = 1;
                 // return response()->json($notification);
                 }

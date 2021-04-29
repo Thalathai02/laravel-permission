@@ -21,10 +21,14 @@ class CreateCollectPointsTable extends Migration
             $table->unsignedInteger('project_id_collect_points');
             $table->foreign('project_id_collect_points')->references('id')->on('projects')->onDelete('cascade');
 
-            $table->integer('Internship_score');
-            $table->integer('Test_in_time');
-            $table->integer('presentations');
+            $table->float('Total_point');
+            $table->float('Test_in_time');
+            $table->float('test50_collect_points');
+            $table->float('test100_collect_points');
+            $table->float('presentations');
             $table->string('grade');
+
+            $table->integer('SendGrade')->nullable();
             
             $table->timestamps();
             $table->softDeletes();

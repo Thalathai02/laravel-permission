@@ -22,6 +22,9 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Project as XmlProject;
 use App\Http\Controllers\DataTableController;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\InvoicePaid;
+use App\reject_test;
+use App\CollectPoints;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class CheckProjectController extends Controller
 {
@@ -212,18 +215,18 @@ class CheckProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, $id)
     {
         $request->validate([
             'reject' => 'required',
         ]);
-        $id_reg  =  project_user::where([['Project_id',$id],['isHead','1']])->first();
-       
-        project::where('id', '=', $id)->update(['status' => "reject",'because_reject'=> $request->reject]);
-        DB::table('project__files')->where('id', '=', $id)->update(['status_file_path' => "reject"]);
-        $sendToUser  =  project_user::where([['Project_id',$id]])->get();
+        $id_reg  =  project_user::where([['Project_id', $id], ['isHead', '1']])->first();
 
-        $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
+        project::where('id', '=', $id)->update(['status' => "reject", 'because_reject' => $request->reject]);
+        DB::table('project__files')->where('id', '=', $id)->update(['status_file_path' => "reject"]);
+        $sendToUser  =  project_user::where([['Project_id', $id]])->get();
+
+        $sendToUser  = User::where('reg_std_id', $id_reg->id_reg_Std)->first();
         // return response()->json($sendToUser);
         $sendToUser->notify(new InvoicePaid(10, $id, 'โครงานของคุณไม่ผ่าน กรุณาแก้ไข', Auth::user()));
         return back();
@@ -273,14 +276,107 @@ class CheckProjectController extends Controller
     }
     public function success_check($id)
     {
-        $sendToUser  =  project_user::where([['Project_id',$id]])->get();
+        $sendToUser  =  project_user::where([['Project_id', $id]])->get();
         // $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
-        foreach($sendToUser as $key =>$itme){
-            $send  = User::where('reg_std_id',$itme->id_reg_Std)->first();
+        foreach ($sendToUser as $key => $itme) {
+            $send  = User::where('reg_std_id', $itme->id_reg_Std)->first();
             $send->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว รอการแต่งตั้งกรรมการ', Auth::user()));
         }
         // return response()->json($send);
         // $sendToUser->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว', Auth::user()));
         return back();
+    }
+    public function allreject($id)
+    {
+        $reg_project = project_user::where('id_reg_Std', $id)->first();
+        $reject = reject_test::join('users', 'reject_tests.id_user_reject_tests', 'users.id')
+            ->select('reject_tests.*', 'users.name')
+            ->where([['reject_tests.project_id_reject_tests', $reg_project->Project_id]])->withTrashed()->get();
+        // collect($reject)->groupBy(['test_id']);
+        // $reject->groupBy('test_id');
+        foreach ($reject as $key => $box_data) {
+            $rejects[] = $box_data;
+        }
+        $datas = collect($rejects)->groupBy('test_id');
+        return view('info_word_template.allreject', compact('datas'));
+        return response()->json($datas);
+    }
+    public function SendGrade_page()
+    {
+        if (Auth::user()->hasRole('Admin')) {
+            $datas = reg_std::join('collect_points', 'reg_stds.id', 'collect_points.reg_id_collect_points')
+                ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
+                ->join('subjects', 'subject_students.subject_id', 'subjects.id')
+                ->select('reg_stds.id', 'reg_stds.name', 'reg_stds.std_code', 'collect_points.grade', 'subjects.year_term')
+                ->where([['collect_points.deleted_at', NULL], ['reg_stds.deleted_at', NULL], ['collect_points.SendGrade', 1]])->get()
+                ->groupBy('year_term');
+            // return response()->json($datas);
+            return view('admin.SendGrade', compact('datas'));
+        }
+    }
+    public function SendGrade(Request $request)
+    {
+        if (Auth::user()->hasRole('Admin')) {
+            $data = $request->code_id;
+            $templateProcessor = new TemplateProcessor(storage_path('word-template/แบบฟอร์มบันทึกผลคะแนนเป็นรายบุคคล.docx'));
+
+            foreach ($data as $key => $itme) {
+                $datas =  CollectPoints::where('reg_id_collect_points',$itme)->first();
+                $datas->SendGrade = 2 ; 
+                $datas->save();
+                // $array[] = $itme;
+
+            }
+
+            for ($a = 0; $a < 15; $a++) {
+                $array[] = $a;
+                foreach ($data as $key => $itme) {
+                    if ($key == $a) {
+                        $arrays[] = $key;
+                        $Datas_reg = reg_std::find($itme);
+                        $templateProcessor->setValue('id'.$key, $Datas_reg->std_code);
+                        $templateProcessor->setValue('name'.$key, $Datas_reg->name);
+                        $templateProcessor->setValue('grade'.$key,  $Datas_reg->gpa);
+                        $templateProcessor->setValue('note_std'.$key,  $Datas_reg->note);
+                    }
+                }
+            }
+            $g = collect($array);
+            $c = $g->diffAssoc($arrays);
+            foreach ($c as $key => $itme) {
+                $r[] = $itme;
+                $templateProcessor->setValue('id'.$key, "");
+                $templateProcessor->setValue('name'.$key, "");
+                $templateProcessor->setValue('grade'.$key, "");
+                $templateProcessor->setValue('note_std'.$key, "");
+            }
+
+            $about_subject = subject_student::join('subjects', 'subject_students.subject_id', 'subjects.id')->select('subjects.term', 'subjects.year')
+                ->where('subject_students.student_id', $Datas_reg->id)->first();
+
+            $about_project = project_user::join('projects','project_users.Project_id','projects.id')
+            ->join('project_instructors','projects.id','project_instructors.Project_id')
+            ->join('teachers','project_instructors.id_instructor','teachers.id')
+            ->select('teachers.*')->where([['id_reg_Std',$Datas_reg->id],['Is_director',0],['Is_president',1]])->first();
+
+            $templateProcessor->setValue('note',  $request->note);
+            $templateProcessor->setValue('term',  $about_subject->term);
+            $templateProcessor->setValue('year',  $about_subject->year);
+            $templateProcessor->setValue('name_president',  $about_project->Title_name_Instructor.$about_project->name_Instructor);
+            $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
+          
+
+
+            $fileName = storage_path("แบบฟอร์มบันทึกผลคะแนนเป็นรายบุคคล" . '.docx');
+            $templateProcessor->saveAs($fileName);
+            return response()->download($fileName)->deleteFileAfterSend(true);
+            // return response()->json($array);
+            // return response()->json([$r, $arrays, $data,$Datas_reg]);
+            // return back();
+        }
+    }
+    public function public_project(){
+        pro
+        return view('Admin.public_project');
     }
 }

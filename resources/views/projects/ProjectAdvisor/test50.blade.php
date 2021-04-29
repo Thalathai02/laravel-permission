@@ -23,11 +23,11 @@
                     <div class="row">
                         <div class="col-xl-3 col-lg-3">
 
-                            <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">
+                            <a target="_blank" href="{{ route('std.showinfo', $datas_std[0]->id_reg_Std) }}">
                                 {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control ']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
-                            <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">
+                            <a target="_blank" href="{{ route('std.showinfo', $datas_std[0]->id_reg_Std) }}">
                                 {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
@@ -63,11 +63,11 @@
                         {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
                         <div class="row">
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[1]->id_reg_Std) }}">
                                     {!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[1]->id_reg_Std) }}">
                                     {!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
@@ -102,11 +102,11 @@
                         {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3 ') !!}
                         <div class="row">
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[2]->id_reg_Std) }}">
                                     {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[2]->id_reg_Std) }}">
                                     {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
@@ -176,12 +176,13 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">สอบ 50</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
-                                <p>ถ้าเลือก ผ่าน/ไม่ผ่าน จะไม่สามารถแก้ไขได้</p>
+                                <p>ถ้าเลือก ผ่าน จะไม่สามารถแก้ไขได้</p>
+                                <p>หากเลือก ไม่ผ่าน สามารถกลับมาแก้ไขได้</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
@@ -215,11 +216,11 @@
                     <div class="row">
                         <div class="col-xl-3 col-lg-3">
 
-                            <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">
+                            <a target="_blank" href="{{ route('std.showinfo', $datas_std[0]->id_reg_Std) }}">
                                 {!! Form::text('reg_std1', $datas_std[0]->std_code, ['readonly', 'class' => 'form-control ']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
-                            <a target="_blank" href="{{ route('std.show', $datas_std[0]->id_reg_Std) }}">
+                            <a target="_blank" href="{{ route('std.showinfo', $datas_std[0]->id_reg_Std) }}">
                                 {!! Form::text('reg_std1_name', $datas_std[0]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                         </div>
                         <div class="col-xl-3 col-lg-3">
@@ -255,11 +256,11 @@
                         {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
                         <div class="row">
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[1]->id_reg_Std) }}">
                                     {!! Form::text('reg_std2', $datas_std[1]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[1]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[1]->id_reg_Std) }}">
                                     {!! Form::text('reg_std2_name', $datas_std[1]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
@@ -294,11 +295,11 @@
                         {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3 ') !!}
                         <div class="row">
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[2]->id_reg_Std) }}">
                                     {!! Form::text('reg_std3', $datas_std[2]->std_code, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
-                                <a target="_blank" href="{{ route('std.show', $datas_std[2]->id_reg_Std) }}">
+                                <a target="_blank" href="{{ route('std.showinfo', $datas_std[2]->id_reg_Std) }}">
                                     {!! Form::text('reg_std3_name', $datas_std[2]->name, ['readonly', 'class' => 'form-control']) !!}</a>
                             </div>
                             <div class="col-xl-3 col-lg-3">
@@ -368,12 +369,13 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">สอบ 50</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 {{-- <p>หากเลือกบันทึกข้อมูล จะสามารถกลับมาแก้ไขประเมินได้</p> --}}
-                                <p>ถ้าเลือก ผ่าน/ไม่ผ่าน จะไม่สามารถแก้ไขได้</p>
+                                <p>ถ้าเลือก ผ่าน จะไม่สามารถแก้ไขได้</p>
+                                <p>หากเลือก ไม่ผ่าน สามารถกลับมาแก้ไขได้</p>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>

@@ -19,7 +19,7 @@
                 </div>
             @endif
 
-            {!! Form::open(['action' => 'ImportExcel\ImportExcelController@Search', 'method' => 'POST']) !!}
+            {!! Form::open(['action' => 'ImportExcel\ImportExcelController@show', 'method' => 'POST']) !!}
             {{ csrf_field() }}
             <div class="form-group row">
                 <div>
@@ -77,7 +77,7 @@
                                         <td scope="row">{{ $row->phone }}</td>
                                         <td scope="row">{{ $row->year_term }}</td>
                                         <td scope="row">{{ $row->note }}</td>
-                                        <td scope="row"><a href="{{ route('std.show', $row->id) }}"
+                                        <td scope="row"><a href="{{ route('std.showinfo', $row->id) }}"
                                             class="btn btn-primary">ดูข้อมูล</a></td>
                                         <td scope="row"><a href="{{ route('STD.edit', $row->id) }}"
                                                 class="btn btn-success">แก้ไข</a></td>

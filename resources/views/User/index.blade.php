@@ -19,7 +19,8 @@
                 </div>
             @endif
 
-            {!! Form::open(['action' => 'UserController@Search', 'method' => 'POST']) !!}
+            {!! Form::open(['action' => 'UserController@show', 'method' => 'POST']) !!}
+            {{ csrf_field() }}
             <div class="form-group col">
                 {!! Form::label('Search', 'ค้นหา', ['class' => 'form-group']) !!}
                 {!! Form::text('Search', null, ['class' => 'form-group col-6']) !!}

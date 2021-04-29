@@ -142,9 +142,9 @@
                          <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
                          <a class="collapse-item" href="/projects/into_project">เพิ่มโปรเจค</a>
                          <a class="collapse-item" href="/Selection_yearCheck_Project">ตรวจโปรเจค</a>
-                         <a class="collapse-item" href="/CollectPoints">ให้คะแนน</a>         
-                         <a class="collapse-item" href="/Check_Project">ส่งเกรด</a>
-                         <a class="collapse-item" href="/Check_Project">โปรเจคที่เผยแพร่</a>
+                         <a class="collapse-item" href="/CollectPoints">รายงานผลการสอบโครงงาน</a>         
+                         <a class="collapse-item" href="/SendGrade">บันทึกผลคะแนนเป็นรายบุคคล</a>
+                         <a class="collapse-item" href="/public_project">โปรเจคที่เผยแพร่</a>
                      </div>
                  </div>
              </li>
@@ -173,6 +173,7 @@
                         <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
                         <a class="collapse-item" href="{{ route('ResultsTest50',Auth::user()->id) }}">ผลประเมินการสอบ50(ทั้งหมด)</a>
                         <a class="collapse-item" href="{{ route('ResultsTest100',Auth::user()->id) }}">ผลประเมินการสอบ100(ทั้งหมด)</a>
+                        <a class="collapse-item" href="{{ route('CheckProject.allreject',Auth::user()->reg_std_id) }}">เอกสารทีส่งไม่ผ่าน(ทั้งหมด)</a>
                     </div>
                 </div>
             </li>

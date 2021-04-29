@@ -25,9 +25,14 @@
                             @elseif($data_project[0]->test_id == 2)
                                 <h6 class="m-0 font-weight-bold text-danger">คำแบบเสนอขอสอบ 100 ไม่ผ่าน</h6>
                             @elseif($data_project[0]->test_id == 3)
-                                <h6 class="m-0 font-weight-bold text-danger">ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
+                                <h6 class="m-0 font-weight-bold text-danger">
+                                    ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
                             @elseif($data_project[0]->test_id == 4)
-                                <h6 class="m-0 font-weight-bold text-danger">ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
+                                <h6 class="m-0 font-weight-bold text-danger">
+                                    ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
+                            @elseif($data_project[0]->test_id == 5)
+                                <h6 class="m-0 font-weight-bold text-danger">
+                                    ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน</h6>
                             @endif
                             @if ($notification_check == 0)
                                 <div class="font-weight-bold text-warning text-uppercase m-0">

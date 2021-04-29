@@ -101,7 +101,10 @@
                     {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
                 </div>
             @endif
-
+            <div class="my-4">
+                {!! Form::label('name_upload_File', 'นำไฟล์เข้า') !!}
+                {!! Form::file('File', ['class' => 'form-control col-5']) !!}
+            </div>
             
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">

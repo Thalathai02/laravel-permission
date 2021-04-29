@@ -48,14 +48,14 @@ Route::get('/roles', 'PermissionController@Permission');
 
 Route::resource('/STD', 'ImportExcel\ImportExcelController')->middleware('auth');
 Route::post('/STD', 'ImportExcel\ImportExcelController@import')->middleware('auth');
-Route::get('/STD/info/{id}', 'ImportExcel\ImportExcelController@show')->name('std.show')->middleware('auth');
+Route::get('/STD/info/{id}', 'ImportExcel\ImportExcelController@showinfo')->name('std.showinfo')->middleware('auth');
 Route::post('/STD/create', 'ImportExcel\ImportExcelController@store')->middleware('auth');
 Route::post('/STD/edit', 'ImportExcel\ImportExcelController@edit')->middleware('auth');
-Route::post('/STD/Search','ImportExcel\ImportExcelController@Search')->middleware('auth');
+Route::post('/STD/Search','ImportExcel\ImportExcelController@show')->middleware('auth');
 
 
 Route::post('/User/edit', 'UserController@edit')->middleware('auth');
-Route::post('/User/Search', 'UserController@Search')->middleware('auth');
+Route::post('/User/Search', 'UserController@show')->middleware('auth');
     
 Route::post('/Teacher/create', 'TeacherController@store')->middleware('auth');
 Route::post('/Teacher/edit', 'TeacherController@edit')->middleware('auth');
@@ -125,8 +125,11 @@ Route::GET('/CollectPoints','projectControllers@CollectPoints')->name('projectCo
 Route::GET('/CollectPoints/{id}','projectControllers@CollectPointsForm')->name('projectControllers.collectPointsForm')->middleware('auth');
 
 Route::POST('/CollectPoints/{id}','projectControllers@wordExport_CollectPoints')->name('projectControllers.wordExport_CollectPoints')->middleware('auth');
+Route::get('/allreject/{id}', 'CheckProjectController@allreject')->name('CheckProject.allreject')->middleware('auth');
 
-
+Route::get('/SendGrade', 'CheckProjectController@SendGrade_page')->name('CheckProject.SendGrade_page')->middleware('auth');
+Route::POST ('/SendGradeReport', 'CheckProjectController@SendGrade')->name('CheckProject.SendGrade')->middleware('auth');
+Route::GET('/public_project', 'CheckProjectController@public_project')->name('CheckProject.public_project')->middleware('auth');
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

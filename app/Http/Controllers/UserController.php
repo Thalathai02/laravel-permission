@@ -48,10 +48,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -163,17 +163,18 @@ class UserController extends Controller
         User::find($id)->delete();
         return redirect('/User');
     }
-    public function Search(Request $request)
+    public function show(Request $request)
     {
         $user = $request->user();
         if ($user->hasRole('Admin')) {
             $Search =$request->get(
                 'Search'
             );
-            $data =User::query()
-        ->where('name', 'LIKE', "%{$Search}%")
+            $data =User::where('name', 'LIKE', "%{$Search}%")
         ->orWhere('username', 'LIKE', "%{$Search}%")
-        ->get();
+        ->paginate(20);
+                // return response()->json($data);
+             $data->appends(['Search' => $Search]);
             return view('User.index', compact('data'));
         } else {
             abort(404);
