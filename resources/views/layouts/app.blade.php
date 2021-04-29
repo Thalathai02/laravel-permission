@@ -142,9 +142,9 @@
                          <a class="collapse-item" href="/project">{{ __('โปรเจด') }}</a>
                          <a class="collapse-item" href="/projects/into_project">เพิ่มโปรเจค</a>
                          <a class="collapse-item" href="/Selection_yearCheck_Project">ตรวจโปรเจค</a>
-                         <a class="collapse-item" href="/CollectPoints">ให้คะแนน</a>         
-                         <a class="collapse-item" href="/Check_Project">ส่งเกรด</a>
-                         <a class="collapse-item" href="/Check_Project">โปรเจคที่เผยแพร่</a>
+                         <a class="collapse-item" href="/CollectPoints">รายงานผลการสอบโครงงาน</a>         
+                         <a class="collapse-item" href="/SendGrade">บันทึกผลคะแนนเป็นรายบุคคล</a>
+                         <a class="collapse-item" href="/public_project">โปรเจคที่เผยแพร่</a>
                      </div>
                  </div>
              </li>

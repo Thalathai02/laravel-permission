@@ -19,6 +19,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if(isset($datas))
                                 @foreach ($datas as $key=>$row)
                                     @if ($row->status == 'Check')
                                         <tr>
@@ -31,6 +32,9 @@
                                         </tr>
                                     @endif
                                 @endforeach
+                                @else
+
+                                @endif
                             </tbody>
                         </table>
                     </div>

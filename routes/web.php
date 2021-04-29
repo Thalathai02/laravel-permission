@@ -127,7 +127,9 @@ Route::GET('/CollectPoints/{id}','projectControllers@CollectPointsForm')->name('
 Route::POST('/CollectPoints/{id}','projectControllers@wordExport_CollectPoints')->name('projectControllers.wordExport_CollectPoints')->middleware('auth');
 Route::get('/allreject/{id}', 'CheckProjectController@allreject')->name('CheckProject.allreject')->middleware('auth');
 
-
+Route::get('/SendGrade', 'CheckProjectController@SendGrade_page')->name('CheckProject.SendGrade_page')->middleware('auth');
+Route::POST ('/SendGradeReport', 'CheckProjectController@SendGrade')->name('CheckProject.SendGrade')->middleware('auth');
+Route::GET('/public_project', 'CheckProjectController@public_project')->name('CheckProject.public_project')->middleware('auth');
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

@@ -214,21 +214,54 @@ class DataTableController extends Controller
         foreach ($datas_std_test100 as $key => $box_100) {
             $datas_std[] = $box_100;
         }
-        $data_CollectPoints = CollectPoints::where('project_id_collect_points', $Project_id)->get();
-        if(isset($data_CollectPoints)){
-            $datas_std[] = null;
-            foreach ($data_CollectPoints as $key => $data_Collect) {
-                // $arrays[] = $datas->id;
-                foreach ($datas_std as $key => $datas) {
-                    if ($data_Collect->reg_id_collect_points != $datas->id) {
-                        $datas_std[] = $datas;
+        $data_CollectPoints = CollectPoints::where('project_id_collect_points', $Project_id)->select('reg_id_collect_points')->get();
+
+        if ($data_CollectPoints == '[]') {
+            $datas_std2 = collect($datas_std)->groupBy(['year_term', 'std_code', 'Is_director']);
+            return $datas_std2;
+        } else {
+            // $datas_std = array();
+
+            foreach ($datas_std as $key => $datas) {
+                if (isset($data_CollectPoints[2]->reg_id_collect_points)) {
+                    switch ($datas->id) {
+                        case ($data_CollectPoints[0]->reg_id_collect_points):
+                            break;
+                        case ($data_CollectPoints[1]->reg_id_collect_points):
+                            break;
+                        case ($data_CollectPoints[2]->reg_id_collect_points):
+                            break;
+                        default:
+                        $datas_st[] = $datas;
+                            break;
+                    }
+                } elseif (isset($data_CollectPoints[1]->reg_id_collect_points)) {
+                    switch ($datas->id) {
+                        case ($data_CollectPoints[0]->reg_id_collect_points):
+                            break;
+                        case ($data_CollectPoints[1]->reg_id_collect_points):
+                            break;
+                        default:
+                            $datas_st[] = $datas;
+                            break;
+                    }
+                } elseif (isset($data_CollectPoints[0]->reg_id_collect_points)) {
+                    switch ($datas->id) {
+                        case ($data_CollectPoints[0]->reg_id_collect_points):
+                            break;
+                        default:
+                            $datas_st[] = $datas;
+                            break;
                     }
                 }
             }
+            if (empty($datas_st)) {
+                $datas_st=null;
+            }
+
+            $datas_std2 = collect($datas_st)->groupBy(['year_term', 'std_code', 'Is_director']);
+            return $datas_std2;
         }
-        
-        $datas_std2 = collect($datas_std)->groupBy(['year_term', 'std_code', 'Is_director']);
-        return $datas_std2;
     }
     public function count_data_progress($num_data)
     {

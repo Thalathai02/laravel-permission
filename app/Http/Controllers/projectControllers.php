@@ -392,7 +392,7 @@ class projectControllers extends Controller
             $id =  $name->id;
             $data_nameProject = project::find($id);
 
-            $fileModel->name_file = time() . '_' . Auth::user()->name.'.zip';;
+            $fileModel->name_file = time() . '_' . Auth::user()->name . '.zip';;
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
@@ -424,7 +424,7 @@ class projectControllers extends Controller
             $id =  $name->id;
             $data_nameProject = project::find($id);
 
-            $fileModel->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
+            $fileModel->name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
             $fileModel->status_file_path = "Waiting";
             $fileModel->Project_id_File = $name->id;
 
@@ -701,9 +701,9 @@ class projectControllers extends Controller
     {
         $request->validate([
             'File' => 'required|file|mimes:zip',
-            
+
         ]);
-        $name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';
+        $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';
         //Database
         // return response()->json($name_file);
         $CompleteForm_DB = CompleteForm::create([
@@ -783,14 +783,14 @@ class projectControllers extends Controller
             'room_test50' => 'required',
             'File' => 'required|file|mimes:zip',
         ]);
-        $name_file = time() . '_' .Auth::user()->reg_std->std_code.'.zip';;
+        $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
         //Database
         $test50_DB = test50::create([
             'Project_id_test50' => $id,
             'date_test50' => $request->date_test50,
             'end_date_test50' => formatDateEnd_test($request->date_test50),
             'room_test50' => $request->room_test50,
-            'file_test50' => time() . '_' . Auth::user()->reg_std->std_code.'.zip',
+            'file_test50' => time() . '_' . Auth::user()->reg_std->std_code . '.zip',
             'status_test50' => 'Waiting'
         ]);
         Storage::disk('local')->putFileAs(
@@ -996,8 +996,11 @@ class projectControllers extends Controller
         $request->validate([
             'room_test100' => 'required',
             'File' => 'required|file|mimes:zip',
+            'GPA_reg1' =>'required',
+            'GPA_reg2' =>'required',
+            'GPA_reg3' =>'required',
         ]);
-        $name_file = time() . '_' .Auth::user()->reg_std->std_code.'.zip';;
+        $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
         //Database
         $test100_DB = test100::create([
             'Project_id_test100' => $id,
@@ -1026,7 +1029,7 @@ class projectControllers extends Controller
         $templateProcessor->setValue('id', $request->reg_std1);
         $templateProcessor->setValue('name', $request->reg_std1_name);
         $templateProcessor->setValue('phone', $request->reg_std1_Phone);
-        reg_std::where('std_code',$request->reg_std1)->update(['gpa'=>$request->GPA_reg1]);
+        reg_std::where('std_code', $request->reg_std1)->update(['gpa' => $request->GPA_reg1]);
 
         if (!empty($request->reg_std2)) {
             $templateProcessor->setValue('id2', $request->reg_std2);
@@ -1034,7 +1037,7 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
             $templateProcessor->setValue('code2', "รหัส ");
             $templateProcessor->setValue('phone_n2', "มือถือ ");
-            reg_std::where('std_code',$request->reg_std2)->update(['gpa'=>$request->GPA_reg2]);
+            reg_std::where('std_code', $request->reg_std2)->update(['gpa' => $request->GPA_reg2]);
         } else {
             $templateProcessor->setValue('code2', "");
             $templateProcessor->setValue('phone_n2', "");
@@ -1050,7 +1053,7 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
             $templateProcessor->setValue('code3', "รหัส ");
             $templateProcessor->setValue('phone_n3', "มือถือ ");
-            reg_std::where('std_code',$request->reg_std3)->update(['gpa'=>$request->GPA_reg3]);
+            reg_std::where('std_code', $request->reg_std3)->update(['gpa' => $request->GPA_reg3]);
         } else {
             $templateProcessor->setValue('id3', "");
             $templateProcessor->setValue('name3', "");
@@ -1364,7 +1367,7 @@ class projectControllers extends Controller
             $project_id->name_mentor = $request->name_mentor;
             $project_id->save();
             $fileModel = Project_File::find(["Project_id_File", $id]);
-            $fileModel[0]->name_file = time() . '_' . Auth::user()->reg_std->std_code.'.zip';;
+            $fileModel[0]->name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
             $fileModel[0]->status_file_path = "Waiting";
             $subject = subject::find($project_id->subject_id);
             //  return response()->json($project_id);
@@ -1546,15 +1549,14 @@ class projectControllers extends Controller
             $datas_std = $this->DataTableController->data_project($id);
             // return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest50_id'));
 
-            $data_reject_test = comment_test50::where([['project_id_comemt_test50',$id],['action_comemt_test50',2],['id_instructor_comemt_test50',Auth::user()->reg_tea_id]])->first();
-            if(isset($data_reject_test)){
-                $point_test50 =point_test50::where([['project_id_point_test50',$id],['id_instructor_point_test50',Auth::user()->reg_tea_id]])->get();
+            $data_reject_test = comment_test50::where([['project_id_comemt_test50', $id], ['action_comemt_test50', 2], ['id_instructor_comemt_test50', Auth::user()->reg_tea_id]])->first();
+            if (isset($data_reject_test)) {
+                $point_test50 = point_test50::where([['project_id_point_test50', $id], ['id_instructor_point_test50', Auth::user()->reg_tea_id]])->get();
                 // return response()->json($point_test50);
-                return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest50_id','data_reject_test','point_test50'));
-            }else{
+                return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest50_id', 'data_reject_test', 'point_test50'));
+            } else {
                 return view('projects.ProjectAdvisor.test50', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest50_id'));
             }
-            
         }
     }
     public function comment_test50_page()
@@ -1566,7 +1568,7 @@ class projectControllers extends Controller
             // comment_test50::all();
             foreach ($data_project_instructors as $key => $data_test50s) {
                 $check_test50 = test50::where('Project_id_test50', $data_test50s->Project_id)->first();
-                $comment_test50 = comment_test50::where([['action_comemt_test50',1],['project_id_comemt_test50', $data_test50s->Project_id], ['id_instructor_comemt_test50', $data_user->reg_tea_id]])->first();
+                $comment_test50 = comment_test50::where([['action_comemt_test50', 1], ['project_id_comemt_test50', $data_test50s->Project_id], ['id_instructor_comemt_test50', $data_user->reg_tea_id]])->first();
                 if (isset($comment_test50)) {
                 } else {
                     if (isset($check_test50)) {
@@ -1602,10 +1604,9 @@ class projectControllers extends Controller
                 // $point_test50->status_point_test50 = 'Waiting';
                 // $point_test50->save();
                 point_test50::updateOrCreate(
-                    ['reg_id_point_test50'=>$std_1->id,'project_id_point_test50'=> $id,'id_instructor_point_test50'=> $id_user->reg_tea_id],
-                    ['point_test50'=>$request->point_reg_std1,"status_point_test50" => "Waiting"]
+                    ['reg_id_point_test50' => $std_1->id, 'project_id_point_test50' => $id, 'id_instructor_point_test50' => $id_user->reg_tea_id],
+                    ['point_test50' => $request->point_reg_std1, "status_point_test50" => "Waiting"]
                 );
-
             }
             if (isset($request->reg_std2)) {
                 $std_2 = reg_std::where('std_code', $request->reg_std2)->first();
@@ -1618,8 +1619,8 @@ class projectControllers extends Controller
                 // $point_test50->save();
 
                 point_test50::updateOrCreate(
-                    ['reg_id_point_test50'=>$std_2->id,'project_id_point_test50'=> $id,'id_instructor_point_test50'=>$id_user->reg_tea_id],
-                    ['point_test50'=>$request->point_reg_std2,'status_point_test50'=>'Waiting']
+                    ['reg_id_point_test50' => $std_2->id, 'project_id_point_test50' => $id, 'id_instructor_point_test50' => $id_user->reg_tea_id],
+                    ['point_test50' => $request->point_reg_std2, 'status_point_test50' => 'Waiting']
                 );
             }
             if (isset($request->reg_std3)) {
@@ -1632,8 +1633,8 @@ class projectControllers extends Controller
                 // $point_test50->status_point_test50 = 'Waiting';
                 // $point_test50->save();
                 point_test50::updateOrCreate(
-                    ['reg_id_point_test50'=>$std_3->id,'project_id_point_test50'=> $id,'id_instructor_point_test50'=>$id_user->reg_tea_id],
-                    ['point_test50'=>$request->point_reg_std3,'status_point_test50'=>'Waiting']
+                    ['reg_id_point_test50' => $std_3->id, 'project_id_point_test50' => $id, 'id_instructor_point_test50' => $id_user->reg_tea_id],
+                    ['point_test50' => $request->point_reg_std3, 'status_point_test50' => 'Waiting']
                 );
             }
             // return response()->json([$request->point_reg_std1,$std_1,$request->point_reg_std2,$std_2,$request->point_reg_std3,$std_3]);
@@ -1643,9 +1644,9 @@ class projectControllers extends Controller
             // $comment_test50->text_comemt_test50 = $request->commemt;
             // $comment_test50->action_comemt_test50 = $request->selecttopic;
             // $comment_test50->save();
-           comment_test50::updateOrCreate(
-                ['project_id_comemt_test50'=>$id,'id_instructor_comemt_test50'=>$id_user->reg_tea_id],
-                ['text_comemt_test50'=>$request->commemt,'action_comemt_test50'=>$request->selecttopic]
+            comment_test50::updateOrCreate(
+                ['project_id_comemt_test50' => $id, 'id_instructor_comemt_test50' => $id_user->reg_tea_id],
+                ['text_comemt_test50' => $request->commemt, 'action_comemt_test50' => $request->selecttopic]
             );
 
             $id_user = project_user::where('Project_id', $id)->get();
@@ -1720,16 +1721,14 @@ class projectControllers extends Controller
             $tableTest100_id = test100::where('Project_id_test100', '=', $id)->first();
             $datas_std = $this->DataTableController->data_project($id);
             // return view('projects.ProjectAdvisor.test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest100_id'));
-            $data_reject_test = comment_test100::where([['project_id_comemt_test100',$id],['action_comemt_test100',2],['id_instructor_comemt_test100',Auth::user()->reg_tea_id]])->first();
-            if(isset($data_reject_test)){
-                $point_test100 = point_test100::where([['project_id_point_test100',$id],['id_instructor_point_test100',Auth::user()->reg_tea_id]])->get();
+            $data_reject_test = comment_test100::where([['project_id_comemt_test100', $id], ['action_comemt_test100', 2], ['id_instructor_comemt_test100', Auth::user()->reg_tea_id]])->first();
+            if (isset($data_reject_test)) {
+                $point_test100 = point_test100::where([['project_id_point_test100', $id], ['id_instructor_point_test100', Auth::user()->reg_tea_id]])->get();
                 // return response()->json($point_test50);
-                return view('projects.ProjectAdvisor.test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest100_id','data_reject_test','point_test100'));
-            }else{
+                return view('projects.ProjectAdvisor.test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest100_id', 'data_reject_test', 'point_test100'));
+            } else {
                 return view('projects.ProjectAdvisor.test100', compact('id', 'datas_std', 'datas_instructor', 'datas', 'tableTest100_id'));
             }
-            
-
         }
     }
     public function comment_test100_page()
@@ -1741,7 +1740,7 @@ class projectControllers extends Controller
             // comment_test50::all();
             foreach ($data_project_instructors as $key => $data_test100s) {
                 $check_test100 = test100::where('Project_id_test100', $data_test100s->Project_id)->first();
-                $comment_test100 = comment_test100::where([['action_comemt_test100',1],['project_id_comemt_test100', $data_test100s->Project_id], ['id_instructor_comemt_test100', $data_user->reg_tea_id]])->first();
+                $comment_test100 = comment_test100::where([['action_comemt_test100', 1], ['project_id_comemt_test100', $data_test100s->Project_id], ['id_instructor_comemt_test100', $data_user->reg_tea_id]])->first();
                 if (isset($comment_test100)) {
                 } else {
                     if (isset($check_test100)) {
@@ -1778,8 +1777,8 @@ class projectControllers extends Controller
                 // $point_test100->status_point_test100 = 'Waiting';
                 // $point_test100->save();
                 point_test100::updateOrCreate(
-                    ['reg_id_point_test100'=>$std_1->id,'project_id_point_test100'=> $id,'id_instructor_point_test100'=> $id_user->reg_tea_id],
-                    ['point_test100'=>$request->point_reg_std1,"status_point_test100" => "Waiting"]
+                    ['reg_id_point_test100' => $std_1->id, 'project_id_point_test100' => $id, 'id_instructor_point_test100' => $id_user->reg_tea_id],
+                    ['point_test100' => $request->point_reg_std1, "status_point_test100" => "Waiting"]
                 );
             }
             if (isset($request->reg_std2)) {
@@ -1792,8 +1791,8 @@ class projectControllers extends Controller
                 // $point_test100->status_point_test100 = 'Waiting';
                 // $point_test100->save();
                 point_test100::updateOrCreate(
-                    ['reg_id_point_test100'=>$std_2->id,'project_id_point_test100'=> $id,'id_instructor_point_test100'=>$id_user->reg_tea_id],
-                    ['point_test100'=>$request->point_reg_std2,'status_point_test100'=>'Waiting']
+                    ['reg_id_point_test100' => $std_2->id, 'project_id_point_test100' => $id, 'id_instructor_point_test100' => $id_user->reg_tea_id],
+                    ['point_test100' => $request->point_reg_std2, 'status_point_test100' => 'Waiting']
                 );
             }
             if (isset($request->reg_std3)) {
@@ -1807,8 +1806,8 @@ class projectControllers extends Controller
                 // $point_test100->save();
 
                 point_test100::updateOrCreate(
-                    ['reg_id_point_test100'=>$std_3->id,'project_id_point_test100'=> $id,'id_instructor_point_test100'=>$id_user->reg_tea_id],
-                    ['point_test100'=>$request->point_reg_std3,'status_point_test100'=>'Waiting']
+                    ['reg_id_point_test100' => $std_3->id, 'project_id_point_test100' => $id, 'id_instructor_point_test100' => $id_user->reg_tea_id],
+                    ['point_test100' => $request->point_reg_std3, 'status_point_test100' => 'Waiting']
                 );
             }
             // $comment_test100 = new comment_test100();
@@ -1818,8 +1817,8 @@ class projectControllers extends Controller
             // $comment_test100->action_comemt_test100 = $request->selecttopic;
             // $comment_test100->save();
             comment_test100::updateOrCreate(
-                ['project_id_comemt_test100'=>$id,'id_instructor_comemt_test100'=>$id_user->reg_tea_id],
-                ['text_comemt_test100'=>$request->commemt,'action_comemt_test100'=>$request->selecttopic]
+                ['project_id_comemt_test100' => $id, 'id_instructor_comemt_test100' => $id_user->reg_tea_id],
+                ['text_comemt_test100' => $request->commemt, 'action_comemt_test100' => $request->selecttopic]
             );
 
             $id_user = project_user::where('Project_id', $id)->get();
@@ -1885,8 +1884,20 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Admin')) {
-            $datas = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')->select('projects.*')->where([['complete_forms.status_CompleteForm', 'Successfully']])->get();
+            $data = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')->select('projects.*')->where([['complete_forms.status_CompleteForm', 'Successfully']])->get();
+            // $datas = null;
+            $datas = array();
 
+
+            foreach ($data as $key => $box) {
+                $datas_std = $this->DataTableController->data_project_collectPointsForm($box->id);
+                if ($datas_std == '[]') {
+                    $datas = array();
+                } elseif ($datas_std != '[]') {
+                    $datas[] = $box;
+                }
+            }
+            //    return response()->json($datas);
             return View('projects.CollectPoints_page', compact('datas'));
         } else {
             abort(404);
@@ -1894,16 +1905,21 @@ class projectControllers extends Controller
     }
     public function CollectPointsForm($id)
     {
-        $datas_instructor = DB::table('projects')
-            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-            ->select('teachers.*')->where('projects.id', '=', $id)->get();
-        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
-        $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
-        $id_instructor = project_instructor::where('Project_id', $id)->get();
+        
+        if (Auth::user()->hasRole('Admin')) {
+            $datas_instructor = DB::table('projects')
+                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+            $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
+            $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
+            $id_instructor = project_instructor::where('Project_id', $id)->get();
 
-        // return response()->json($datas_std);
-        return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas'));
+            // return response()->json($datas_std);
+            return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas'));
+        } else {
+            abort(404);
+        }
     }
 
     public function wordExport_CollectPoints(Request $request, $id)
@@ -1930,11 +1946,11 @@ class projectControllers extends Controller
                 }
             }
         }
-        
+
         // return response()->json($GPA1->gpa);
         $templateProcessor = new TemplateProcessor(storage_path('word-template/รายงานผลการสอบโครงงานคอมพิวเตอร์.docx'));
 
-        $GPA1=reg_std::where('std_code',$arrays[0][0][0]->std_code)->first();
+        $GPA1 = reg_std::where('std_code', $arrays[0][0][0]->std_code)->first();
 
         $templateProcessor->setValue('std_1', $arrays[0][0][0]->name);
         $templateProcessor->setValue('std1',  substr($arrays[0][0][0]->std_code, -3));
@@ -1947,8 +1963,8 @@ class projectControllers extends Controller
         $templateProcessor->setValue('pointtest100_11',  $arrays[0][0][1]->point_test100);
         $templateProcessor->setValue('pointtest100_21',  $arrays[0][1][1]->point_test100);
         $templateProcessor->setValue('pointtest100_31',  $arrays[0][2][1]->point_test100);
-        $templateProcessor->setValue('meam50_1', $meam50_1 = $request->test50[0] );
-        $templateProcessor->setValue('meam100_1', $meam100_1 =$request->test100[0]);
+        $templateProcessor->setValue('meam50_1', $meam50_1 = $request->test50[0]);
+        $templateProcessor->setValue('meam100_1', $meam100_1 = $request->test100[0]);
         $templateProcessor->setValue('internship1', $request->Internship_score[0]);
         $templateProcessor->setValue('testintime1', $request->Test_in_time[0]);
         $templateProcessor->setValue('pres1', $request->presentations[0]);
@@ -1970,18 +1986,21 @@ class projectControllers extends Controller
             $templateProcessor->setValue('grade1', $grade = 'D');
         }
         $CollectPoints = new CollectPoints;
-        
+
         $CollectPoints->Test_in_time = $request->Test_in_time[0];
         $CollectPoints->presentations = $request->presentations[0];
         $CollectPoints->grade = $grade;
         $CollectPoints->reg_id_collect_points = $arrays[0][0][0]->id;
         $CollectPoints->project_id_collect_points = $id;
         $CollectPoints->Total_point = $total1;
+        $CollectPoints->test50_collect_points = $meam50_1;
+        $CollectPoints->test100_collect_points = $meam100_1;
+        $CollectPoints->SendGrade = 1;
         $CollectPoints->save();
 
         if (!empty($arrays[1])) {
 
-            $GPA2=reg_std::where('std_code',$arrays[1][0][0]->std_code)->first();
+            $GPA2 = reg_std::where('std_code', $arrays[1][0][0]->std_code)->first();
 
             $templateProcessor->setValue('std2',  substr($arrays[1][0][0]->std_code, -3));
             $templateProcessor->setValue('nick_name2', $arrays[1][0][0]->nick_name);
@@ -2015,7 +2034,7 @@ class projectControllers extends Controller
                 $templateProcessor->setValue('grade2', $grade2 = 'C+');
             } else if ($total2 >= 60) {
                 $templateProcessor->setValue('grade2', $grade2 = 'C');
-            }else if ($total2 >= 55) {
+            } else if ($total2 >= 55) {
                 $templateProcessor->setValue('grade1', $grade = 'D+');
             } else if ($total2 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
@@ -2027,6 +2046,9 @@ class projectControllers extends Controller
             $CollectPoints->reg_id_collect_points = $arrays[1][0][0]->id;
             $CollectPoints->project_id_collect_points = $id;
             $CollectPoints->Total_point = $total1;
+            $CollectPoints->test50_collect_points = $meam50_2;
+            $CollectPoints->test100_collect_points = $meam100_2;
+            $CollectPoints->SendGrade = 1;
             $CollectPoints->save();
         } else {
             $templateProcessor->setValue('std2',  "");
@@ -2054,7 +2076,7 @@ class projectControllers extends Controller
             $templateProcessor->setValue('grade2', '');
         }
         if (!empty($arrays[2])) {
-            $GPA3=reg_std::where('std_code',$arrays[2][0][0]->std_code)->first();
+            $GPA3 = reg_std::where('std_code', $arrays[2][0][0]->std_code)->first();
 
             $templateProcessor->setValue('std3',  substr($arrays[2][0][0]->std_code, -3));
             $templateProcessor->setValue('nick_name3', $arrays[2][0][0]->nick_name);
@@ -2088,19 +2110,22 @@ class projectControllers extends Controller
                 $templateProcessor->setValue('grade3', $grade3 = 'C+');
             } else if ($total3 >= 60) {
                 $templateProcessor->setValue('grade3', $grade3 = 'C');
-            }else if ($total3 >= 55) {
+            } else if ($total3 >= 55) {
                 $templateProcessor->setValue('grade1', $grade = 'D+');
             } else if ($total3 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
             }
             $CollectPoints = new CollectPoints;
-           
+
             $CollectPoints->Test_in_time = $request->Test_in_time[2];
             $CollectPoints->presentations = $request->presentations[2];
             $CollectPoints->grade = $grade3;
             $CollectPoints->reg_id_collect_points = $arrays[2][0][0]->id;
             $CollectPoints->project_id_collect_points = $id;
             $CollectPoints->Total_point = $total3;
+            $CollectPoints->test50_collect_points = $meam50_3;
+            $CollectPoints->test100_collect_points = $meam100_3;
+            $CollectPoints->SendGrade = 1;
             $CollectPoints->save();
         } else {
             $templateProcessor->setValue('std3',  "");
@@ -2176,8 +2201,8 @@ class projectControllers extends Controller
                 $send->notify(new InvoicePaid(12, $id, 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์ไม่ผ่าน กรุณาแก้ไข', Auth::user()));
             }
         }
-        if($id_test == 5){
-            foreach($sendToUser as $key =>$itme){
+        if ($id_test == 5) {
+            foreach ($sendToUser as $key => $itme) {
                 $send  = User::where('reg_std_id', $itme->id_reg_Std)->first();
                 $send->notify(new InvoicePaid(12, $id, 'แบบขอส่งโครงงานฉบับสมบูรณ์ไม่ผ่าน กรุณาแก้ไข', Auth::user()));
             }
@@ -2218,7 +2243,7 @@ class projectControllers extends Controller
             }
         } elseif ($id_test == 3) {
             $changetopic = changetopic::where('Project_id_changetopics', $id)->get();
-        // return response()->json([$changetopic]);
+            // return response()->json([$changetopic]);
             if (isset($changetopic)) {
                 changetopic::where('Project_id_changetopics', $id)->delete();
                 return redirect('/home');
@@ -2234,7 +2259,7 @@ class projectControllers extends Controller
                 return redirect('/home');
             }
             return redirect('/home');
-        }elseif ($id_test == 5) {
+        } elseif ($id_test == 5) {
             $CompleteForm = CompleteForm::where('Project_id_CompleteForm', $id)->get();
             if (isset($CompleteForm)) {
                 CompleteForm::where('Project_id_CompleteForm', $id)->delete();

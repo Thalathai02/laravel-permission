@@ -23,8 +23,12 @@ class CreateCollectPointsTable extends Migration
 
             $table->float('Total_point');
             $table->float('Test_in_time');
+            $table->float('test50_collect_points');
+            $table->float('test100_collect_points');
             $table->float('presentations');
             $table->string('grade');
+
+            $table->integer('SendGrade')->nullable();
             
             $table->timestamps();
             $table->softDeletes();
