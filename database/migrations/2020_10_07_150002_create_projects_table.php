@@ -19,10 +19,16 @@ class CreateProjectsTable extends Migration
             $table->text('name_en')->nullable();            
             $table->text('status')->nullable();
             
-            $table->unsignedInteger('subject_id')->nullable();
+            $table->unsignedInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
-            $table->text('name_mentor')->default('-');
-            $table->text('because_reject')->default('-');
+            $table->text('name_mentor')->nullable();
+            $table->text('because_reject')->nullable();
+            $table->text('keyword_th')->nullable();
+            $table->text('keyword_eng')->nullable();
+            $table->text('abstract_th')->nullable();
+            $table->text('abstract_eng')->nullable();
+            
+            $table->text('number_project')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

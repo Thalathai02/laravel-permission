@@ -724,6 +724,7 @@
                         ['สอบ 100', {{ count($test100) }}],
                         ['ส่งรูปเล่มสมบูรณ์', {{ count($CompleteForm) }}],
                         ['โปรเจคที่สมบูรณ์', {{ count($Successfully_project) }}]
+                        
 
                     ]);
 

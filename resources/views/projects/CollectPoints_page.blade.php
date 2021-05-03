@@ -20,8 +20,9 @@
                             </thead>
                             <tbody>
                                 @if(isset($datas))
+                               
                                 @foreach ($datas as $key=>$row)
-                                    @if ($row->status == 'Check')
+                                    @if ($row->status == 'Successfully')
                                         <tr>
                                             <th scope="row">{{ $key+1 }}</th>
                                             <td>{{ $row->name_th }}</td>

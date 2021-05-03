@@ -129,7 +129,17 @@ Route::get('/allreject/{id}', 'CheckProjectController@allreject')->name('CheckPr
 
 Route::get('/SendGrade', 'CheckProjectController@SendGrade_page')->name('CheckProject.SendGrade_page')->middleware('auth');
 Route::POST ('/SendGradeReport', 'CheckProjectController@SendGrade')->name('CheckProject.SendGrade')->middleware('auth');
-Route::GET('/public_project', 'CheckProjectController@public_project')->name('CheckProject.public_project')->middleware('auth');
+Route::GET('/public_project', 'PublicProjectController@public_project')->name('PublicProject.public_project')->middleware('auth');
+Route::POST('/search_public_projec', 'PublicProjectController@search_public_projec')->name('PublicProject.search_public_projec')->middleware('auth');
+Route::GET('/public_project/{id}', 'PublicProjectController@view_public_projec')->name('PublicProject.view_public_projec');
+Route::GET('/edit_public_projec/{id}', 'PublicProjectController@edit_public_projec')->name('PublicProject.edit_public_projec')->middleware('auth');
+Route::POST('/store_public_projec/{id}', 'PublicProjectController@store')->name('PublicProject.store')->middleware('auth');
+
+Route::get('/{form}/{file}', 'PublicProjectController@download')->name('PublicProject.download');
+Route::POST('/search', 'PublicProjectController@search_Guest_public_projec')->name('PublicProject.search_Guest_public_projec');
+
+
+
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

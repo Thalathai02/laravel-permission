@@ -619,6 +619,9 @@ class DataTableController extends Controller
             $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
         }
         if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+            $project = project::find($Project_id);
+            $project->status ='Private';
+            $project->save();
             // $submit = 2;
             $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
             $id_Project_id_CompleteForm[0]->save();
@@ -682,9 +685,10 @@ class DataTableController extends Controller
             // $notif_id_3 = [$d, User::find($id_3->user_id_Instructor)];
         }
         if ($a == 1 && $b == 1 && $c == 1 && $d == 1) {
+
             $submit = 1;
-            // $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
-            // $id_Project_id_CompleteForm[0]->save();
+            $id_Project_id_CompleteForm[0]->status_CompleteForm = 'Successfully';
+            $id_Project_id_CompleteForm[0]->save();
         } else {
             $submit = 0;
         }

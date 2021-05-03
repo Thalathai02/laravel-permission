@@ -375,8 +375,5 @@ class CheckProjectController extends Controller
             // return back();
         }
     }
-    public function public_project(){
-        pro
-        return view('Admin.public_project');
-    }
+   
 }
