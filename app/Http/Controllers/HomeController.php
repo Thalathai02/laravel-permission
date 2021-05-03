@@ -162,9 +162,9 @@ class HomeController extends Controller
             $CompleteForm = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')
             ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('complete_forms.*','projects.*')->get();
 
-            $Successfully_project = project::where([['projects.status', 'Successfully'],['subject_id',$term_last[0]->id]])->get();
+            $Successfully_project = project::where([['projects.status', 'Private'],['subject_id',$term_last[0]->id]])->orwhere([['projects.status', 'Public'],['subject_id',$term_last[0]->id]])->get();
 
-            // return response()->json($test50);
+            // return response()->json($Successfully_project);
             return view('home', compact('term','project','test50','test100','CompleteForm','Successfully_project','term_last'));
         }
         if (Auth::user()->hasRole('Tea')) {

@@ -185,76 +185,55 @@
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="#" class="logo">Computer Science
 
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="#welcome" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#about">About</a></li>
+            <nav class="main-nav navbar navbar-expand-md navbar-light fixed-top bg-white ">
+                <a href="/"><img src="{{ asset('css/assets/images/ezgif.com-gif-maker.gif') }}"
+                        style="width: 50%;"></a>
 
-                            @if (Route::has('login'))
-                                @auth
-                                    <li class="scroll-to-section"> <a href="{{ url('/home') }}">Dashboard</a></li>
-                                @else
-                                    <li class="scroll-to-section"> <a href="{{ route('login') }}">LOGIN</a></li>
-                                @endauth
-                            @endif
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-
-
-
-                            {{-- @if (Route::has('login'))
-                        <div class="top-right links">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active scroll-to-section">
+                            <a class="nav-link" href="#welcome">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="#about">about</a>
+                        </li>
+                        @if (Route::has('login'))
                             @auth
-                            <div class="content">
-                                <div class="title m-b-md">
-                                    <a href="{{ url('/home') }} " class="gg">HOME</a>
-                                </div>
-                            </div>
+                                <li class="nav-item scroll-to-section">
+                                    <a class="nav-link" href="{{ url('/home') }}">Dashboard</a>
+                                </li>
                             @else
-                                <div class="content">
-                                    <div class="title m-b-md">
-                                            <a href="{{ route('login') }}" class="gg">LOGIN</a>
-                                    </div>
-                                </div>
+                                <li class="nav-item scroll-to-section">
+                                    <a class="nav-link" href="{{ route('login') }}">Sign in</a>
+                                </li>
                             @endauth
-                        </div>
-                        @endif --}}
+                        @endif
+                        <li class="nav-item scroll-to-section">
+                            <a class="nav-link" href="#contact-us">Contact Us</a>
+                        </li>
 
-
-                            {{-- <li class="scroll-to-section"><a href="#services">Services</a></li>
-                        <li class="scroll-to-section"><a href="#frequently-question">Frequently Questions</a></li>
-                        <li class="submenu">
-                            <a href="javascript:;">Drop Down</a>
-                            <ul>
-                                <li><a href="">About Us</a></li>
-                                <li><a href="">Features</a></li>
-                                <li><a href="">FAQ's</a></li>
-                                <li><a href="">Blog</a></li>
-                            </ul>
-                        </li> --}}
-                            <li class="scroll-to-section"><a href="#contact-us">Contact Us</a></li>
-                        </ul>
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                 </div>
-            </div>
+            </nav>
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
 
 
+
     <!-- ***** Welcome Area Start ***** -->
-    <div class="welcome-area" id="welcome">
+    <div class="welcome-area mt-1" id="welcome">
 
         <!-- ***** Header Text Start ***** -->
         <div class="header-text">
@@ -262,30 +241,31 @@
                 <div class="row">
                     <div class="left-text col-lg-6 col-md-6 col-sm-12 col-xs-12"
                         data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
-                        <h1>WELCOME TO<strong> CSMJU PROJECT</strong>
 
-                        </h1>
-
-                        {{-- <p>......</p> --}}
+                        <h1>WELCOME TO<strong> CSMJU PROJECT</strong></h1>
                         <a href="#about" class="main-button-slider">Find Out More</a>
                     </div>
 
                     <div class="col-sm" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                        <img src="{{ asset('css/assets/images/logo.gif') }}" class="float-left" alt=""
-                            style="float:left;width:300px;">
-                        <img src="{{ asset('css/assets/images/mju.png') }}" class="float-right" alt=""
-                            style="float:left;width:180px;">
+                        <div class="text-center row">
+                            <div class="col"><img src="{{ asset('css/assets/images/logo.gif') }}" class="float-none"
+                                    alt="" style="float:left;width:300px;">
+                            </div>
+                            <div class="col"> <img src="{{ asset('css/assets/images/mju.png') }}" class="float-none"
+                                    alt="" style="float:right;width:180px;">
+                            </div>
+                        </div>
 
                     </div>
+
                 </div>
             </div>
         </div>
-        <!-- ***** Header Text End ***** -->
+
     </div>
-    <!-- ***** Welcome Area End ***** -->
 
 
-    <!-- ***** Features Big Item Start ***** -->
+
     <section class="section" id="about">
         <div class="container">
             <div class="row">
@@ -318,344 +298,95 @@
             </div>
         </div>
     </section>
-    <!-- ***** Features Big Item End ***** -->
 
-
-    <!-- ***** Features Big Item Start ***** -->
-    {{-- <section class="section" id="about2">
-    <div class="container">
-        <div class="row">
-            <div class="left-text col-lg-5 col-md-12 col-sm-12 mobile-bottom-fix">
-                <div class="left-heading">
-                    <h5>Curabitur aliquam eget tellus id porta</h5>
-                </div>
-                <p>Proin justo sapien, posuere suscipit tortor in, fermentum mattis elit. Aenean in feugiat purus.</p>
-                <ul>
-                    <li>
-                        <img src="{{ asset('css/assets/images/about-icon-01.png') }}" alt="">
-                        <div class="text">
-                            <h6>Nulla ultricies risus quis risus</h6>
-                            <p>You can use this website template for commercial or non-commercial purposes.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="{{ asset('css/assets/images/about-icon-02.png') }}" alt="">
-                        <div class="text">
-                            <h6>Donec consequat commodo purus</h6>
-                            <p>You have no right to re-distribute this template as a downloadable ZIP file on any website.</p>
-                        </div>
-                    </li>
-                    <li>
-                        <img src="{{ asset('css/assets/images/about-icon-03.png') }}" alt="">
-                        <div class="text">
-                            <h6>Sed placerat sollicitudin mauris</h6>
-                            <p>If you have any question or comment, please <a rel="nofollow" href="https://templatemo.com/contact">contact</a> us on TemplateMo.</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="right-image col-lg-7 col-md-12 col-sm-12 mobile-bottom-fix-big" data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                <img src="{{ asset('css/assets/images/right-image.png') }}" class="rounded img-fluid d-block mx-auto" alt="App">
-            </div>
-        </div>
-    </div>
-</section> --}}
-    <!-- ***** Features Big Item End ***** -->
-
-
-    <!-- ***** Features Small Start ***** -->
-    {{-- <section class="section" id="services">
-    <div class="container">
-        <div class="row">
-            <div class="owl-carousel owl-theme">
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-01.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">First Box Service</h5>
-                    <p>Aenean vulputate massa sed neque consectetur, ac fringilla quam aliquet. Sed a enim nec eros tempor cursus at id libero.</p>
-                    <a href="#" class="main-button">Read More</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-02.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Second Box Title</h5>
-                    <p>Pellentesque vitae urna ut nisi viverra tristique quis at dolor. In non sodales dolor, id egestas quam. Aliquam erat volutpat. </p>
-                    <a href="#" class="main-button">Discover More</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('assets/images/service-icon-03.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Third Title Box</h5>
-                    <p>Quisque finibus libero augue, in ultrices quam dictum id. Aliquam quis tellus sit amet urna tincidunt bibendum.</p>
-                    <a href="#" class="main-button">More Detail</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-02.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Fourth Service Box</h5>
-                    <p>Fusce sollicitudin feugiat risus, tempus faucibus arcu blandit nec. Duis auctor dolor eu scelerisque vestibulum.</p>
-                    <a href="#" class="main-button">Read More</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-01.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Fifth Service Title</h5>
-                    <p>Curabitur aliquam eget tellus id porta. Proin justo sapien, posuere suscipit tortor in, fermentum mattis elit.</p>
-                    <a href="#" class="main-button">Discover</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-03.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Sixth Box Title</h5>
-                    <p>Ut nibh velit, aliquam vitae pellentesque nec, convallis vitae lacus. Aliquam porttitor urna ut pellentesque.</p>
-                    <a href="#" class="main-button">Detail</a>
-                </div>
-                <div class="item service-item">
-                    <div class="icon">
-                        <i><img src="{{ asset('css/assets/images/service-icon-01.png') }}" alt=""></i>
-                    </div>
-                    <h5 class="service-title">Seventh Title Box</h5>
-                    <p>Sed a consequat velit. Morbi lectus sapien, vestibulum et sapien sit amet, ultrices malesuada odio. Donec non quam.</p>
-                    <a href="#" class="main-button">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
-    <!-- ***** Features Small End ***** -->
-
-
-    <!-- ***** Frequently Question Start ***** -->
-    {{-- <section class="section" id="frequently-question">
-    <div class="container">
-        <!-- ***** Section Title Start ***** -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-heading">
-                    <h2>Frequently Asked Questions</h2>
-                </div>
-            </div>
-            <div class="offset-lg-3 col-lg-6">
-                <div class="section-heading">
-                    <p>Vivamus venenatis eu mi ac mattis. Maecenas ut elementum sapien. Nunc euismod risus ac lobortis congue. Sed erat quam.</p>
-                </div>
-            </div>
-        </div>
-        <!-- ***** Section Title End ***** -->
-
-        <div class="row">
-            <div class="left-text col-lg-6 col-md-6 col-sm-12">
-                <h5>Class aptent taciti sociosqu ad litora torquent per conubia</h5>
-                <div class="accordion-text">
-                    <p>Curabitur placerat diam in risus lobortis, laoreet porttitor est elementum. Nulla ultricies risus quis risus scelerisque, a aliquam tellus maximus. Cras pretium nulla ac convallis iaculis. Aenean bibendum erat vitae odio sodales, in facilisis tellus volutpat.</p>
-                    <p>Sed lobortis pellentesque magna ac congue. Suspendisse quis molestie magna, id eleifend ex. Ut mollis ultricies diam nec dictum. Morbi commodo hendrerit mi vel vulputate. Proin non tincidunt dui. Lorem ipsum dolor sit amet.</p>
-                    <span>Email: <a href="#">email@company.com</a><br></span>
-                    <a href="#contact-us" class="main-button">Contact Us</a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="accordions is-first-expanded">
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>First Common Question</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Duis vulputate porttitor urna sit amet pretium. Phasellus sed pulvinar eros, condimentum consequat ex. Suspendisse potenti.
-                                <br><br>
-                                Pellentesque maximus lorem sed elit imperdiet mattis. Duis posuere mauris ut eros rutrum sodales. Aliquam erat volutpat.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>Second Question Answer</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Sed odio elit, cursus sed consequat at, rutrum eget augue. Cras ac eros iaculis, tempor quam sit amet, scelerisque mi. Quisque eu risus eget nunc porttitor vestibulum at a ante.
-                                <br><br>
-                                Praesent ut placerat turpis, vel pellentesque dolor. Sed rutrum eleifend tortor, eu luctus orci sagittis in. In blandit fringilla mollis.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>Third Answer for you</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Proin feugiat ante ut vulputate rutrum. Nam quis erat turpis. Nullam maximus pharetra lorem, eu condimentum est iaculis ut. Pellentesque mattis ultrices dignissim. 
-                                <br><br>
-                                Etiam et enim finibus, feugiat massa efficitur, finibus sapien. Sed cursus lacus quis arcu scelerisque, eget ornare risus maximus. Aenean non lectus id odio rhoncus pharetra.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>Fourth Question Asked</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Phasellus eu purus ornare, eleifend orci nec, egestas nulla. Sed sed aliquet sapien. Proin placerat, ipsum eu posuere blandit, tellus quam consectetur nisi, id sollicitudin diam ex at nisi.
-                                <br><br>
-                                Aenean fermentum eget turpis egestas semper. Sed finibus mollis venenatis. Praesent at sem in massa iaculis pharetra.</p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>Fifth Ever Question</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Quisque aliquet ipsum ut magna rhoncus, euismod lacinia elit rhoncus. Sed sapien elit, mollis ut ultricies quis, fermentum nec ante.
-                                <br><br>
-                                Sed nec ex nec tortor fermentum sollicitudin id ut ligula. Ut sagittis rutrum lectus, non sagittis ante euismod eu. </p>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="accordion">
-                        <div class="accordion-head">
-                            <span>Sixth Sense Question</span>
-                            <span class="icon">
-                                <i class="icon fa fa-chevron-right"></i>
-                            </span>
-                        </div>
-                        <div class="accordion-body">
-                            <div class="content">
-                                <p>Suspendisse potenti. Ut dapibus leo ut massa vulputate semper. Pellentesque maximus lorem sed elit imperdiet mattis. Duis posuere mauris ut eros rutrum sodales. Aliquam erat volutpat.</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> --}}
-    <!-- ***** Frequently Question End ***** -->
-
-
-    <!-- ***** Contact Us Start ***** -->
-    <section class="section" id="contact-us">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- ***** Contact Map Start ***** -->
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div id="map">
-                        <!-- How to change your own map point
-                       1. Go to Google Maps
-                       2. Click on your location point
-                       3. Click "Share" and choose "Embed map" tab
-                       4. Copy only URL and paste it within the src="" field below
-                -->
-
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7549.563268478465!2d99.0099707270447!3d18.896766158054884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30da239a4f2aedb7%3A0x610f3e722c9e2fa6!2sCSMJU%20Studio!5e0!3m2!1sth!2sth!4v1610471012281!5m2!1sth!2sth"
-                            width="100%" height="500px" frameborder="0" style="border:0" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <!-- ***** Contact Map End ***** -->
-
-                <!-- ***** Contact Form Start ***** -->
-                <div class="col-lg-6 col-md-6 col-sm-12">
-
-                    <div class="contact-form">
-                        <form id="contact" action="" method="post">
-                            <h1>Contact</h1>
-                            <div class="row">
-
-
-                                <div class="col-md-6 col-sm-12">
-                                    <fieldset>
-                                        {{-- <input name="name" type="text" id="name" placeholder="Full Name" required="" class="contact-field"> --}}
-                                        <h3>
-                                            <i class="fas fa-phone-alt"></i>
-                                            +6653873890-3
-                                        </h3>
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <fieldset>
-                                        <h3>
-                                            <i class="fas fa-envelope"></i>
-                                            Fax: +6653873898
-                                        </h3>
-                                        {{-- <input name="email" type="text" id="email" placeholder="E-mail" required="" class="contact-field"> --}}
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <h3 class="left">
-                                            <i class="far fa-copyright"></i>
-                                            สาขาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์
-                                        </h3>
-                                        {{-- <textarea name="message" rows="6" id="message" placeholder="Your Message" required="" class="contact-field"></textarea> --}}
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <h3 class="left">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            มหาวิทยาลัยแม่โจ้
-                                            <br>
-                                            &nbsp;&nbsp; 63 หมู่ 4 ต.หนองหาร อ.สันทราย จ.เชียงใหม่ 50290
-                                        </h3>
-                                        {{-- <button type="submit" id="form-submit" class="main-button">Send It</button> --}}
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- ***** Contact Form End ***** -->
-            </div>
-        </div>
-    </section>
-    <!-- ***** Contact Us End ***** -->
-
-
-    <!-- ***** Footer Start ***** -->
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-7 col-md-12 col-sm-12">
-                    <p class="copyright">Copyright &copy; 2021 CSMJU COMPANY
+        <section class="section" id="contact-us">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-4 fw_light m_bottom_30">
 
-
-                </div>
-                <div class="col-lg-5 col-md-12 col-sm-12">
-                    <ul class="social">
-                        <li><a href="https://www.facebook.com/comscience.mju"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href=""><i class="fa fa-linkedin"></i></a></li>
-                        {{-- <li><a href="#"><i class="fa fa-rss"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li> --}}
-                    </ul>
+                    </div>
+                    <div class="col-sm-8 m_bottom_30">
+                        <h5 class="color_dark m_bottom_20 fw_light">Contact Us</h5>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <ul class="col-xs-12 col-sm-6 fw_light w_break">
+                                    <li class="m_bottom_8">
+                                        <div class="not-fixed-table" style="vertical-align: top;">
+                                            <div class="body">
+                                                <div class="row">
+                                                    <div class="cell" style="padding-right: 1rem;">
+                                                        
+                                                           
+                                                        
+                                                    </div>
+                                                    <div class="cell" style="word-break: break-word;">
+                                                        <i class="far fa-phone" style="color:red" aria-hidden="true"></i>  +6653873890-3
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="m_bottom_8">
+                                        <div class="not-fixed-table" style="vertical-align: top;">
+                                            <div class="body">
+                                                <div class="row">
+                                                    <div class="cell" style="padding-right: 1rem;">
+                                                        <div class="icon_wrap_size_1 color_pink circle f_left"><i
+                                                                class="icon-mail-alt"></i></div>
+                                                    </div>
+                                                    <div class="cell" style="word-break: break-word;">
+                                                        <i class="far fa-envelope" style="color:red" aria-hidden="true"></i>  Fax: +6653873898
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="m_bottom_8">
+                                        <div class="not-fixed-table" style="vertical-align: top;">
+                                            <div class="body">
+                                                <div class="row">
+                                                    <div class="cell" style="padding-right: 1rem;">
+                                                        <div class="icon_wrap_size_1 color_pink circle f_left"><i
+                                                                class="icon-skype"></i></div>
+                                                    </div>
+                                                    <div class="cell" style="word-break: break-word;">
+                                                        สาขาวิชาวิทยาการคอมพิวเตอร์ คณะวิทยาศาสตร์</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="col-xs-12 col-sm-6 fw_light w_break">
+                                    <li class="m_bottom_8">
+                                        <div class="not-fixed-table" style="vertical-align: top;">
+                                            <div class="body">
+                                                <div class="row">
+                                                    <div class="cell" style="padding-right: 1rem;">
+                                                        <div class="icon_wrap_size_1 color_pink circle f_left"><i
+                                                                class="icon-location"></i></div>
+                                                    </div>
+                                                    <div class="cell" style="word-break: break-word;">
+                                                        <i class="fa fa-map-marker" style="color:red" aria-hidden="true"></i>
+                                                        มหาวิทยาลัยแม่โจ้<br>63 หมู่ 4 ต.หนองหาร อ.สันทราย จ.เชียงใหม่
+                                                        50290<br><br>
+                                                        <a href="https://www.google.com/maps/place/%E0%B8%AA%E0%B8%B2%E0%B8%82%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%84%E0%B8%AD%E0%B8%A1%E0%B8%9E%E0%B8%B4%E0%B8%A7%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C/@18.8959443,99.0108007,17z/data=!3m1!4b1!4m5!3m4!1s0x30da234aca979f93:0xb01d3d9375066a7a!8m2!3d18.8959392!4d99.0129894"
+                                                            target="_blank"
+                                                            class="button_type_2 color_dark r_corners tr_all color_pink_hover d_inline_m fs_medium t_md_align_c w_break">
+                                                            Open in Google Maps
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </footer>
 
     <!-- jQuery -->
