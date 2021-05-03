@@ -47,7 +47,7 @@ class PublicProjectController extends Controller
     public function public_project()
     {
         if (Auth::user()->hasRole('Admin')) {
-            $project = project::where('status', 'Private')->orWhere('status', 'Public')->paginate(20);
+            $project = project::where('status', 'Private')->orWhere('status', 'Public')->paginate(10);
             // return response()->json($project);
 
             return view('Admin.project.public_project', compact('project'));
@@ -65,7 +65,7 @@ class PublicProjectController extends Controller
                 ->orWhere('keyword_th', 'LIKE', "%{$request->search}%")
                 ->orWhere('keyword_eng', 'LIKE', "%{$request->search}%")
 
-                ->paginate(20);
+                ->paginate(10);
             // return response()->json($project);
 
             return view('Admin.project.public_project', compact('project'));
@@ -178,4 +178,22 @@ class PublicProjectController extends Controller
     {
         return response()->download(storage_path("/app/{$form}/{$file}"));
     }
+
+    public function search_Guest_public_projec(Request $request)
+    {
+        
+            $project = project::where([['status', 'Private'],['status', 'Public']])
+                ->orWhere('name_th', 'LIKE', "%{$request->search}%")
+                ->orWhere('name_en', 'LIKE', "%{$request->search}%")
+                ->orWhere('number_project', 'LIKE', "%{$request->search}%")
+                ->orWhere('keyword_th', 'LIKE', "%{$request->search}%")
+                ->orWhere('keyword_eng', 'LIKE', "%{$request->search}%")
+
+                ->paginate(10);
+            // return response()->json($project);
+
+            return view('info_word_template.Guest_public_project', compact('project'));
+        
+    }
+    
 }

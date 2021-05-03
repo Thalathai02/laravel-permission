@@ -220,16 +220,17 @@
                         </li>
 
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    
+                        {!! Form::open(['action' => 'PublicProjectController@search_Guest_public_projec', 'method' => 'POST', 'enctype' => 'multipart/form-data','class'=>"form-inline my-2 my-lg-0"]) !!}
+                        <input class="form-control mr-sm-2" type="search" placeholder="search" aria-label="search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                        {!! Form::close() !!}
+                  
                 </div>
             </nav>
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
-
 
 
     <!-- ***** Welcome Area Start ***** -->

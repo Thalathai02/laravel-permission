@@ -136,6 +136,7 @@ Route::GET('/edit_public_projec/{id}', 'PublicProjectController@edit_public_proj
 Route::POST('/store_public_projec/{id}', 'PublicProjectController@store')->name('PublicProject.store')->middleware('auth');
 
 Route::get('/{form}/{file}', 'PublicProjectController@download')->name('PublicProject.download');
+Route::POST('/search', 'PublicProjectController@search_Guest_public_projec')->name('PublicProject.search_Guest_public_projec');
 
 
 

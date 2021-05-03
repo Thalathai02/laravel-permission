@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     @endforeach
-                    
+                    {!! $project->links() !!}
                 @else
                     <p>There are no data.</p>
                 @endif
