@@ -22,7 +22,7 @@
                                 @if(isset($datas))
                                
                                 @foreach ($datas as $key=>$row)
-                                    @if ($row->status == 'Successfully')
+                                    @if ($row->status == 'Private')
                                         <tr>
                                             <th scope="row">{{ $key+1 }}</th>
                                             <td>{{ $row->name_th }}</td>
