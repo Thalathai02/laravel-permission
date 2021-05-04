@@ -311,7 +311,7 @@ class CheckProjectController extends Controller
                 ->where([['collect_points.deleted_at', NULL], ['reg_stds.deleted_at', NULL], ['collect_points.SendGrade', 1]])->get()
                 ->groupBy('year_term');
             // return response()->json($datas);
-            return view('admin.SendGrade', compact('datas'));
+            return view('Admin.SendGrade', compact('datas'));
         }
     }
     public function SendGrade(Request $request)
