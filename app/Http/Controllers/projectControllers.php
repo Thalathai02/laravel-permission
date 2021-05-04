@@ -368,7 +368,7 @@ class projectControllers extends Controller
         $request->validate([
             'Project_name_thai' => 'required',
             'Project_name_eg' => 'required',
-            'File' => 'required|file|mimes:zip',
+            'File' => 'required|file|mimes:zip|size:10000',
 
         ]);
         $fileModel = new Project_File;
@@ -377,7 +377,7 @@ class projectControllers extends Controller
             $request->validate([
                 'Project_name_thai' => 'required',
                 'Project_name_eg' => 'required',
-                'File' => 'required|file|mimes:zip',
+                'File' => 'required|file|mimes:zip|size:10000',
                 'subject' => 'required',
             ]);
             $name = new project();
@@ -419,7 +419,7 @@ class projectControllers extends Controller
 
             // $term = subject::query()->where('id', 'LIKE', "%{$request['subject']}%")->get();
 
-            // return response()->json($term); 
+            // return response()->json($term);
             $name->save();
             $id =  $name->id;
             $data_nameProject = project::find($id);
@@ -700,7 +700,7 @@ class projectControllers extends Controller
     public function wordExport_CompleteForm(Request $request, $id)
     {
         $request->validate([
-            'File' => 'required|file|mimes:zip',
+            'File' => 'required|file|mimes:zip|size:10000',
 
         ]);
         $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';
@@ -781,7 +781,7 @@ class projectControllers extends Controller
 
         $request->validate([
             'room_test50' => 'required',
-            'File' => 'required|file|mimes:zip',
+            'File' => 'required|file|mimes:zip|size:10000',
         ]);
         $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
         //Database
@@ -995,7 +995,7 @@ class projectControllers extends Controller
     {
         $request->validate([
             'room_test100' => 'required',
-            'File' => 'required|file|mimes:zip',
+            'File' => 'required|file|mimes:zip|size:10000',
             'GPA_reg1' =>'required',
             'GPA_reg2' =>'required',
             'GPA_reg3' =>'required',
@@ -1356,7 +1356,7 @@ class projectControllers extends Controller
         }
         if (Auth::user()->hasRole('Std')) {
             $request->validate([
-                'File' => 'required|file|mimes:zip',
+                'File' => 'required|file|mimes:zip|size:10000',
 
             ]);
             $project_id = project::find($id);
@@ -1905,7 +1905,7 @@ class projectControllers extends Controller
     }
     public function CollectPointsForm($id)
     {
-        
+
         if (Auth::user()->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
                 ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
