@@ -50,7 +50,7 @@ class PublicProjectController extends Controller
             $project = project::where('status', 'Private')->orWhere('status', 'Public')->paginate(10);
             // return response()->json($project);
 
-            return view('Admin.project.public_project', compact('project'));
+            return view('Admin.Project.public_project', compact('project'));
         } else {
             abort(404);
         }
@@ -68,7 +68,7 @@ class PublicProjectController extends Controller
                 ->paginate(10);
             // return response()->json($project);
 
-            return view('Admin.project.public_project', compact('project'));
+            return view('Admin.Project.public_project', compact('project'));
         } else {
             abort(404);
         }
@@ -97,7 +97,7 @@ class PublicProjectController extends Controller
         $data_file = Project_File::orderBy('id', 'desc')->where([['Project_id_File', $id], ['status_file_path', 'Public']])->first();
 
         // return response()->json($datas);
-        return view('Admin.project.view_public_project', compact('datas', 'datas_instructor', 'data_project', 'data_file'));
+        return view('Admin.Project.view_public_project', compact('datas', 'datas_instructor', 'data_project', 'data_file'));
     }
     public function edit_public_projec($id)
     {
@@ -121,7 +121,7 @@ class PublicProjectController extends Controller
 
             $data_file = Project_File::orderBy('id', 'desc')->where('Project_id_File', $id)->first();
             // return response()->json($datas);
-            return view('Admin.project.edit_public_project', compact('datas', 'datas_instructor', 'data_project', 'data_file'));
+            return view('Admin.Project.edit_public_project', compact('datas', 'datas_instructor', 'data_project', 'data_file'));
         } else {
             abort(404);
         }
