@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                {!! Form::open(['action' => ['PublicProjectController@store', $datas[0]->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['action' => ['PublicProjectController@store', $data_project->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 <div class="row">
                     <div class="card shadow mb-4">
                         <div class="card-body">
