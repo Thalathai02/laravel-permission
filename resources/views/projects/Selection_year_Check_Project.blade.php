@@ -39,11 +39,7 @@
                  $(document).ready(function() {
                      $("#staticBackdrop").modal('show');
                  });
-     
              </script>
-     
-     
-        </div>
     </body>
 
     </html>

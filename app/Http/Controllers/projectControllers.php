@@ -326,6 +326,7 @@ class projectControllers extends Controller
                     $this->Database_Project_instructor($id, 'ID_Instructor', $name_director2, $action = "Is_director", $is_action = 2);
                 }
             }
+            $this->notifications_fun(1, 13, $id, 'ได้เสนอหัวข้อเข้ามา กรุณาตรวจสอบ');
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
 
             return redirect("/project");

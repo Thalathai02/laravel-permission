@@ -613,6 +613,19 @@ class InfoWordTemplateController extends Controller
                 abort(404);
             }
         }
+        if ($form == 13) {
+            //เมื่อนักศึกษาส่งหัวข้ัอโปรเจคแล้วแจ้งเตือน
+            if (Auth::user()->hasRole('Admin')) {
+
+                Auth::user()->unreadNotifications->markAsRead();
+
+                $term = subject::orderBy('id', 'desc')->pluck('year_term', 'id');
+                // return response()->json($term);
+                return view('projects.Selection_year_Check_Project', compact('term'));
+            } else {
+                abort(404);
+            }
+        }
         // return response()->json($tableTest50_id->Project_id_test50 );
     }
     public function download($form, $status, $file)
