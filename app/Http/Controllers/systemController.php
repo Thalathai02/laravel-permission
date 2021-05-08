@@ -91,25 +91,25 @@ class systemController extends Controller
         
         if ($user->hasRole('Admin')) {
             // $data2 = subject::query()->where('datePropose', 'LIKE', "%{$id}%")->get();
-            $request->validate([
-               'DatePropose',
-               'OutPropose',
-               'Datedecide',
-               'Outdecide',
-               'Datedecide',
-               'Outdecide',
-               'Datesend',
-               'Outdecide',
-               'DateComment',
-               'OutComment',
-               'DateSubmitProject',
-               'OutSubmitProject',
-               'DateDue50',
-               'OutDue50',
-               'DateDue100',
-               'OutDue100'
-            ]);
-            subject::find($id)->update($request->all());
+            // $request->validate([
+            //    'DatePropose',
+            //    'OutPropose',
+            //    'Datedecide',
+            //    'Outdecide',
+            //    'Datedecide',
+            //    'Outdecide',
+            //    'Datesend',
+            //    'Outdecide',
+            //    'DateComment',
+            //    'OutComment',
+            //    'DateSubmitProject',
+            //    'OutSubmitProject',
+            //    'DateDue50',
+            //    'OutDue50',
+            //    'DateDue100',
+            //    'OutDue100'
+            // ]);
+            // subject::find($id)->update($request->all());
             return redirect('/system');
         }else {
             abort(404);

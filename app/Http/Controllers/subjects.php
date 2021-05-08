@@ -60,22 +60,22 @@ class subjects extends Controller
      
 
 
-        $reg->DatePropose =  \Carbon\Carbon::now()->format('d-m-Y');
-        $reg->OutPropose =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->Datedecide =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->Outdecide =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateComment =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutComment =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateSubmitProject =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutSubmitProject =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateDue50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutDue50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateDue100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutDue100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateComment50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutComment50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        $reg->DateComment100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        $reg->OutComment100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DatePropose =  \Carbon\Carbon::now()->format('d-m-Y');
+        // $reg->OutPropose =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->Datedecide =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->Outdecide =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateComment =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutComment =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateSubmitProject =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutSubmitProject =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateDue50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutDue50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateDue100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutDue100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateComment50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutComment50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+        // $reg->DateComment100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+        // $reg->OutComment100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
 
        
         $reg->save();
