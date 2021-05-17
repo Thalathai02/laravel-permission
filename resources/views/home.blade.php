@@ -28,7 +28,7 @@
                             @if ($data_topics_Dashboard == 'ยังไม่ส่งหัวข้อ')
                                 <div>
                                     <a href="/projects/into_project" class="btn btn-primary my-2"
-                                        align="left">เพิ่มโปรเจค</a>
+                                        align="left">ส่งหัวข้อโครงงาน</a>
                                 </div>
                             @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' )
                                 <div>

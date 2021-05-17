@@ -15,7 +15,6 @@
                         <th scope="col">ลำดับโครงงาน</th>
                         <th scope="col">ชื่อโครงงาน (ภาษาไทย)</th>
                         <th scope="col">ชื่อโครงงาน (ภาษาอังกฤษ)</th>
-                        <th scope="col">หมายเหตุ</th>
                         <th scope="col">รายละเอียด</th>
                         <th scope="col">แต่งตั้งประธาน</th>
                         <th scope="col">ผ่าน</th>
@@ -32,7 +31,6 @@
                                 <td scope="row">{{ $key + 1 }}</td>
                                 <td>{{ $row->name_th }}</td>
                                 <td>{{ $row->name_en }}</td>
-                                <td></td>
                                 <td><a href="{{ route('Check_Project.show', $row->id) }}"
                                         class="btn btn-info">รายละเอียด</a></td>
                                 <td><a href="{{ route('Check_Project.edit', $row->id) }}"

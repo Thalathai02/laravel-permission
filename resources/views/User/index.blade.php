@@ -8,7 +8,7 @@
         <br />
 
         <div class="container">
-            <h3 align="center">User information in Laravel</h3>
+            <h3 align="center">User information in Database</h3>
             <br />
 
 

@@ -7,7 +7,7 @@
     <body>
         <br />
 
-        <div class="container-fluid">
+        <div class="container">
             <h3 align="center">Import Student information in Database</h3>
             <br />
 
@@ -21,34 +21,55 @@
 
             {!! Form::open(['action' => 'ImportExcel\ImportExcelController@show', 'method' => 'POST']) !!}
             {{ csrf_field() }}
-            <div class="form-group row">
-                <div>
-                    {!! Form::label('Search', 'ค้นหา', ['class' => 'form']) !!}
-                    {!! Form::text('Search', null, ['class' => 'form col-6']) !!}
-                    <input type="submit" value="ค้นหา" class="btn btn-primary col-2 " name="submit_1" id="">
+            
+                <div class="row justify-content-md-center mb-4">
+                    <div class="col-xl-1 col-lg-1">
+                        {!! Form::label('Search', 'ค้นหา', ['class' => 'form ']) !!}
+                    </div>
+                    <div class="col-xl-6 col-lg-6">
+                        {!! Form::text('Search', null, ['class' => 'form-control']) !!}
+                    </div>
+                    <div class="col-xl-4 col-lg-4 ">
+                        <button type="submit" class="btn btn-primary " name="submit_1" id="">ค้นหา</button>
+                    </div>
                 </div>
-               
-            </div>
+
             {!! Form::close() !!}
 
-            {!! Form::open(['action' => 'ImportExcel\ImportExcelController@import', 'method' => 'POST', 'enctype' =>
-            'multipart/form-data']) !!}
+            {!! Form::open(['action' => 'ImportExcel\ImportExcelController@import', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
             {{ csrf_field() }}
-            <div class="form-group2">
-               
+           
 
-                {!! Form::Label('subject_id', 'ปีการศึกษา:') !!}
-                {!! Form::select('subject', $term, ['class' => 'form-control']) !!}
-                <a href="/STD/term/create" class="btn btn-primary my-2" align="left">เพิ่มปีการศึกษา</a>
-                <div class="col-md" align="center">
-                    {!! Form::file($name ?? 'import_file', $attributes = []) !!}
-                    <input type="submit" value="อัพโหลด" class="btn btn-primary col-2 " name="submit_2" id="">
-                    <span>----- Or -----</span>
-                    <a href="/STD/create" class="btn btn-primary my-2" align="left">เพิ่มข้อมูล</a>
+                <div class="row justify-content-md-center">
+                    <div class="col-xl-2 col-lg-2">
+                        {!! Form::label('subject_id', 'ปีการศึกษา:') !!}
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        {!! Form::select('subject', $term,  ['class' => 'md-6 form-select']) !!}
+                    </div>
+                    <div class="col-xl-2 col-lg-2">
+                        <a href="/STD/term/create" class="btn btn-primary">เพิ่มปีการศึกษา</a>
+                    </div>
 
                 </div>
+          
+            <div class="row my-4">
+                <div class="row justify-content-md-center" align="center">
+                    <div class="col-xl-5 col-lg-5 my-2">
+                        {!! Form::file($name ?? 'import_file', ['class' => 'form-control ']) !!}
+                    </div>
 
+                    <input align="center" type="submit" value="อัพโหลด" class="btn btn-primary my-2 col-xl-1 col-lg-1"
+                        name="submit_2" id="">
+
+                    <span>----- หรือ -----</span>
+
+                    <a align="center" href="/STD/create" class="btn btn-primary my-2 col-xl-1 col-lg-1">เพิ่มข้อมูล</a>
+
+                </div>
             </div>
+
+
             {!! Form::close() !!}
 
             <br />
@@ -78,7 +99,7 @@
                                         <td scope="row">{{ $row->year_term }}</td>
                                         <td scope="row">{{ $row->note }}</td>
                                         <td scope="row"><a href="{{ route('std.showinfo', $row->id) }}"
-                                            class="btn btn-primary">ดูข้อมูล</a></td>
+                                                class="btn btn-primary">ดูข้อมูล</a></td>
                                         <td scope="row"><a href="{{ route('STD.edit', $row->id) }}"
                                                 class="btn btn-success">แก้ไข</a></td>
                                         <td scope="row">

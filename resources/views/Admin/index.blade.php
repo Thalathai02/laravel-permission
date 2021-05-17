@@ -7,7 +7,7 @@
         <br />
 
         <div class="container">
-            <h3 align="center">Administrator information in Laravel</h3>
+            <h3 align="center">Administrator information in Database</h3>
             <br />
 
 

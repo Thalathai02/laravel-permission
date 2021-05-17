@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-xl-3 col-lg-3">
                                             <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                                                 src="img/undraw_posting_photo.svg" alt="">
                                         </div>

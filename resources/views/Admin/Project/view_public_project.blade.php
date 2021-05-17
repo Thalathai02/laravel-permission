@@ -24,7 +24,11 @@
                                 @endif
                                    
                                 @endforeach
-
+                                @if(isset($data_project->name_mentor))
+                                <p class="m-0 font-weight-bold">ที่ปรึกษาพิเศษ :</p>
+                                <p>{{$data_project->name_mentor }}</p>
+                                
+                                @endif
                                 <p class="m-0 font-weight-bold">ผู้จัดทำ :</p>
                                 @foreach ($datas as $data)
                                     <p>{{ $data->name }}</p>

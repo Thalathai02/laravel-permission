@@ -998,9 +998,8 @@ class projectControllers extends Controller
             'room_test100' => 'required',
             'File' => 'required|file|mimes:zip',
             'GPA_reg1' =>'required',
-            'GPA_reg2' =>'required',
-            'GPA_reg3' =>'required',
         ]);
+        
         $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
         //Database
         $test100_DB = test100::create([
@@ -1033,6 +1032,9 @@ class projectControllers extends Controller
         reg_std::where('std_code', $request->reg_std1)->update(['gpa' => $request->GPA_reg1]);
 
         if (!empty($request->reg_std2)) {
+            $request->validate([
+                'GPA_reg2' =>'required',
+            ]);
             $templateProcessor->setValue('id2', $request->reg_std2);
             $templateProcessor->setValue('name2', $request->reg_std2_name);
             $templateProcessor->setValue('phone2', $request->reg_std2_Phone);
@@ -1049,6 +1051,9 @@ class projectControllers extends Controller
 
 
         if (!empty($request->reg_std3)) {
+            $request->validate([
+                'GPA_reg3' =>'required',
+            ]);
             $templateProcessor->setValue('id3', $request->reg_std3);
             $templateProcessor->setValue('name3', $request->reg_std3_name);
             $templateProcessor->setValue('phone3', $request->reg_std3_Phone);
@@ -1505,8 +1510,10 @@ class projectControllers extends Controller
             $term = subject::pluck('year_term', 'id');
             $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->paginate(10);
             $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+
+            $data_project_public = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // return response()->json( $request->subject);
-            return view('projects.ProjectAdvisor.president_show', compact('term', 'datas'));
+            return view('projects.ProjectAdvisor.president_show', compact('term', 'datas','data_project_public'));
         } else {
             abort(404);
         }
@@ -1532,8 +1539,9 @@ class projectControllers extends Controller
             $term = subject::pluck('year_term', 'id');
             $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->orWhere([['Is_director', 2]])->paginate(10);
             $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-            // return response()->json( $datas);
-            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas'));
+            $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+            // return response()->json( $data_project_public);
+            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas','data_project_public'));
         } else {
             abort(404);
         }
