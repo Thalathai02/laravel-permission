@@ -63,6 +63,6 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 อย่าลืมรัน 
 
-php artisan storage:link ไม่งั้นรู้ไม่ขึ้น
+php artisan storage:link ไม่งั้นรูปไม่ขึ้น
 
 
