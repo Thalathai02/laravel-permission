@@ -26,7 +26,7 @@ class CreatePointTest100sTable extends Migration
             $table->unsignedInteger('reg_id_point_test100');
             $table->foreign('reg_id_point_test100')->references('id')->on('reg_stds')->onDelete('cascade');
 
-            $table->text('status_point_test100');
+            $table->string('status_point_test100');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,7 +18,7 @@ class CreateProjectFilesTable extends Migration
             $table->string('name_file')->nullable();
             $table->unsignedInteger('Project_id_File')->nullable();
             $table->foreign('Project_id_File')->references('id')->on('projects')->onDelete('cascade');
-            $table->text('status_file_path')->nullable();
+            $table->string('status_file_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

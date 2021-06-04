@@ -19,9 +19,9 @@ class CreateTest100sTable extends Migration
             $table->foreign('Project_id_test100')->references('id')->on('projects')->onDelete('cascade');
             $table->DateTime('date_test100');
             $table->DateTime('end_date_test100');
-            $table->text('room_test100');
+            $table->string('room_test100');
             $table->string('file_test100');
-            $table->text('status_test100');
+            $table->string('status_test100');
             $table->timestamps();
             $table->softDeletes();
         });

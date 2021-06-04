@@ -29,7 +29,7 @@ class CreateRegStdsTable extends Migration
             $table->string('password')->nullable();
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->text('note')->default('-')->nullable();
+            $table->string('note',500)->default('-')->nullable();
             $table->string('avatar')->nullable();
             $table->float('gpa')->nullable();
             $table->float('Internship_score')->nullable();

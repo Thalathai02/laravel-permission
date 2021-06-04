@@ -21,8 +21,8 @@ class CreateProjectInstructorsTable extends Migration
             $table->unsignedInteger('id_instructor');
             $table->foreign('id_instructor')->references('id')->on('teachers')->onDelete('cascade');
 
-            $table->text('Is_director')->default(0);
-            $table->text('Is_president')->default(0);
+            $table->string('Is_director')->default(0);
+            $table->string('Is_president')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

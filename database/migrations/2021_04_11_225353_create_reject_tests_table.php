@@ -24,7 +24,7 @@ class CreateRejectTestsTable extends Migration
             $table->unsignedInteger('id_user_reject_tests');
             $table->foreign('id_user_reject_tests')->references('id')->on('users')->onDelete('cascade');
 
-            $table->text('comment_reject_tests');
+            $table->string('comment_reject_tests',500);
             
             $table->timestamps();
             $table->softDeletes();

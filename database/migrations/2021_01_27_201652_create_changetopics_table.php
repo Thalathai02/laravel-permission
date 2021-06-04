@@ -17,12 +17,12 @@ class CreateChangetopicsTable extends Migration
             $table->id();
             $table->unsignedInteger('Project_id_changetopics');
             $table->foreign('Project_id_changetopics')->references('id')->on('projects')->onDelete('cascade');
-            $table->text('old_name_th');
-            $table->text('old_name_en');
-            $table->text('new_name_th');
-            $table->text('new_name_en');     
-            $table->text('note');    
-            $table->text('status_changetopics');
+            $table->string('old_name_th',500);
+            $table->string('old_name_en',500);
+            $table->string('new_name_th',500);
+            $table->string('new_name_en',500);     
+            $table->string('note',500);    
+            $table->string('status_changetopics');
             $table->timestamps();
             $table->softDeletes();
         });

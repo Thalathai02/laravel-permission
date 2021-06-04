@@ -17,7 +17,7 @@ class CreateProgressReportTest100sTable extends Migration
             $table->id();
             $table->unsignedInteger('Project_id_report_test100');
             $table->foreign('Project_id_report_test100')->references('id')->on('projects')->onDelete('cascade');
-            $table->text('status_progress_report_test100');
+            $table->string('status_progress_report_test100');
             $table->timestamps();
             $table->softDeletes();
         });

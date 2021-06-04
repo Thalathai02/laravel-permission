@@ -15,10 +15,10 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->text('name_subjects');
-            $table->text('year');
-            $table->text('term');
-            $table->text('year_term');
+            $table->string('name_subjects');
+            $table->string('year');
+            $table->string('term');
+            $table->string('year_term');
 
             // $table->text('DatePropose');
             // $table->text('OutPropose');

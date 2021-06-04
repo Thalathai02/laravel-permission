@@ -21,7 +21,7 @@ class CreateCommentTest50sTable extends Migration
             $table->unsignedInteger('id_instructor_comemt_test50');
             $table->foreign('id_instructor_comemt_test50')->references('id')->on('teachers')->onDelete('cascade');
 
-            $table->text('text_comemt_test50');
+            $table->string('text_comemt_test50',5000);
             $table->integer('action_comemt_test50');
             $table->timestamps();
             $table->softDeletes();

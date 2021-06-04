@@ -96,9 +96,9 @@ class UserController extends Controller
                 'ConfirmPassword' => 'same:Newpassword'
         ]);
             $data = $request->all();
-            $user_user = User::find(auth()->user()->id);
-            if (!Hash::check($data['password'], $user_user->password)) {
-                return back()->with('error', 'The specified password does not match the database password');
+            if (!Hash::check($request->password, Auth::user()->password)) {
+                return  back()->withErrors('รหัสผ่านผิดพลาด กรุณาตรวจสอบ');
+                // return back()->with('error', 'The specified password does not match the database password');
             } else {
                 // write code to update password
                 if ($data['ConfirmPassword']==null) {
@@ -125,9 +125,9 @@ class UserController extends Controller
                 'ConfirmPassword' => 'same:Newpassword'
         ]);
             $data = $request->all();
-            $user_user = User::find(auth()->user()->id);
-            if (!Hash::check($data['password'], $user_user->password)) {
-                return back()->with('error', 'The specified password does not match the database password');
+            if (!Hash::check($request->password, Auth::user()->password)) {
+                return  back()->withErrors('รหัสผ่านผิดพลาด กรุณาตรวจสอบ');
+                // return back()->with('error', 'The specified password does not match the database password');
             } else {
                 // write code to update password
                 if ($data['ConfirmPassword']==null) {
