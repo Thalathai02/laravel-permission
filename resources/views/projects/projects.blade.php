@@ -21,24 +21,27 @@
                                     <div class="col-xl-6 col-lg-6">
                                         <div class="card shadow mb-4">
                                             <!-- Card Header - Dropdown -->
-                                            <div
+                                            <div id="dropdownMenuLink" data-toggle="dropdown"
                                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
-                                                    {{ $row[0]->name_en }}</h6>
+
                                                 <div class="dropdown no-arrow">
-                                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                    <h6 class=" m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                        {{ $row[0]->name_en }}</h6>
+                                                    {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                        aria-labelledby="dropdownMenuLink">
-                                                        <div class="dropdown-header">ตัวเลือก:</div>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('project.edit', $row[0]->id) }}">แก้ไข</a>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
-                                                    </div>
+                                                    </a> --}}
+
                                                 </div>
+
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">ตัวเลือก:</div>
+                                                <a class="dropdown-item" target="_blank"
+                                                    href="{{ route('project.edit', $row[0]->id) }}">แก้ไข</a>
+                                                <a class="dropdown-item" target="_blank"
+                                                    href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
                                             </div>
                                             <!-- Card Body -->
                                             <div class="card-body">
@@ -91,22 +94,26 @@
                                         <div class="card shadow mb-4">
                                             <!-- Card Header - Dropdown -->
                                             <div
+                                            <div id="dropdownMenuLink" data-toggle="dropdown"
                                                 class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
-                                                    {{ $row[0]->name_en }}</h6>
+
                                                 <div class="dropdown no-arrow">
+                                                    <h6 class=" m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                        {{ $row[0]->name_en }}</h6>
                                                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                                     </a>
-                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                        aria-labelledby="dropdownMenuLink">
-                                                        <div class="dropdown-header">ตัวเลือก :</div>
 
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
-                                                    </div>
                                                 </div>
+
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                <div class="dropdown-header">ตัวเลือก:</div>
+                                                
+                                                <a class="dropdown-item" target="_blank"
+                                                    href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
                                             </div>
                                             <!-- Card Body -->
                                             <div class="card-body">
@@ -139,24 +146,26 @@
                                     <div class="col-xl-6 col-lg-6">
                                         <div class="card shadow mb-4">
                                             <!-- Card Header - Dropdown -->
-                                            <div
-                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                                <h6 class="m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
-                                                    {{ $row[0]->name_en }}</h6>
-                                                <div class="dropdown no-arrow">
-                                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                                    </a>
-                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                                        aria-labelledby="dropdownMenuLink">
-                                                        <div class="dropdown-header">ตัวเลือก :</div>
+                                            <div id="dropdownMenuLink" data-toggle="dropdown"
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
-                                                    </div>
-                                                </div>
+                                            <div class="dropdown no-arrow">
+                                                <h6 class=" m-0 font-weight-bold text-primary">{{ $row[0]->name_th }}
+                                                    {{ $row[0]->name_en }}</h6>
+                                                {{-- <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                                </a> --}}
+
                                             </div>
+
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                            aria-labelledby="dropdownMenuLink">
+                                            <div class="dropdown-header">ตัวเลือก:</div>
+                                            <a class="dropdown-item" target="_blank"
+                                                href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                        </div>
                                             <!-- Card Body -->
                                             <div class="card-body">
                                                 <div class="card-body">

@@ -52,15 +52,14 @@
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">คุณต้องการให้โครงการ
-                                    ไม่ผ่านหรือไม่ ?</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">คุณต้องการบันทึกคะแนนใบส่งเกรด</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <div>
-                                    {!! Form::label('note', 'บันทึกอาจารย์ผู้สอน') !!}
+                                    {!! Form::label('note', 'ความคิดเห็นจากอาจารย์ผู้สอน') !!}
                                     {!! Form::text('note', null, ['class' => 'form-control']) !!}
                                 </div>
 

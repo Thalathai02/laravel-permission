@@ -519,6 +519,34 @@
                      </div>
                  </div>
              @endif
+
+             @if ($message = Session::get('success'))
+                <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index:9999;">
+                    <!-- Position it: -->
+                    <!-- - `.toast-container` for spacing between toasts -->
+                    <!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
+                    <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+                    <div class="toast-container position-absolute top-0 end-0 p-3">
+           
+                        <!-- Then put toasts within -->
+                        <div class="toast alert alert-success" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <span class="icon"><i class="fas fa-user-tie" aria-hidden="true"></i></span>
+                                <strong class="me-auto success">success</strong>
+                                <small class="text-muted">just now</small>
+                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                            <div class="toast-body">
+                               
+                                    <li>{{ $message }}</li>
+                             
+                            </div>
+                        </div>
+           
+                    </div>
+                </div>
+            @endif
+
                  <!-- Begin Page Content -->
                  <div class="container-fluid">
                      <div class="content py-4">

@@ -93,12 +93,15 @@ class HomeController extends Controller
                 $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
                 $test50_ProgressReport = ProgressReport_test50::where('Project_id_report_test50', $id_stu_project[0]->Project_id)->get();
                 $test_100 = test100::where('Project_id_test100', $id_stu_project[0]->Project_id)->get();
+                $check_report  = $this->DataTableController->noti_data_check_report_test50s($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
                 if (!empty($test_100[0]->id)) {
                     $notification  = $this->DataTableController->noti_data_allow_test100s($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
                     $data_topics_Dashboard = "เสนอขอสอบ100";
                     $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(5);
                     $test100_ProgressReport = ProgressReport_test100::where('Project_id_report_test100', $id_stu_project[0]->Project_id)->get();
                     $complete_forms = CompleteForm::where('Project_id_CompleteForm', $id_stu_project[0]->Project_id)->get();
+                    $check_report  = $this->DataTableController->noti_data_check_report_test100s($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
+
                     if (!empty($complete_forms[0]->id)) {
                         $notification  = $this->DataTableController->noti_data_allow_complete_forms($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
                         $data_topics_Dashboard = "แบบขอส่งโครงงานฉบับสมบูรณ์";
@@ -110,7 +113,7 @@ class HomeController extends Controller
                         $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(6);
                         return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                     }
-                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor','check_report'));
                 } elseif (!empty($test50_ProgressReport[0]->id)) {
                     $notification  = $this->DataTableController->noti_data_allow_report_test50s($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
                     $data_topics_Dashboard = "รายงานการสอบความก้าวหน้า (สอบ50)";
@@ -118,7 +121,7 @@ class HomeController extends Controller
                     return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
                 // return response()->json($notification);
-                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
+                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor','check_report'));
             } elseif (!empty($datas_instructor[0]->id)) {
                 $notification_id = 3;
                 $data_topics_Dashboard = "แต่งตั้งประธานและกรรมการแล้ว";

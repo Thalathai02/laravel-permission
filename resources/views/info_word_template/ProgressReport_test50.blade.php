@@ -106,6 +106,15 @@
             </div>
             
             <div class="my-2">
+                <a href="{!!  route('wordExport_ProgressReport_test_Download', ['test_form'=>50 , 'id'=>$datas[0]->id]) !!} " class="btn btn-primary btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-book"></i>
+                    </span>
+                    <span class="text">ดาวน์โหลดเอกสาร</span>
+                </a>
+            </div>
+
+            <div class="my-2">
                 <a href="{!!  route('InfoWordTemplate.markAsRead', ['id'=>$id_Notifications]) !!}" class="btn btn-success btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-check"></i>

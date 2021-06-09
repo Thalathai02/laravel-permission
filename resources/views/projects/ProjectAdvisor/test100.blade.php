@@ -335,7 +335,7 @@
         </div>
         <div class="my-4">
             {!! Form::label('commemt', 'ความคิดเห็น') !!}
-            {!! Form::textarea('commemt', '', ['class' => 'form-control col-xl-8 col-lg-8']) !!}
+            {!! Form::textarea('commemt',  $data_reject_test->text_comemt_test100, ['class' => 'form-control col-xl-8 col-lg-8']) !!}
         </div>
 
         <div class="my-2">

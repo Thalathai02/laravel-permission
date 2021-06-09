@@ -701,10 +701,10 @@ class projectControllers extends Controller
     public function wordExport_CompleteForm(Request $request, $id)
     {
         $request->validate([
-            'File' => 'required|file|mimes:zip',
+            'File' => 'required|file|mimes:pdf',
 
         ]);
-        $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';
+        $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.pdf';
         //Database
         // return response()->json($name_file);
         $CompleteForm_DB = CompleteForm::create([
@@ -997,9 +997,9 @@ class projectControllers extends Controller
         $request->validate([
             'room_test100' => 'required',
             'File' => 'required|file|mimes:zip',
-            'GPA_reg1' =>'required',
+            'GPA_reg1' => 'required',
         ]);
-        
+
         $name_file = time() . '_' . Auth::user()->reg_std->std_code . '.zip';;
         //Database
         $test100_DB = test100::create([
@@ -1033,7 +1033,7 @@ class projectControllers extends Controller
 
         if (!empty($request->reg_std2)) {
             $request->validate([
-                'GPA_reg2' =>'required',
+                'GPA_reg2' => 'required',
             ]);
             $templateProcessor->setValue('id2', $request->reg_std2);
             $templateProcessor->setValue('name2', $request->reg_std2_name);
@@ -1052,7 +1052,7 @@ class projectControllers extends Controller
 
         if (!empty($request->reg_std3)) {
             $request->validate([
-                'GPA_reg3' =>'required',
+                'GPA_reg3' => 'required',
             ]);
             $templateProcessor->setValue('id3', $request->reg_std3);
             $templateProcessor->setValue('name3', $request->reg_std3_name);
@@ -1113,14 +1113,13 @@ class projectControllers extends Controller
     }
     public function wordExport_ProgressReport_test50(Request $request, $id)
     {
-
-
-
         //Database
-        $ProgressReport_test50_DB = ProgressReport_test50::create([
-            'Project_id_report_test50' => $id,
-            'status_progress_report_test50' => 'Waiting'
-        ]);
+        $ProgressReport_test50_DB = ProgressReport_test50::create(
+            [
+                'Project_id_report_test50' => $id,
+                'status_progress_report_test50' => 'Waiting'
+            ]
+        );
 
         $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
@@ -1169,6 +1168,29 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone_n3', "");
             $templateProcessor->setValue('and_name3', "");
         }
+        $data_comment = comment_test50::join('project_instructors', 'comment_test50s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+            ->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
+            ->where([['comment_test50s.project_id_comemt_test50', $id], ['project_instructors.Project_id', $id]])
+            ->select(
+                'teachers.id',
+                'teachers.Title_name_Instructor',
+                'teachers.name_Instructor',
+                'project_instructors.Is_director',
+                'comment_test50s.text_comemt_test50',
+                'comment_test50s.project_id_comemt_test50',
+                'project_instructors.is_director'
+            )
+            ->get();
+
+        foreach ($data_comment as $key => $data) {
+            if ($data['is_director'] == 0) {
+                $templateProcessor->setValue('comment_name_president', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+            } elseif ($data['is_director'] == 1) {
+                $templateProcessor->setValue('comment_ name_director1', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+            } elseif ($data['is_director'] == 2) {
+                $templateProcessor->setValue('comment_ name_director2', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+            }
+        }
         $templateProcessor->setValue('name_president', $request->name_president);
         $templateProcessor->setValue('name_director1', $request->name_director1);
         $templateProcessor->setValue('name_director2', $request->name_director2);
@@ -1182,6 +1204,7 @@ class projectControllers extends Controller
         $templateProcessor->saveAs($fileName);
 
         return response()->download($fileName)->deleteFileAfterSend(true);
+        // return response()->json($data_comment);
     }
     public function ProgressReport_test100(Request $request, $id)
     {
@@ -1513,7 +1536,7 @@ class projectControllers extends Controller
 
             $data_project_public = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // return response()->json( $request->subject);
-            return view('projects.ProjectAdvisor.president_show', compact('term', 'datas','data_project_public'));
+            return view('projects.ProjectAdvisor.president_show', compact('term', 'datas', 'data_project_public'));
         } else {
             abort(404);
         }
@@ -1541,7 +1564,7 @@ class projectControllers extends Controller
             $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // return response()->json( $data_project_public);
-            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas','data_project_public'));
+            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public'));
         } else {
             abort(404);
         }
@@ -1573,6 +1596,7 @@ class projectControllers extends Controller
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
             $data_user = user::find($user->id);
+            $data_test50 = null;
             $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
             // comment_test50::all();
             foreach ($data_project_instructors as $key => $data_test50s) {
@@ -1585,23 +1609,49 @@ class projectControllers extends Controller
                     }
                 }
             }
+
+            // $notification_check  = $this->DataTableController->noti_data_allow_Pretest50s($test50->Project_id_test50, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,1);
             if (!empty($data_project)) {
                 foreach ($data_project as $key => $data_project_instructor) {
-                    $data_test50[] = project::where('id', $data_project_instructor->Project_id_test50)->first();
-                    // $data_test50[] =$data_project_instructor;
+                    $data_test[] = project_instructor::select('project_instructors.id_instructor', 'project_instructors.Project_id')
+                        ->where('Project_id', $data_project_instructor->Project_id_test50)->get();
                 }
+                foreach ($data_test as $key => $data_check) {
+                    $notification_check[]  = [$this->DataTableController->noti_data_allow_Pretest50s($data_check[0]->Project_id, $data_check[0]->id_instructor, $data_check[1]->id_instructor, $data_check[2]->id_instructor, 1), 'Project' => $data_check[0]->Project_id];
+                    // if($notification_check[0] == 1){
+                    // $d = $notification_check[0][0];
+                    // }
+                }
+
+                foreach ($notification_check as $key => $data_project) {
+                    if ($data_project[0] == 1) {
+                        $data_test50[] = project::where('id', $data_project['Project'])->first();
+                        // $data_test50[] =$data_project_instructor;
+
+                    }
+                }
+
+                // foreach ($data_project as $key => $data_project_instructor) {
+                //     $data_test50[] = project::where('id', $data_project_instructor->Project_id_test50)->first();
+                //     // $data_test50[] =$data_project_instructor;
+                // }
             } else {
                 $data_test50 = null;
             }
 
-            // return response()->json($comment_test50);
+            // return response()->json($data_test50);
             return view('projects.ProjectAdvisor.test50_page', compact('data_test50'));
         }
     }
     public function comment_test50_Datas(Request $request, $id)
     {
         $user = Auth::user();
+        $request->validate([
+            'commemt' => 'required',
+        ]);
         if ($user->hasRole('Tea')) {
+
+
             $id_user = user::find($user->id);
             if (isset($request->reg_std1)) {
                 $std_1 = reg_std::where('std_code', $request->reg_std1)->first();
@@ -1747,6 +1797,7 @@ class projectControllers extends Controller
             $data_user = user::find($user->id);
             $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
             // comment_test50::all();
+            $data_test100 = null;
             foreach ($data_project_instructors as $key => $data_test100s) {
                 $check_test100 = test100::where('Project_id_test100', $data_test100s->Project_id)->first();
                 $comment_test100 = comment_test100::where([['action_comemt_test100', 1], ['project_id_comemt_test100', $data_test100s->Project_id], ['id_instructor_comemt_test100', $data_user->reg_tea_id]])->first();
@@ -1759,8 +1810,20 @@ class projectControllers extends Controller
             }
             if (!empty($data_project)) {
                 foreach ($data_project as $key => $data_project_instructor) {
-                    $data_test100[] = project::where('id', $data_project_instructor->Project_id_test100)->first();
-                    // $data_test50[] =$data_project_instructor;
+                    $data_test[] = project_instructor::select('project_instructors.id_instructor', 'project_instructors.Project_id')
+                        ->where('Project_id', $data_project_instructor->Project_id_test100)->get();
+                }
+                foreach ($data_test as $key => $data_check) {
+                    $notification_check[]  = [$this->DataTableController->noti_data_allow_Pretest100s($data_check[0]->Project_id, $data_check[0]->id_instructor, $data_check[1]->id_instructor, $data_check[2]->id_instructor, 2), 'Project' => $data_check[0]->Project_id];
+                    // if($notification_check[0] == 1){
+                    // $d = $notification_check[0][0];
+                    // }
+                }
+                foreach ($notification_check as $key => $data_project) {
+                    if ($data_project[0] == 1) {
+                        $data_test100[] = project::where('id', $data_project['Project'])->first();
+                        // $data_test50[] =$data_project_instructor;
+                    }
                 }
             } else {
                 $data_test100 = null;
@@ -1773,6 +1836,9 @@ class projectControllers extends Controller
     public function comment_test100_Datas(Request $request, $id)
     {
         $user = Auth::user();
+        $request->validate([
+            'commemt' => 'required',
+        ]);
         if ($user->hasRole('Tea')) {
 
             $id_user = user::find($user->id);
@@ -2175,7 +2241,10 @@ class projectControllers extends Controller
     }
     public function reject_project(Request $request, $id_Notifications, $id, $id_test)
     {
+        $request->validate([
+            'reject' => 'required',
 
+        ]);
         $reject = new reject_test();
         $reject->project_id_reject_tests = $id;
         $reject->test_id = $id_test;
@@ -2277,6 +2346,142 @@ class projectControllers extends Controller
                 return redirect('/home');
             }
             return redirect('/home');
+        }
+    }
+
+    public function wordExport_ProgressReport_test_Download($test_form, $id)
+    {
+        // return response()->json(12452345);
+
+        $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
+
+        $datas_std = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
+            ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
+            ->select('projects.*', 'project_users.*', 'reg_stds.*')->where([['projects.id', '=', $id], ['project_users.deleted_at', null]])->get();
+
+        $templateProcessor = new TemplateProcessor(storage_path('word-template/03-รายงานการสอบความก้าวหน้า.docx'));
+        $templateProcessor->setValue('id', $datas_std[0]->std_code);
+        $templateProcessor->setValue('name', $datas_std[0]->name);
+        $templateProcessor->setValue('phone', $datas_std[0]->phone);
+
+        if (!empty($datas_std[1]->std_code)) {
+            $templateProcessor->setValue('id2', $datas_std[1]->std_code);
+            $templateProcessor->setValue('name2', $datas_std[1]->name);
+            $templateProcessor->setValue('phone2', $datas_std[1]->phone);
+            $templateProcessor->setValue('code2', "รหัส ");
+            $templateProcessor->setValue('phone_n2', "มือถือ ");
+            $templateProcessor->setValue('and_name2', "ชื่อนักศึกษา ");
+        } else {
+            $templateProcessor->setValue('code2', "");
+            $templateProcessor->setValue('phone_n2', "");
+            $templateProcessor->setValue('id2', "");
+            $templateProcessor->setValue('name2', "");
+            $templateProcessor->setValue('phone2', "");
+            $templateProcessor->setValue('and_name2', "");
+        }
+
+
+        if (!empty($datas_std[2]->std_code)) {
+            $templateProcessor->setValue('id3', $datas_std[2]->std_code);
+            $templateProcessor->setValue('name3', $datas_std[2]->name);
+            $templateProcessor->setValue('phone3', $datas_std[2]->phone);
+            $templateProcessor->setValue('code3', "รหัส ");
+            $templateProcessor->setValue('phone_n3', "มือถือ ");
+            $templateProcessor->setValue('and_name3', "ชื่อนักศึกษา ");
+        } else {
+            $templateProcessor->setValue('id3', "");
+            $templateProcessor->setValue('name3', "");
+            $templateProcessor->setValue('phone3', "");
+            $templateProcessor->setValue('code3', "");
+            $templateProcessor->setValue('phone_n3', "");
+            $templateProcessor->setValue('and_name3', "");
+        }
+        if ($test_form == 50) {
+            //wordExport
+
+            $data_comment = comment_test50::join('project_instructors', 'comment_test50s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+                ->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
+                ->where([['comment_test50s.project_id_comemt_test50', $id], ['project_instructors.Project_id', $id]])
+                ->select(
+                    'teachers.id',
+                    'teachers.Title_name_Instructor',
+                    'teachers.name_Instructor',
+                    'project_instructors.Is_director',
+                    'comment_test50s.text_comemt_test50',
+                    'comment_test50s.project_id_comemt_test50',
+                    'project_instructors.is_director'
+                )
+                ->get();
+
+            foreach ($data_comment as $key => $data) {
+                if ($data['is_director'] == 0) {
+                    $templateProcessor->setValue('comment_name_president', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+                    $templateProcessor->setValue('name_president', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                } elseif ($data['is_director'] == 1) {
+                    $templateProcessor->setValue('comment_ name_director1', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+                    $templateProcessor->setValue('name_director1', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                } elseif ($data['is_director'] == 2) {
+                    $templateProcessor->setValue('name_director2', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                    $templateProcessor->setValue('comment_ name_director2', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test50']);
+                }
+            }
+
+            $time_test50 = test50::where('Project_id_test50', $datas[0]->id)->get();
+
+            $templateProcessor->setValue('date_test', formatDateThai($time_test50[0]->date_test50));
+
+            $templateProcessor->setValue('name_Thai', $datas[0]->name_th);
+            $templateProcessor->setValue('name_Eng',  $datas[0]->name_en);
+            $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
+
+            $fileName = storage_path("รายงานการสอบความก้าวหน้า50" . '.docx');
+            $templateProcessor->saveAs($fileName);
+
+            return response()->download($fileName)->deleteFileAfterSend(true);
+            // return response()->json($data_comment);
+        }
+        elseif ($test_form == 100) {
+            //wordExport
+
+            $data_comment = comment_test100::join('project_instructors', 'comment_test100s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+                ->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
+                ->where([['comment_test100s.project_id_comemt_test100', $id], ['project_instructors.Project_id', $id]])
+                ->select(
+                    'teachers.id',
+                    'teachers.Title_name_Instructor',
+                    'teachers.name_Instructor',
+                    'project_instructors.Is_director',
+                    'comment_test100s.text_comemt_test100',
+                    'comment_test100s.project_id_comemt_test100',
+                    'project_instructors.is_director'
+                )
+                ->get();
+
+            foreach ($data_comment as $key => $data) {
+                if ($data['is_director'] == 0) {
+                    $templateProcessor->setValue('comment_name_president', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test100']);
+                    $templateProcessor->setValue('name_president', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                } elseif ($data['is_director'] == 1) {
+                    $templateProcessor->setValue('comment_ name_director1', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test100']);
+                    $templateProcessor->setValue('name_director1', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                } elseif ($data['is_director'] == 2) {
+                    $templateProcessor->setValue('name_director2', $data['Title_name_Instructor'] . $data['name_Instructor']);
+                    $templateProcessor->setValue('comment_ name_director2', '(' . $data['Title_name_Instructor'] . $data['name_Instructor'] . ') ' . $data['text_comemt_test100']);
+                }
+            }
+
+            $time_test100 = test100::where('Project_id_test100', $datas[0]->id)->get();
+
+            $templateProcessor->setValue('date_test', formatDateThai($time_test100[0]->date_test100));
+
+            $templateProcessor->setValue('name_Thai', $datas[0]->name_th);
+            $templateProcessor->setValue('name_Eng',  $datas[0]->name_en);
+            $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
+
+            $fileName = storage_path("รายงานการสอบความก้าวหน้า100" . '.docx');
+            $templateProcessor->saveAs($fileName);
+
+            return response()->download($fileName)->deleteFileAfterSend(true);
         }
     }
 }

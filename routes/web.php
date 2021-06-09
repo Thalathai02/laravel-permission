@@ -139,6 +139,8 @@ Route::get('/{form}/{file}', 'PublicProjectController@download')->name('PublicPr
 Route::POST('/search', 'PublicProjectController@search_Guest_public_project')->name('PublicProject.search_Guest_public_project');
 
 
+Route::get('/{test_form}{id}', 'projectControllers@wordExport_ProgressReport_test_Download')->name('wordExport_ProgressReport_test_Download')->middleware('auth');
+
 
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');

@@ -8,7 +8,7 @@
 
         <div id="content">
             <!-- Begin Page Content -->
-            
+
             <div class="container-fluid">
                 <!-- Page Heading -->
                 <!-- Content Row -->
@@ -29,20 +29,20 @@
                                         </span>
                                     </div>
                                 @elseif($sumbit > 3)
-                                <div class="font-weight-bold text-danger text-uppercase m-0">
-                                    ไม่ผ่าน
-                                    <span class="icon">
-                                        <i class="fas fa-times"></i>
-                                    </span>
-                                </div>
+                                    <div class="font-weight-bold text-danger text-uppercase m-0">
+                                        ไม่ผ่าน
+                                        <span class="icon">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </div>
                                 @endif
-                                @else
+                            @else
                                 <div class="font-weight-bold text-warning text-uppercase m-0">
                                     รอการประเมิน...
                                 </div>
-                                @endif
+                            @endif
 
-                                
+
                         </div>
                         {{-- {{$data}} --}}
                         <!-- Card Body -->
@@ -158,8 +158,8 @@
                             @endforeach
                         </div>
                         @if ($key == 2)
-                        @if($sumbit > 3)
-                            {{-- <div class="my-2">
+                            @if ($sumbit > 3)
+                                {{-- <div class="my-2">
                                                        
                                 <a href="{!! route('remove_comment_test50', ['id1' => $data[0]->id,'id2' => $data[1]->id,'id3' => $data[2]->id] ) !!}" class="btn btn-success btn-icon-split">
                                     <span class="icon text-white-50">
@@ -168,8 +168,8 @@
                                     <span class="text">รับทราบ</span>
                                 </a>
                             </div> --}}
-                        @else
-                        @endif
+                            @else
+                            @endif
                         @else
                         @endif
 

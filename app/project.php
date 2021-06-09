@@ -9,6 +9,8 @@ class project extends Model
     use SoftDeletes;
     protected $fillable = [
         'status',
+        'name_mentor',
+        'subject_id'
        ];
    
 }

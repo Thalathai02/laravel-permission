@@ -25,6 +25,11 @@ use App\Notifications\InvoicePaid;
 use App\reject_test;
 use App\CollectPoints;
 use PhpOffice\PhpWord\TemplateProcessor;
+use App\test100;
+use App\test50;
+use App\ProgressReport_test100;
+use App\ProgressReport_test50;
+use App\CompleteForm;
 
 class CheckProjectController extends Controller
 {
@@ -165,7 +170,14 @@ class CheckProjectController extends Controller
         $user = $request->user();
 
         if ($user->hasRole('Admin')) {
-            project::find($id)->update(['status' => 'Check']);
+            $project = project::find($id);
+            $project->status = 'Check';
+            $project->name_mentor = $request->name_mentor;
+            $project->save();
+            // project::updateOrCreate(
+            //     ['id' => $id, 'name_mentor' => $request->name_mentor],
+            //     ['name_mentor' => $request->name_mentor]
+            // );
 
             if (!empty($request->get('name_president'))) {
                 $Search_name_president = $request->get('name_president');
@@ -265,8 +277,17 @@ class CheckProjectController extends Controller
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project($id);
-        return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor'));
-        // return response()->json($id);
+
+        $test50 = test50::where('Project_id_test50',$id)->first();
+        $report_50 = ProgressReport_test50::where('Project_id_report_test50',$id)->first();
+
+        $test100 = test100::where('Project_id_test100',$id)->first();
+        $report_100 = ProgressReport_test100::where('Project_id_report_test100',$id)->first();
+        
+        $complete =CompleteForm::where('Project_id_CompleteForm',$id)->first() ;
+        
+        return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor','test50','report_50','test100','complete'));
+        // return response()->json($test50);
     }
     public function Selection_year()
     {
@@ -278,13 +299,14 @@ class CheckProjectController extends Controller
     {
         $sendToUser  =  project_user::where([['Project_id', $id]])->get();
         // $sendToUser  = User::where('reg_std_id',$id_reg->id_reg_Std)->first();
+
         foreach ($sendToUser as $key => $itme) {
             $send  = User::where('reg_std_id', $itme->id_reg_Std)->first();
             $send->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว รอการแต่งตั้งกรรมการ', Auth::user()));
         }
         // return response()->json($send);
         // $sendToUser->notify(new InvoicePaid(11, $id, 'โครงานผ่านการตรวจสอบแล้ว', Auth::user()));
-        return back();
+        return back()->with('success', 'โครงงานผ่านแล้ว รอแต่งตั้งกรรมการ');
     }
     public function allreject($id)
     {
@@ -294,10 +316,17 @@ class CheckProjectController extends Controller
             ->where([['reject_tests.project_id_reject_tests', $reg_project->Project_id]])->withTrashed()->get();
         // collect($reject)->groupBy(['test_id']);
         // $reject->groupBy('test_id');
-        foreach ($reject as $key => $box_data) {
-            $rejects[] = $box_data;
+       
+        if($reject == []){
+            // $datas =0;
+            foreach ($reject as $key => $box_data) {
+                $rejects[] = $box_data;
+            }
+            $datas = collect($rejects)->groupBy('test_id');
+        }else{
+            $datas= null; 
         }
-        $datas = collect($rejects)->groupBy('test_id');
+        
         return view('info_word_template.allreject', compact('datas'));
         return response()->json($datas);
     }

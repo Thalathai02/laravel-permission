@@ -1123,4 +1123,31 @@ class DataTableController extends Controller
         return  $submit;
         // return  $id_test50[0]->id;
     }
+    public function noti_data_check_report_test50s($Project_id, $id_1, $id_2, $id_3){
+        $data = comment_test50::where('project_id_comemt_test50',$Project_id)->select('action_comemt_test50')->get();
+        // $count_dataReg = project_user::where('Project_id',$Project_id)->get();
+        $data_post = null;
+        foreach($data as $key=> $datacheck){
+            if($datacheck['action_comemt_test50'] == 2 || count($data) != 3 ){
+                $data_post = 0;
+            }elseif($datacheck['action_comemt_test50'] == 1 && count($data) == 3){
+                $data_post = 1;
+            }
+        }
+       return $data_post;
+    }
+
+    public function noti_data_check_report_test100s($Project_id, $id_1, $id_2, $id_3){
+        $data = comment_test100::where('project_id_comemt_test100',$Project_id)->select('action_comemt_test100')->get();
+        // $count_dataReg = project_user::where('Project_id',$Project_id)->get();
+        $data_post = null;
+        foreach($data as $key=> $datacheck){
+            if($datacheck['action_comemt_test100'] == 2 || count($data) != 3 ){
+                $data_post = 0;
+            }elseif($datacheck['action_comemt_test100'] == 1 && count($data) == 3 ){
+                $data_post = 1;
+            }
+        }
+       return $data_post;
+    }
 }

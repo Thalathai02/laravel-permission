@@ -24,13 +24,16 @@
                         </div>
                         <!-- Content Row -->
                         <div class="row">
+
                             <!-- Earnings (Monthly) Card Example -->
                             @if ($data_topics_Dashboard == 'ยังไม่ส่งหัวข้อ')
                                 <div>
                                     <a href="/projects/into_project" class="btn btn-primary my-2"
                                         align="left">ส่งหัวข้อโครงงาน</a>
                                 </div>
-                            @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' )
+                            @elseif($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard
+                                == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard ==
+                                'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' )
                                 <div>
                                     <a class="btn btn-primary my-1"
                                         href="{{ route('project.test50', Auth::user()->id) }}">แบบเสนอขอสอบ50</a>
@@ -43,21 +46,30 @@
                                 </div>
                             @elseif($data_topics_Dashboard == 'เสนอขอสอบ50')
                                 <div>
-                                    <a class="btn btn-primary my-2"
-                                        href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
-                                        (สอบ50)</a>
+                                    @if ($check_report == 1)
+                                        <a class="btn btn-primary my-2"
+                                            href="{{ route('project.ProgressReport_test50', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
+                                            (สอบ50)</a>
+                                    @endif
+
+
                                 </div>
 
                             @elseif($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ50)')
+
                                 <div>
                                     <a class="btn btn-primary my-2"
                                         href="{{ route('project.test100', Auth::user()->id) }}">แบบเสนอขอสอบ100</a>
                                 </div>
                             @elseif($data_topics_Dashboard == 'เสนอขอสอบ100')
                                 <div>
-                                    <a class="btn btn-primary my-2"
-                                        href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
-                                        (สอบ100)</a>
+                                        @if ($check_report == 1)
+                                            <a class="btn btn-primary my-2"
+                                                href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
+                                                (สอบ100)</a>
+                                        @endif
+
+
                                 </div>
                             @elseif($data_topics_Dashboard == 'รายงานการสอบความก้าวหน้า (สอบ100)')
                                 <div>
@@ -91,7 +103,7 @@
                                                                     <li @if ($data_topics_Dashboard == 'ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ') class="active" @endif>ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ</li>
                                                                 </div>
                                                                 <div>
-                                                                    <li @if ($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์' ) class="active" @endif>แต่งตั้งประธานและกรรมการแล้ว</li>
+                                                                    <li @if ($data_topics_Dashboard == 'แต่งตั้งประธานและกรรมการแล้ว' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์' || $data_topics_Dashboard == 'ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์') class="active" @endif>แต่งตั้งประธานและกรรมการแล้ว</li>
                                                                 </div>
                                                                 <div>
                                                                     <li @if ($data_topics_Dashboard == 'เสนอขอสอบ50') class="active" @endif>เสนอขอสอบ50</li>
@@ -262,7 +274,8 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">รายชื่อโปรเจดที่รับผิดชอบ(รอดำเนินการ)
+                                        <h6 class="m-0 font-weight-bold text-primary">
+                                            รายชื่อโปรเจดที่รับผิดชอบ(รอดำเนินการอยู่)
                                         </h6>
                                     </div>
                                     <!-- Card Body -->
@@ -724,7 +737,7 @@
                         ['สอบ 100', {{ count($test100) }}],
                         ['ส่งรูปเล่มสมบูรณ์', {{ count($CompleteForm) }}],
                         ['โปรเจคที่สมบูรณ์', {{ count($Successfully_project) }}]
-                        
+
 
                     ]);
 

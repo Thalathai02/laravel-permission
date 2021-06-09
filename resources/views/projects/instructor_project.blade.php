@@ -62,7 +62,7 @@
         @if (!empty($datas[0]->name_mentor))
             <div class="my-4">
                 {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
-                {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control
+                {!! Form::text('name_mentor', $datas[0]->name_mentor, [ 'class' => 'form-control
                 col-5']) !!}
             </div>
         @endif

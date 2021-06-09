@@ -112,14 +112,15 @@
                     </span>
                     <span class="text">เอกสารผ่าน</span>
                 </a>
-
+                @if (Auth::user()->reg_tea_id == $datas_instructor[0]->id)
                 <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-times"></i>
                     </span>
                     <span class="text">เอกสารไม่ผ่าน</span>
                 </a>
-
+                @endif
+                
                 {!! Form::open(['action' => ['projectControllers@reject_project', $id_Notifications, $datas[0]->id, 5], 'method' => 'POST']) !!}
                 <!-- Modal -->
                 <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
