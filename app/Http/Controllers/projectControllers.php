@@ -1540,6 +1540,12 @@ class projectControllers extends Controller
                 $datas[] = project::where([['id', 'LIKE', $data->Project_id], ['subject_id', $request->subject]])->first();
                 $data_project_public[] = project::where([['id', 'LIKE', $data->Project_id], ['subject_id', $request->subject]])->first();
             }
+            if (!isset($datas)) {
+                $datas = null;
+            }
+            if (!isset($data_project_public)) {
+                $data_project_public = null;
+            }
             // return response()->json($datas);
             return view('projects.ProjectAdvisor.president_show', compact('term', 'datas', 'data_project_public'));
             // } elseif (!isset($data_subject_RAW)) {
@@ -1570,11 +1576,28 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::where('id_instructor', 'LIKE', $user->reg_tea_id)->whereNotIn('Is_director', [0])->paginate(10);
-            $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-            $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-            // return response()->json( $data_subject);
-            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public'));
+            $data_subject = project_instructor::where('id_instructor', $user->reg_tea_id)->whereNotIn('Is_director', [0])->get();
+
+            // $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+            // $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+
+            if (!isset($data_subject)) {
+                $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+                $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+                if (!isset($datas)) {
+                    $datas = null;
+                }
+                if (!isset($data_project_public)) {
+                    $data_project_public = null;
+                }
+            } else {
+                $data_project_public = null;
+                $datas = null;
+
+            }
+            // return response()->json($data_subject);
+
+            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public','data_subject'));
         } else {
             abort(404);
         }
@@ -2051,9 +2074,9 @@ class projectControllers extends Controller
             }
             // $have_CollectPoints= $have_Collect->groupBy('id');
             // $have_CollectPoints = collect($have_Collect)->groupBy('id');
-                // return response()->json($have_CollectPoints);
-                return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas', 'have_CollectPoints'));
-           
+            // return response()->json($have_CollectPoints);
+            return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas', 'have_CollectPoints'));
+
 
             // return response()->json($have_CollectPoints);
         } else {
@@ -2124,7 +2147,7 @@ class projectControllers extends Controller
         } else if ($total1 >= 50) {
             $templateProcessor->setValue('grade1', $grade = 'D');
         }
-        $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[0][0][0]->id)->delete();
+        $CollectPoints_update = CollectPoints::where('reg_id_collect_points', $arrays[0][0][0]->id)->delete();
 
         $CollectPoints = new CollectPoints;
         $CollectPoints->Test_in_time = $request->Test_in_time[0];
@@ -2179,7 +2202,7 @@ class projectControllers extends Controller
             } else if ($total2 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
             }
-            $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[1][0][0]->id)->delete();
+            $CollectPoints_update = CollectPoints::where('reg_id_collect_points', $arrays[1][0][0]->id)->delete();
 
             $CollectPoints = new CollectPoints;
             $CollectPoints->Test_in_time = $request->Test_in_time[1];
@@ -2257,7 +2280,7 @@ class projectControllers extends Controller
             } else if ($total3 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
             }
-            $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[2][0][0]->id)->delete();
+            $CollectPoints_update = CollectPoints::where('reg_id_collect_points', $arrays[2][0][0]->id)->delete();
 
             $CollectPoints = new CollectPoints;
 
