@@ -15,29 +15,36 @@
                                     <th scope="col">ลำดับโครงงาน</th>
                                     <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
                                     <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                    <th scope="col">รายชื่อ</th>
                                     <th scope="col">เลือก</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(isset($datas))
-                               
-                                @foreach ($datas as $key=>$row)
-                                    @if ($row->status == 'Private')
-                                        <tr>
-                                            <th scope="row">{{ $key+1 }}</th>
-                                            <td>{{ $row->name_th }}</td>
-                                            <td>{{ $row->name_en }}</td>
-                                            <td><a href="{{ route('projectControllers.collectPointsForm', $row->id) }}"
-                                                    class="btn btn-info">เลือก</a>
-                                            </td>                                           
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                @else
+                                @if (isset($datas))
 
+                                    @foreach ($datas as $key => $rows)
+                                        <tr>
+                                            <th scope="row">{{ $key }}</th>
+                                            <td>{{ $rows[0]->name_th }}</td>
+                                            <td>{{ $rows[0]->name_en }}</td>
+                                            <td scope="col">
+                                                @foreach ($rows as $key2 => $row)
+                                                    {{ $row->name }}
+                                                @endforeach
+                                            </td>
+                                            <td><a href="{{ route('projectControllers.collectPointsForm', $rows[0]->id) }}"
+                                                    class="btn btn-info">เลือก</a>
+                                            </td>
+                                        </tr>
+
+                                    @endforeach
+                                @else
+                                   
                                 @endif
+                                
                             </tbody>
-                        </table>
+                        </table> 
+                        {!! $datas->links() !!}
                     </div>
                 </div>
             @endif

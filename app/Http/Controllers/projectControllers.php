@@ -1523,6 +1523,8 @@ class projectControllers extends Controller
             abort(404);
         }
     }
+
+
     public function president_show(Request $request)
     {
         $user = Auth::user();
@@ -1531,12 +1533,20 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->paginate(10);
-            $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-
-            $data_project_public = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-            // return response()->json( $request->subject);
+            $data_subject_RAW = project_instructor::where([['id_instructor', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->get();
+            // return response()->json( $data_subject_RAW);
+            // if (isset($data_subject_RAW)) {
+            foreach ($data_subject_RAW as $key => $data) {
+                $datas[] = project::where([['id', 'LIKE', $data->Project_id], ['subject_id', $request->subject]])->first();
+                $data_project_public[] = project::where([['id', 'LIKE', $data->Project_id], ['subject_id', $request->subject]])->first();
+            }
+            // return response()->json($datas);
             return view('projects.ProjectAdvisor.president_show', compact('term', 'datas', 'data_project_public'));
+            // } elseif (!isset($data_subject_RAW)) {
+            //     $datas = null;
+            //     $data_project_public = null;
+            //     return view('projects.ProjectAdvisor.president_show', compact('term', 'datas', 'data_project_public'));
+            // }
         } else {
             abort(404);
         }
@@ -1560,10 +1570,10 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::query()->where([['id_instructor', 'LIKE', $user->reg_tea_id], ['Is_director', 'LIKE', 1]])->orWhere([['Is_director', 2]])->paginate(10);
-            $datas = project::query()->where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
+            $data_subject = project_instructor::where('id_instructor', 'LIKE', $user->reg_tea_id)->whereNotIn('Is_director', [0])->paginate(10);
+            $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
-            // return response()->json( $data_project_public);
+            // return response()->json( $data_subject);
             return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public'));
         } else {
             abort(404);
@@ -1727,25 +1737,38 @@ class projectControllers extends Controller
 
         $data_user = reg_std::where('user_id', $id)->first();
         $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
-        $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
-        $data_comment_test50 = comment_test50::where('project_id_comemt_test50', $data_user_project->Project_id)->get();
+        if ($data_user_project == null) {
+            $data = null;
+            return view('info_word_template.AllResultsTest50', compact('data'));
+        } else {
+            $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+            $data_comment_test50 = comment_test50::where('project_id_comemt_test50', $data_user_project->Project_id)->get();
 
-        // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
-        // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
-        // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
+            // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+            // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+            // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
 
-        // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
-        // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-        // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-        // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+            // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+            // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+            // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+            // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
+            $data = comment_test50::withTrashed()->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
+                ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
+            if ($data != null) {
+                return view('info_word_template.AllResultsTest50', compact('data'));
+            } else {
+                $data = null;
+                return view('info_word_template.AllResultsTest50', compact('data'));
+            }
+            // return response()->json($data);
+        }
+        // return response()->json($a);
 
-        $data = comment_test50::withTrashed()->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-            ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
-            ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
-            ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
 
-        // return response()->json($data);
-        return view('info_word_template.AllResultsTest50', compact('data'));
+
+
     }
     public function remove_comment_test50($id1, $id2, $id3)
     {
@@ -1915,25 +1938,33 @@ class projectControllers extends Controller
 
         $data_user = reg_std::where('user_id', $id)->first();
         $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
-        $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
-        $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $data_user_project->Project_id)->get();
+        if ($data_user_project == null) {
+            $data = null;
+            return view('info_word_template.AllResultsTest100', compact('data'));
+        } else {
+            $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+            $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $data_user_project->Project_id)->get();
+            // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+            // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+            // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
 
-        // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
-        // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
-        // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
+            // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
+            // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
+            // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+            // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
 
-        // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
-        // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-        // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
-        // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
-
-        $data = comment_test100::withTrashed()->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-            ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
-            ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
-            ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
-
-        // return response()->json($data);
-        return view('info_word_template.AllResultsTest100', compact('data'));
+            $data = comment_test100::withTrashed()->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
+                ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
+            if ($data != null) {
+                return view('info_word_template.AllResultsTest100', compact('data'));
+            } else {
+                $data = null;
+                return view('info_word_template.AllResultsTest100', compact('data'));
+            }
+            // return response()->json($data);
+        }
     }
     public function remove_comment_test100($id1, $id2, $id3)
     {
@@ -1955,23 +1986,33 @@ class projectControllers extends Controller
         return redirect("/home");
         // return response()->json([$id1,$id2,$id3,$test50]);
     }
+    public function paginate_CollectPoints($items, $perPage = 10, $page = null, $options = ['path' => 'http://127.0.0.1:8000/CollectPoints'])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     public function CollectPoints()
     {
         $user = Auth::user();
         if ($user->hasRole('Admin')) {
-            $data = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')->select('projects.*')->where([['complete_forms.status_CompleteForm', 'Successfully']])->get();
+            $datas_array = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
+                ->join('project_users', 'projects.id', 'project_users.Project_id')
+                ->join('reg_stds', 'project_users.id_reg_Std', 'reg_stds.id')
+                ->select('projects.*', 'reg_stds.name')->where([['complete_forms.status_CompleteForm', 'Successfully']])
+                ->get()->groupBy('id');
             // $datas = null;
-            $datas = array();
-
-
-            foreach ($data as $key => $box) {
-                $datas_std = $this->DataTableController->data_project_collectPointsForm($box->id);
-                if ($datas_std == '[]') {
-                    $datas = array();
-                } elseif ($datas_std != '[]') {
-                    $datas[] = $box;
-                }
-            }
+            // $datas = array();
+            $datas_collect = collect($datas_array);
+            $datas = $this->paginate_CollectPoints($datas_collect);
+            // foreach ($data as $key => $box) {
+            //     $datas_std = $this->DataTableController->data_project_collectPointsForm($box->id);
+            //     if ($datas_std == '[]') {
+            //         $datas = array();
+            //     } elseif ($datas_std != '[]') {
+            //         $datas[] = $box;
+            //     }
+            // }
             //    return response()->json($datas);
             return View('projects.CollectPoints_page', compact('datas'));
         } else {
@@ -1985,13 +2026,36 @@ class projectControllers extends Controller
             $datas_instructor = DB::table('projects')
                 ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                 ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*')->where('projects.id', '=', $id)->get();
+                ->select('teachers.*', 'project_instructors.Is_director')->where('projects.id', '=', $id)->get();
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
             $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
             $id_instructor = project_instructor::where('Project_id', $id)->get();
+            foreach ($datas_std as $key => $row_data) {
+                foreach ($row_data as $key => $row) {
+                    $arrays[] = $row;
+                }
+            }
+            $data_collectPoints = null;
+            if (isset($arrays[0][0][0]->std_code)) {
+                $data_collectPoints[] = reg_std::where('std_code', $arrays[0][0][0]->std_code)->select('reg_stds.id')->first();
+            }
+            if (isset($arrays[1][0][0]->std_code)) {
+                $data_collectPoints[] = reg_std::where('std_code', $arrays[1][0][0]->std_code)->select('reg_stds.id')->first();
+            }
+            if (isset($arrays[2][0][0]->std_code)) {
+                $data_collectPoints[] = reg_std::where('std_code', $arrays[2][0][0]->std_code)->select('reg_stds.id')->first();
+            }
 
-            // return response()->json($datas_std);
-            return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas'));
+            foreach ($data_collectPoints as $key => $raw) {
+                $have_CollectPoints[] = CollectPoints::where('reg_id_collect_points', $raw->id)->first();
+            }
+            // $have_CollectPoints= $have_Collect->groupBy('id');
+            // $have_CollectPoints = collect($have_Collect)->groupBy('id');
+                // return response()->json($have_CollectPoints);
+                return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas', 'have_CollectPoints'));
+           
+
+            // return response()->json($have_CollectPoints);
         } else {
             abort(404);
         }
@@ -2022,7 +2086,7 @@ class projectControllers extends Controller
             }
         }
 
-        // return response()->json($GPA1->gpa);
+        // return response()->json($arrays[0][0][0]->point_test50);
         $templateProcessor = new TemplateProcessor(storage_path('word-template/รายงานผลการสอบโครงงานคอมพิวเตอร์.docx'));
 
         $GPA1 = reg_std::where('std_code', $arrays[0][0][0]->std_code)->first();
@@ -2060,8 +2124,9 @@ class projectControllers extends Controller
         } else if ($total1 >= 50) {
             $templateProcessor->setValue('grade1', $grade = 'D');
         }
-        $CollectPoints = new CollectPoints;
+        $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[0][0][0]->id)->delete();
 
+        $CollectPoints = new CollectPoints;
         $CollectPoints->Test_in_time = $request->Test_in_time[0];
         $CollectPoints->presentations = $request->presentations[0];
         $CollectPoints->grade = $grade;
@@ -2114,6 +2179,8 @@ class projectControllers extends Controller
             } else if ($total2 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
             }
+            $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[1][0][0]->id)->delete();
+
             $CollectPoints = new CollectPoints;
             $CollectPoints->Test_in_time = $request->Test_in_time[1];
             $CollectPoints->presentations = $request->presentations[1];
@@ -2190,6 +2257,8 @@ class projectControllers extends Controller
             } else if ($total3 >= 50) {
                 $templateProcessor->setValue('grade1', $grade = 'D');
             }
+            $CollectPoints_update = CollectPoints::where('reg_id_collect_points',$arrays[2][0][0]->id)->delete();
+
             $CollectPoints = new CollectPoints;
 
             $CollectPoints->Test_in_time = $request->Test_in_time[2];
@@ -2440,10 +2509,10 @@ class projectControllers extends Controller
             return response()->download($fileName)->deleteFileAfterSend(true);
             // return response()->json($data_comment);
         }
-        elseif ($test_form == 100) {
+        if ($test_form == 100) {
             //wordExport
 
-            $data_comment = comment_test100::join('project_instructors', 'comment_test100s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+            $data_comment = comment_test100::join('project_instructors', 'comment_test100s.id_instructor_comemt_test100', 'project_instructors.id_instructor')
                 ->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
                 ->where([['comment_test100s.project_id_comemt_test100', $id], ['project_instructors.Project_id', $id]])
                 ->select(

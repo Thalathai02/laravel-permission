@@ -43,7 +43,7 @@
                         </div>
                     @endif
                 @endforeach
-                {!! $datas->links() !!}
+                {{-- {!! $datas->links() !!} --}}
 
             </div>
         @endif
@@ -80,7 +80,7 @@
                         </div>
                     @endif
                 @endforeach
-                {!! $datas->links() !!}
+                {{-- {!! $data_project_public->links() !!} --}}
             </div>
         @endif
         </div>

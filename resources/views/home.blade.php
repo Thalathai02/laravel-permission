@@ -63,11 +63,11 @@
                                 </div>
                             @elseif($data_topics_Dashboard == 'เสนอขอสอบ100')
                                 <div>
-                                        @if ($check_report == 1)
-                                            <a class="btn btn-primary my-2"
-                                                href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
-                                                (สอบ100)</a>
-                                        @endif
+                                    @if ($check_report == 1)
+                                        <a class="btn btn-primary my-2"
+                                            href="{{ route('project.ProgressReport_test100', Auth::user()->id) }}">รายงานการสอบความก้าวหน้า
+                                            (สอบ100)</a>
+                                    @endif
 
 
                                 </div>
@@ -367,6 +367,58 @@
                         </div>
                         <div class="row">
                             <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-2">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">
+                                            ประเมินสอบ 50 เสร็จสิ้น
+                                        </h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body ">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            <th scope="col">หมายเหตุ</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($ProgressReport_test50_Success != null)
+                                                            @foreach ($ProgressReport_test50_Success as $key => $row)
+                                                                {{-- @if ($row->status == 'Check') --}}
+                                                                <tr>
+
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+                                                                    <td>{{ $row->note }}</td>
+                                                                </tr>
+                                                                {{-- @endif --}}
+                                                            @endforeach
+                                                        @endif
+
+                                                    </tbody>
+                                                </table>
+                                                {{-- {!! $datas->links() !!} --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
                                     <div
@@ -405,6 +457,53 @@
 
                                                     </tbody>
                                                 </table> {!! $datas->links() !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">ประเมินสอบ 100 เสร็จสิ้น</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($ProgressReport_test100_Success != null)
+                                                            @foreach ($ProgressReport_test100_Success as $key => $row)
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -452,6 +551,55 @@
 
                                                     </tbody>
                                                 </table> {!! $datas->links() !!}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">โครงงานฉบับสมบูรณ์</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($Successfully_project != null)
+                                                            @foreach ($Successfully_project as $key => $row)
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -527,7 +675,8 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">รายชื่อโปรเจดที่รับผิดชอบ(รอดำเนินการ)
+                                        <h6 class="m-0 font-weight-bold text-primary">
+                                            รายชื่อโปรเจดที่รับผิดชอบ(รอดำเนินการอยู่)
                                         </h6>
                                     </div>
                                     <!-- Card Body -->
@@ -621,6 +770,54 @@
                                     <!-- Card Header - Dropdown -->
                                     <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">ประเมินสอบ 50 เสร็จสิ้น</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($ProgressReport_test50_Success != null)
+                                                            @foreach ($ProgressReport_test50_Success as $key => $row)
+                                                                {{-- @if ($row->status == 'Check') --}}
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+                                                                </tr>
+                                                                {{-- @endif --}}
+                                                            @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                         <h6 class="m-0 font-weight-bold text-primary">รอประเมินสอบ 100</h6>
                                     </div>
                                     <!-- Card Body -->
@@ -661,9 +858,57 @@
 
                                 </div>
                             </div>
+
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">ประเมินสอบ 100 เสร็จสิ้น</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($ProgressReport_test100_Success != null)
+                                                            @foreach ($ProgressReport_test100_Success as $key => $row)
+                                                                {{-- @if ($row->status == 'Check') --}}
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+
+                                                                </tr>
+                                                                {{-- @endif --}}
+                                                            @endforeach
+                                                        @endif
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-
                             <div class="col-xl-6 col-lg-6">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
@@ -702,6 +947,56 @@
                                                                 </tr>
                                                             @endif
                                                         @endforeach
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">โครงงานฉบับสมบูรณ์</h6>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="mb-4">
+                                            <div class="table-responsive table-striped">
+                                                <table class="table table-bordered" id="dataTable" width="100%"
+                                                    cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ลำดับโครงงาน</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาไทย)</th>
+                                                            <th scope="col">ชื่อโครงงาน(ภาษาอังกฤษ)</th>
+
+                                                            {{-- <th scope="col">รายละเอียด</th>
+                                                        <th scope="col">แก้ไข</th> --}}
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if ($Successfully_project != null)
+                                                            @foreach ($Successfully_project as $key => $row)
+                                                                {{-- @if ($row->status == 'Check') --}}
+                                                                <tr>
+                                                                    <th scope="row">{{ $key + 1 }}</th>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_th }}</a>
+                                                                    </td>
+                                                                    <td><a target="_blank"
+                                                                            href="{{ route('CheckProject.info_project', $row->id) }}">{{ $row->name_en }}</a>
+                                                                    </td>
+
+                                                                </tr>
+                                                                {{-- @endif --}}
+                                                            @endforeach
+
+                                                        @endif
 
                                                     </tbody>
                                                 </table>

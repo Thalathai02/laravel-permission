@@ -77,19 +77,35 @@
                         {!! Form::text('name_mentor', $datas[0]->name_mentor, ['readonly', 'class' => 'form-control col-5']) !!}
                     </div>
                 @endif
-                <a href="{!! route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}" download>ดาวน์โหลดเอกสาร นำเสนอโครงงาน</a>
-
-
+                <div>
+                    <a href="{!! route('download', ['year' => $datas_std[0]->year, 'term' => $datas_std[0]->term, 'file' => $datas_std[0]->name_file]) !!}" download>ดาวน์โหลดเอกสาร นำเสนอโครงงาน</a>
+                </div>
                 @if (!empty($test50))
                 <div>
                     <a href="{!! route('InfoWordTemplate.download', ['form' => 'test50', 'status' => $test50->status_test50, 'file' => $test50->file_test50]) !!}" download>ดาวน์โหลดเอกสาร สอบ 50</a>
                 </div>
                 @endif
 
+                @if (!empty($report_50))
+                <div>
+                    <a href="{!! route('wordExport_ProgressReport_test_Download', ['test_form'=> 50 , 'id'=>$datas[0]->id]) !!}">รายงานการสอบความก้าวหน้า (สอบ50)</a>
+                </div>
+                @endif
 
                 @if (!empty($test100))
                 <div>
                     <a href="{!! route('InfoWordTemplate.download', ['form' => 'test100', 'status' => $test100->status_test100, 'file' => $test100->file_test100]) !!}" download>ดาวน์โหลดเอกสาร สอบ 100</a>
+                </div>
+                @endif
+
+                @if (!empty($report_100))
+                <div>
+                    <a href="{!! route('wordExport_ProgressReport_test_Download', ['test_form'=> 100 , 'id'=>$datas[0]->id]) !!}">รายงานการสอบความก้าวหน้า (สอบ100)</a>
+                </div>
+                @endif
+                @if (!empty($complete))
+                <div>
+                    <a href="{!! route('InfoWordTemplate.download', ['form' => 'CompleteForm', 'status' => $complete->status_CompleteForm, 'file' => $complete->file_CompleteForm]) !!}">โครงงานฉบับสมบูรณ์</a>
                 </div>
                 @endif
 
@@ -262,7 +278,7 @@
                 @endif
                 @if (!empty($complete))
                 <div>
-                    <a href="{!! route('InfoWordTemplate.download', ['form' => 'CompleteForm', 'status' => $complete->status_CompleteForm, 'file' => $complete->file_CompleteForm]) !!}">รายงานการสอบความก้าวหน้า (สอบ100)</a>
+                    <a href="{!! route('InfoWordTemplate.download', ['form' => 'CompleteForm', 'status' => $complete->status_CompleteForm, 'file' => $complete->file_CompleteForm]) !!}">โครงงานฉบับสมบูรณ์</a>
                 </div>
                 @endif
                 

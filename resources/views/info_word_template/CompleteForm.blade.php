@@ -112,6 +112,14 @@
                     </span>
                     <span class="text">เอกสารผ่าน</span>
                 </a>
+                @if (Auth::user()->hasRole('Admin'))
+                <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
+                    <span class="icon text-white-50">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span class="text">เอกสารไม่ผ่าน</span>
+                </a>
+                @endif
                 @if (Auth::user()->reg_tea_id == $datas_instructor[0]->id)
                 <a data-toggle="modal" data-target="#exampleModal" class="btn btn-danger btn-icon-split">
                     <span class="icon text-white-50">

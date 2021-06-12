@@ -142,6 +142,7 @@ Route::POST('/search', 'PublicProjectController@search_Guest_public_project')->n
 Route::get('/{test_form}{id}', 'projectControllers@wordExport_ProgressReport_test_Download')->name('wordExport_ProgressReport_test_Download')->middleware('auth');
 
 
+
 // Route::get('/001','data\DataTableController@Calculation');
 // Route::Post('/infotest50/{id}', "/InfoWordTemplateController@test50")->middleware('auth');
 // Route::post('/Check_Project/instructor_project','CheckProjectController@edit')->middleware('auth');

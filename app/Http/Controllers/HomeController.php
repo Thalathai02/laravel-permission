@@ -113,7 +113,7 @@ class HomeController extends Controller
                         $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(6);
                         return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                     }
-                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor','check_report'));
+                    return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor', 'check_report'));
                 } elseif (!empty($test50_ProgressReport[0]->id)) {
                     $notification  = $this->DataTableController->noti_data_allow_report_test50s($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id);
                     $data_topics_Dashboard = "รายงานการสอบความก้าวหน้า (สอบ50)";
@@ -121,28 +121,27 @@ class HomeController extends Controller
                     return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
                 // return response()->json($notification);
-                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor','check_report'));
+                return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor', 'check_report'));
             } elseif (!empty($datas_instructor[0]->id)) {
                 $notification_id = 3;
                 $data_topics_Dashboard = "แต่งตั้งประธานและกรรมการแล้ว";
                 $data_progress_Dashboard = $datas_std = $this->count_data_progress->count_data_progress(2);
                 $datas_std = $this->DataTableController->data_project($id_stu_project[0]->Project_id);
-                $ChangeBoard=ChangeBoard::where('Project_id_ChangeBoard',$id_stu_project[0]->Project_id)->first();
-                $changetopic=changetopic::where('Project_id_changetopics',$id_stu_project[0]->Project_id)->first();
-                if(isset($ChangeBoard)){
+                $ChangeBoard = ChangeBoard::where('Project_id_ChangeBoard', $id_stu_project[0]->Project_id)->first();
+                $changetopic = changetopic::where('Project_id_changetopics', $id_stu_project[0]->Project_id)->first();
+                if (isset($ChangeBoard)) {
                     $data_topics_Dashboard = "ขออนุญาตเปลี่ยนแปลงคณะกรรมการโครงงานคอมพิวเตอร์";
-                    $notification  = $this->DataTableController->noti_data_allow_ChangeBoard($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2,4);
+                    $notification  = $this->DataTableController->noti_data_allow_ChangeBoard($ChangeBoard->Project_id_ChangeBoard, $ChangeBoard->new_name_president, $ChangeBoard->new_name_director1, $ChangeBoard->new_name_director2, 4);
                     return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                     // return response()->json($notification);
                 }
-                if(isset($changetopic)){
+                if (isset($changetopic)) {
                     $data_topics_Dashboard = "ขออนุญาตเปลี่ยนแปลงหัวข้อโครงงานคอมพิวเตอร์";
-                    $notification  = $this->DataTableController->noti_data_allow_changetopic($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id,3);
+                    $notification  = $this->DataTableController->noti_data_allow_changetopic($id_stu_project[0]->Project_id, $datas_instructor[0]->id, $datas_instructor[1]->id, $datas_instructor[2]->id, 3);
                     return view('home', compact('notification', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
                 }
                 // return response()->json($ChangeBoard);
                 return view('home', compact('notification_id', 'data_topics_Dashboard', 'data_progress_Dashboard', 'datas', 'datas_std', 'datas_instructor'));
-                
             } else {
                 $notification_id = 3;
                 $data_topics_Dashboard = "ส่งหัวข้อแล้ว รอแต่งตั้งประท่านกรรมการ";
@@ -152,62 +151,191 @@ class HomeController extends Controller
             }
         }
         if (Auth::user()->hasRole('Admin')) {
-            $term = subject::orderBy('id','desc')->pluck('year_term', 'id');
-            $term_last = subject::orderBy('id','desc')->get();
-            $project = project::where([['projects.status', 'check'],['subject_id',$term_last[0]->id]])->get();
+            $term = subject::orderBy('id', 'desc')->pluck('year_term', 'id');
+            $term_last = subject::orderBy('id', 'desc')->get();
+            $project = project::where([['projects.status', 'check'], ['subject_id', $term_last[0]->id]])->get();
 
-            $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')
-            ->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('test50s.*','projects.*')->get();
+            $test50 = test50::join('projects', 'test50s.Project_id_test50', 'projects.id')
+                ->where([['test50s.status_test50', 'Waiting'], ['projects.subject_id', $term_last[0]->id]])->select('test50s.*', 'projects.*')->get();
 
-            $test100 = test100::join('projects','test100s.Project_id_test100','projects.id')
-            ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('test100s.*','projects.*')->get();
 
-            $CompleteForm = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')
-            ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$term_last[0]->id]])->select('complete_forms.*','projects.*')->get();
+            $test100 = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
+                ->where([['test100s.status_test100', 'Waiting'], ['projects.subject_id', $term_last[0]->id]])->select('test100s.*', 'projects.*')->get();
+            $test100_raw = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
+                ->where('projects.subject_id', $term_last[0]->id)->select('test100s.*', 'projects.*')->get();
 
-            $Successfully_project = project::where([['projects.status', 'Private'],['subject_id',$term_last[0]->id]])->orwhere([['projects.status', 'Public'],['subject_id',$term_last[0]->id]])->get();
+            $ProgressReport_test50_RawDatas = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
+                ->where('projects.subject_id', $term_last[0]->id)->select('progress_report_test50s.*', 'projects.*')->get();
 
-            // return response()->json($Successfully_project);
-            return view('home', compact('term','project','test50','test100','CompleteForm','Successfully_project','term_last'));
+            $ProgressReport_test50_Success = null;
+
+            if ($test100_raw == '[]') {
+                foreach ($ProgressReport_test50_RawDatas as $key => $data) {
+                    if ($data['status_progress_report_test50'] !== 'Waiting') {
+                        $ProgressReport_test50_Success[] = $data;
+                    }
+                }
+            } elseif (isset($test100_raw)) {
+                foreach ($test100_raw as $key2 => $data_test100) {
+                    $data_array[] = $data_test100->Project_id_test100;
+                    $ProgressReport_test50_Success = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
+                        ->where('subject_id', $term_last[0]->id)
+                        ->whereNotIn('Project_id_report_test50', $data_array)
+                        ->select('progress_report_test50s.*', 'projects.*')
+                        ->get();
+                }
+            }
+
+
+
+
+
+            $CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
+                ->where([['status_CompleteForm', 'Waiting'], ['projects.subject_id', $term_last[0]->id]])->select('complete_forms.*', 'projects.*')->get();
+
+            $ProgressReport_test100_RawDatas = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
+                ->where('projects.subject_id', $term_last[0]->id)->select('progress_report_test100s.*', 'projects.*')->get();
+            $ProgressReport_test100_Success = null;
+
+
+            $CompleteForm_raw = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
+                ->where('projects.subject_id', $term_last[0]->id)->select('complete_forms.*', 'projects.*')->get();
+
+            if ($CompleteForm_raw == '[]') {
+                foreach ($ProgressReport_test100_RawDatas as $key => $data) {
+                    if ($data->status_progress_report_test100 !== 'Waiting') {
+                        $ProgressReport_test100_Success[] = $data;
+                    }
+                }
+            } elseif (isset($CompleteForm_raw)) {
+                foreach ($CompleteForm_raw as $key2 => $data_CompleteForm) {
+                    $data_array_CompleteForm[] = $data_CompleteForm->Project_id_CompleteForm;
+                    $ProgressReport_test100_Success = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
+                        ->where('subject_id', $term_last[0]->id)
+                        ->whereNotIn('Project_id_report_test100', $data_array_CompleteForm)
+                        ->select('progress_report_test100s.*', 'projects.*')
+                        ->get();
+
+                    // if ($data['Project_id_report_test100']  != $data_CompleteForm['Project_id_CompleteForm']) {
+                    //     $ProgressReport_test100_Success[] = $data;
+                    // }
+                }
+            }
+
+            $Successfully_project = project::where([['projects.status', 'Private'], ['subject_id', $term_last[0]->id]])->orwhere([['projects.status', 'Public'], ['subject_id', $term_last[0]->id]])->get();
+
+            // return response()->json($ProgressReport_test100_Success);
+            return view('home', compact('term', 'project', 'test50', 'test100', 'CompleteForm', 'Successfully_project', 'term_last', 'ProgressReport_test50_Success', 'ProgressReport_test100_Success'));
         }
         if (Auth::user()->hasRole('Tea')) {
             $user = Auth::user();
             $data_subject = project_instructor::where('id_instructor', 'LIKE', $user->reg_tea_id)->get();
             $datas = project::join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')->where([['project_instructors.id_instructor', $user->reg_tea_id], ['projects.status', 'Check']])->paginate(5);
             $data_test50 = test50::join('projects', 'test50s.Project_id_test50', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test50s.status_test50', 'Waiting']])->paginate(5);
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')
+                ->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test50s.status_test50', 'Waiting']])
+                ->paginate(5);
             $data_test100 = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test100s.status_test100', 'Waiting']])->paginate(5);
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')
+                ->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test100s.status_test100', 'Waiting']])
+                ->paginate(5);
 
+            $test100_raw = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->where('project_instructors.id_instructor', $user->reg_tea_id)->select('test100s.*', 'projects.*')->get();
             // return response()->json($data_test50);
             //Waiting
             //Successfully
             $data_CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')->where([['project_instructors.id_instructor', $user->reg_tea_id], ['complete_forms.status_CompleteForm', 'Waiting']])->paginate(5);
-            return view('home', compact('datas', 'data_test50', 'data_test100','data_CompleteForm'));
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->select('projects.*')->where([
+                    ['project_instructors.id_instructor', $user->reg_tea_id],
+                    ['complete_forms.status_CompleteForm', 'Waiting']
+                ])->paginate(5);
+            $ProgressReport_test50_Success = null;
+            $ProgressReport_test50_RawDatas = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->get();
+
+            if ($test100_raw == '[]') {
+                foreach ($ProgressReport_test50_RawDatas as $key => $data) {
+                    if ($data['status_progress_report_test50'] !== 'Waiting') {
+                        $ProgressReport_test50_Success[] = $data;
+                    }
+                }
+            } elseif (isset($test100_raw)) {
+                foreach ($test100_raw as $key2 => $data_test100s) {
+                    $data_array_test100s[] = $data_test100s->Project_id_test100;
+                    $ProgressReport_test50_Success = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
+                        ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                        ->whereNotIn('Project_id_report_test50', $data_array_test100s)
+                        ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                        ->get();
+                }
+            }
+            // return response()->json($ProgressReport_test50_Success);
+
+
+            $CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->get();
+            $ProgressReport_test100_RawDatas = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->get();
+            $ProgressReport_test100_Success = null;
+            if ($CompleteForm == '[]') {
+                foreach ($ProgressReport_test100_RawDatas as $key => $data) {
+                    if ($data->status_progress_report_test100 !== 'Waiting') {
+                        $ProgressReport_test100_Success[] = $data;
+                    }
+                }
+            } elseif (isset($CompleteForm)) {
+                foreach ($CompleteForm as $key2 => $data_CompleteForms) {
+                    $data_array_CompleteForms[] = $data_CompleteForms->Project_id_CompleteForm;
+                    $ProgressReport_test100_Success = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
+                        ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                        ->whereNotIn('Project_id_report_test100', $data_array_CompleteForms)
+                        ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                        ->get();
+                }
+            }
+
+
+            $Successfully_project = project::join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->where([['projects.status', 'Private'], ['project_instructors.id_instructor', $user->reg_tea_id]])->orwhere([
+                    ['projects.status', 'Public'],
+                    ['project_instructors.id_instructor', $user->reg_tea_id]
+                ])
+                ->select('projects.*')
+                ->get();
+            // return response()->json($ProgressReport_test50_Success);
+            return view('home', compact('datas', 'data_test50', 'data_test100', 'data_CompleteForm', 'ProgressReport_test50_Success', 'ProgressReport_test100_Success', 'Successfully_project'));
         }
 
         return view('home');
     }
     public function search_project(Request $request)
-    { 
+    {
         // return response()->json($request->subject);
-        $term = subject::orderBy('id','desc')->pluck('year_term', 'id');
-        $term_last = subject::where('id',$request->subject)->get();
-        $project = project::where([['projects.status', 'check'],['subject_id',$request->subject]])->get();
+        $term = subject::orderBy('id', 'desc')->pluck('year_term', 'id');
+        $term_last = subject::where('id', $request->subject)->get();
+        $project = project::where([['projects.status', 'check'], ['subject_id', $request->subject]])->get();
 
-        $test50 = test50::join('projects','test50s.Project_id_test50','projects.id')
-        ->where([['test50s.status_test50', 'Waiting'],['projects.subject_id',$request->subject]])->select('test50s.*','projects.*')->get();
+        $test50 = test50::join('projects', 'test50s.Project_id_test50', 'projects.id')
+            ->where([['test50s.status_test50', 'Waiting'], ['projects.subject_id', $request->subject]])->select('test50s.*', 'projects.*')->get();
 
-        $test100 = test100::join('projects','test100s.Project_id_test100','projects.id')
-        ->where([['test100s.status_test100', 'Waiting'],['projects.subject_id',$request->subject]])->select('test100s.*','projects.*')->get();
+        $test100 = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
+            ->where([['test100s.status_test100', 'Waiting'], ['projects.subject_id', $request->subject]])->select('test100s.*', 'projects.*')->get();
 
-        $CompleteForm = CompleteForm::join('projects','complete_forms.Project_id_CompleteForm','projects.id')
-        ->where([['status_CompleteForm', 'Waiting'],['projects.subject_id',$request->subject]])->select('complete_forms.*','projects.*')->get();
+        $CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
+            ->where([['status_CompleteForm', 'Waiting'], ['projects.subject_id', $request->subject]])->select('complete_forms.*', 'projects.*')->get();
 
-        $Successfully_project = project::where([['projects.status', 'Private'],['subject_id',$request->subject]])->orwhere([['projects.status', 'Public'],['subject_id',$request->subject]])->get();
+        $Successfully_project = project::where([['projects.status', 'Private'], ['subject_id', $request->subject]])->orwhere([['projects.status', 'Public'], ['subject_id', $request->subject]])->get();
 
         // return response()->json($test50);
-        return view('home', compact('term','project','test50','test100','CompleteForm','Successfully_project','term_last'));
-   }
+        return view('home', compact('term', 'project', 'test50', 'test100', 'CompleteForm', 'Successfully_project', 'term_last'));
+    }
 }

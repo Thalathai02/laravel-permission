@@ -223,42 +223,43 @@ class DataTableController extends Controller
             // $datas_std = array();
 
             foreach ($datas_std as $key => $datas) {
-                if (isset($data_CollectPoints[2]->reg_id_collect_points)) {
-                    switch ($datas->id) {
-                        case ($data_CollectPoints[0]->reg_id_collect_points):
-                            break;
-                        case ($data_CollectPoints[1]->reg_id_collect_points):
-                            break;
-                        case ($data_CollectPoints[2]->reg_id_collect_points):
-                            break;
-                        default:
-                        $datas_st[] = $datas;
-                            break;
-                    }
-                } elseif (isset($data_CollectPoints[1]->reg_id_collect_points)) {
-                    switch ($datas->id) {
-                        case ($data_CollectPoints[0]->reg_id_collect_points):
-                            break;
-                        case ($data_CollectPoints[1]->reg_id_collect_points):
-                            break;
-                        default:
-                            $datas_st[] = $datas;
-                            break;
-                    }
-                } elseif (isset($data_CollectPoints[0]->reg_id_collect_points)) {
-                    switch ($datas->id) {
-                        case ($data_CollectPoints[0]->reg_id_collect_points):
-                            break;
-                        default:
-                            $datas_st[] = $datas;
-                            break;
-                    }
-                }
+            $datas_st[] = $datas;
+
+                // if (isset($data_CollectPoints[2]->reg_id_collect_points)) {
+                //     switch ($datas->id) {
+                //         case ($data_CollectPoints[0]->reg_id_collect_points):
+                //             break;
+                //         case ($data_CollectPoints[1]->reg_id_collect_points):
+                //             break;
+                //         case ($data_CollectPoints[2]->reg_id_collect_points):
+                //             break;
+                //         default:
+                //         $datas_st[] = $datas;
+                //             break;
+                //     }
+                // } elseif (isset($data_CollectPoints[1]->reg_id_collect_points)) {
+                //     switch ($datas->id) {
+                //         case ($data_CollectPoints[0]->reg_id_collect_points):
+                //             break;
+                //         case ($data_CollectPoints[1]->reg_id_collect_points):
+                //             break;
+                //         default:
+                //             $datas_st[] = $datas;
+                //             break;
+                //     }
+                // } elseif (isset($data_CollectPoints[0]->reg_id_collect_points)) {
+                //     switch ($datas->id) {
+                //         case ($data_CollectPoints[0]->reg_id_collect_points):
+                //             break;
+                //         default:
+                //             $datas_st[] = $datas;
+                //             break;
+                //     }
+                // }
             }
             if (empty($datas_st)) {
                 $datas_st=null;
             }
-
             $datas_std2 = collect($datas_st)->groupBy(['year_term', 'std_code', 'Is_director']);
             return $datas_std2;
         }

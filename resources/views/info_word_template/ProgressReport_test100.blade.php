@@ -104,7 +104,7 @@
             </div>
 
             <div class="my-2">
-                <a href="{!!  route('projectControllers.wordExport_ProgressReport_test100_Download', ['id'=>$datas[0]->id]) !!}" class="btn btn-primary btn-icon-split">
+                <a href="{!!  route('wordExport_ProgressReport_test_Download', ['test_form'=>100 ,'id'=>$datas[0]->id]) !!}" class="btn btn-primary btn-icon-split">
                     <span class="icon text-white-50">
                         <i class="fas fa-book"></i>
                     </span>

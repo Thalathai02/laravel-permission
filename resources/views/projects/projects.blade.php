@@ -41,7 +41,7 @@
                                                 <a class="dropdown-item" target="_blank"
                                                     href="{{ route('project.edit', $row[0]->id) }}">แก้ไข</a>
                                                 <a class="dropdown-item" target="_blank"
-                                                    href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                                    href="{{ route('CheckProject.info_project', $row[0]->id) }}">รายละเอียด</a>
                                             </div>
                                             <!-- Card Body -->
                                             <div class="card-body">
@@ -164,7 +164,7 @@
                                             aria-labelledby="dropdownMenuLink">
                                             <div class="dropdown-header">ตัวเลือก:</div>
                                             <a class="dropdown-item" target="_blank"
-                                                href="{{ route('Check_Project.show', $row[0]->id) }}">รายละเอียด</a>
+                                                href="{{ route('CheckProject.info_project', $row[0]->id) }}">รายละเอียด</a>
                                         </div>
                                             <!-- Card Body -->
                                             <div class="card-body">

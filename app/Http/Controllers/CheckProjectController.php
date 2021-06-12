@@ -30,6 +30,9 @@ use App\test50;
 use App\ProgressReport_test100;
 use App\ProgressReport_test50;
 use App\CompleteForm;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+
 
 class CheckProjectController extends Controller
 {
@@ -278,15 +281,15 @@ class CheckProjectController extends Controller
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project($id);
 
-        $test50 = test50::where('Project_id_test50',$id)->first();
-        $report_50 = ProgressReport_test50::where('Project_id_report_test50',$id)->first();
+        $test50 = test50::where('Project_id_test50', $id)->first();
+        $report_50 = ProgressReport_test50::where('Project_id_report_test50', $id)->first();
 
-        $test100 = test100::where('Project_id_test100',$id)->first();
-        $report_100 = ProgressReport_test100::where('Project_id_report_test100',$id)->first();
-        
-        $complete =CompleteForm::where('Project_id_CompleteForm',$id)->first() ;
-        
-        return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor','test50','report_50','test100','complete'));
+        $test100 = test100::where('Project_id_test100', $id)->first();
+        $report_100 = ProgressReport_test100::where('Project_id_report_test100', $id)->first();
+
+        $complete = CompleteForm::where('Project_id_CompleteForm', $id)->first();
+
+        return view('projects.Onlyinfo_project', compact('datas', 'datas_std', 'datas_instructor', 'test50', 'report_50', 'report_100', 'test100', 'complete'));
         // return response()->json($test50);
     }
     public function Selection_year()
@@ -311,34 +314,51 @@ class CheckProjectController extends Controller
     public function allreject($id)
     {
         $reg_project = project_user::where('id_reg_Std', $id)->first();
-        $reject = reject_test::join('users', 'reject_tests.id_user_reject_tests', 'users.id')
-            ->select('reject_tests.*', 'users.name')
-            ->where([['reject_tests.project_id_reject_tests', $reg_project->Project_id]])->withTrashed()->get();
-        // collect($reject)->groupBy(['test_id']);
-        // $reject->groupBy('test_id');
-       
-        if($reject == []){
-            // $datas =0;
-            foreach ($reject as $key => $box_data) {
-                $rejects[] = $box_data;
+        if ($reg_project != null) {
+            $reject = reject_test::join('users', 'reject_tests.id_user_reject_tests', 'users.id')
+                ->select('reject_tests.*', 'users.name')
+                ->where([['reject_tests.project_id_reject_tests', $reg_project->Project_id]])->withTrashed()->get();
+            // collect($reject)->groupBy(['test_id']);
+            // $reject->groupBy('test_id');
+
+            if ($reject == []) {
+                // $datas =0;
+                foreach ($reject as $key => $box_data) {
+                    $rejects[] = $box_data;
+                }
+                $datas = collect($rejects)->groupBy('test_id');
+            } else {
+                $datas = null;
             }
-            $datas = collect($rejects)->groupBy('test_id');
-        }else{
-            $datas= null; 
+
+            return view('info_word_template.allreject', compact('datas'));
+            return response()->json($datas);
+        } else {
+            $datas = null;
+            return view('info_word_template.allreject', compact('datas'));
+            return response()->json($datas);
         }
-        
-        return view('info_word_template.allreject', compact('datas'));
-        return response()->json($datas);
     }
+    public function paginate($items, $perPage = 1, $page = null, $options = ['path' => 'http://127.0.0.1:8000/SendGrade'])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
     public function SendGrade_page()
     {
         if (Auth::user()->hasRole('Admin')) {
-            $datas = reg_std::join('collect_points', 'reg_stds.id', 'collect_points.reg_id_collect_points')
+            $data = reg_std::join('collect_points', 'reg_stds.id', 'collect_points.reg_id_collect_points')
                 ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
                 ->join('subjects', 'subject_students.subject_id', 'subjects.id')
-                ->select('reg_stds.id', 'reg_stds.name', 'reg_stds.std_code', 'collect_points.grade', 'subjects.year_term')
-                ->where([['collect_points.deleted_at', NULL], ['reg_stds.deleted_at', NULL], ['collect_points.SendGrade', 1]])->get()
-                ->groupBy('year_term');
+                ->select('reg_stds.id', 'reg_stds.name', 'reg_stds.std_code', 'collect_points.grade', 'subjects.year_term', 'collect_points.project_id_collect_points')
+                ->where([['collect_points.deleted_at', NULL], ['reg_stds.deleted_at', NULL]])->get()
+                ->groupBy(['year_term', 'project_id_collect_points']);
+            
+            $myCollectionObj = collect($data);
+
+            $datas = $this->paginate($myCollectionObj);
             // return response()->json($datas);
             return view('Admin.SendGrade', compact('datas'));
         }
@@ -350,8 +370,8 @@ class CheckProjectController extends Controller
             $templateProcessor = new TemplateProcessor(storage_path('word-template/แบบฟอร์มบันทึกผลคะแนนเป็นรายบุคคล.docx'));
 
             foreach ($data as $key => $itme) {
-                $datas =  CollectPoints::where('reg_id_collect_points',$itme)->first();
-                $datas->SendGrade = 2 ; 
+                $datas =  CollectPoints::where('reg_id_collect_points', $itme)->first();
+                $datas->SendGrade = 2;
                 $datas->save();
                 // $array[] = $itme;
 
@@ -363,10 +383,11 @@ class CheckProjectController extends Controller
                     if ($key == $a) {
                         $arrays[] = $key;
                         $Datas_reg = reg_std::find($itme);
-                        $templateProcessor->setValue('id'.$key, $Datas_reg->std_code);
-                        $templateProcessor->setValue('name'.$key, $Datas_reg->name);
-                        $templateProcessor->setValue('grade'.$key,  $Datas_reg->gpa);
-                        $templateProcessor->setValue('note_std'.$key,  $Datas_reg->note);
+                        $collect_points = CollectPoints::where('reg_id_collect_points', $itme)->first();
+                        $templateProcessor->setValue('id' . $key, $Datas_reg->std_code);
+                        $templateProcessor->setValue('name' . $key, $Datas_reg->name);
+                        $templateProcessor->setValue('grade' . $key,  $collect_points->grade);
+                        $templateProcessor->setValue('note_std' . $key,  $Datas_reg->note);
                     }
                 }
             }
@@ -374,26 +395,26 @@ class CheckProjectController extends Controller
             $c = $g->diffAssoc($arrays);
             foreach ($c as $key => $itme) {
                 $r[] = $itme;
-                $templateProcessor->setValue('id'.$key, "");
-                $templateProcessor->setValue('name'.$key, "");
-                $templateProcessor->setValue('grade'.$key, "");
-                $templateProcessor->setValue('note_std'.$key, "");
+                $templateProcessor->setValue('id' . $key, "");
+                $templateProcessor->setValue('name' . $key, "");
+                $templateProcessor->setValue('grade' . $key, "");
+                $templateProcessor->setValue('note_std' . $key, "");
             }
 
             $about_subject = subject_student::join('subjects', 'subject_students.subject_id', 'subjects.id')->select('subjects.term', 'subjects.year')
                 ->where('subject_students.student_id', $Datas_reg->id)->first();
 
-            $about_project = project_user::join('projects','project_users.Project_id','projects.id')
-            ->join('project_instructors','projects.id','project_instructors.Project_id')
-            ->join('teachers','project_instructors.id_instructor','teachers.id')
-            ->select('teachers.*')->where([['id_reg_Std',$Datas_reg->id],['Is_director',0],['Is_president',1]])->first();
+            $about_project = project_user::join('projects', 'project_users.Project_id', 'projects.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+                ->select('teachers.*')->where([['id_reg_Std', $Datas_reg->id], ['Is_director', 0], ['Is_president', 1]])->first();
 
             $templateProcessor->setValue('note',  $request->note);
             $templateProcessor->setValue('term',  $about_subject->term);
             $templateProcessor->setValue('year',  $about_subject->year);
-            $templateProcessor->setValue('name_president',  $about_project->Title_name_Instructor.$about_project->name_Instructor);
+            $templateProcessor->setValue('name_president',  $about_project->Title_name_Instructor . $about_project->name_Instructor);
             $templateProcessor->setValue('date_now', formatDateThai(date("Y-m-d")));
-          
+
 
 
             $fileName = storage_path("แบบฟอร์มบันทึกผลคะแนนเป็นรายบุคคล" . '.docx');
@@ -404,5 +425,4 @@ class CheckProjectController extends Controller
             // return back();
         }
     }
-   
 }

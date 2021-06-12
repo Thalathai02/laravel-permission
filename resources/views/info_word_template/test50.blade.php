@@ -128,6 +128,7 @@
                         <span class="text">เอกสารไม่ผ่าน</span>
                     </a>
                 @endif
+                
                 {!! Form::open(['action' => ['projectControllers@reject_project', $id_Notifications, $datas[0]->id, 1], 'method' => 'POST']) !!}
                 <!-- Modal -->
                 <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
