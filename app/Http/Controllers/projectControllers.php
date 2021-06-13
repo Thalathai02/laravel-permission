@@ -725,6 +725,11 @@ class projectControllers extends Controller
             $request->File,
             $name_file
         );
+        Storage::disk('local')->putFileAs(
+            'Successfully',
+            $request->File,
+            $name_file
+        );
         $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();

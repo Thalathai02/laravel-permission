@@ -152,7 +152,7 @@ class PublicProjectController extends Controller
             $fileModel = Project_File::where('Project_id_File', $id)->delete();
 
             $fileModel = new Project_File;
-            $fileModel->name_file = time() . '_' .  $request->Number_project . '.zip';;
+            $fileModel->name_file = time() . '_' .  $request->Number_project . '.pdf';;
             $fileModel->status_file_path = $request->Status_File;
             $fileModel->Project_id_File = $id;
             $fileModel->save();
