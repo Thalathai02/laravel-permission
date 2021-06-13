@@ -70,7 +70,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row my-2">
-                                {!! Form::file('File', ['class' => 'form-control col-5']) !!}
+                                {!! Form::file('File', ['class' => 'form-control col-5']) !!}{{$data_file->name_file}}
                             </div>
                             <div class="row my-2">
                                 {!! Form::label('Status_project_File', 'สถานะเอกสาร', ['class' => 'font-weight-bold']) !!}

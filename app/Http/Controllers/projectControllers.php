@@ -234,7 +234,7 @@ class projectControllers extends Controller
             if (!empty($request->get('reg_std2'))) {
                 $Search2 = $request->get('reg_std2');
                 $data2 = reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
-                
+
                 if ($Search2 === "-") {
                 } else {
                     $this->DataBase($id, 'id_reg_Std', $data2);
@@ -348,13 +348,12 @@ class projectControllers extends Controller
     }
     public function DataBase($id, $table, $data)
     {
-        $check_data=project_user::where($table,$data[0]->id)->first();
-        if(isset($check_data)){
-            back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณาตรวจสอบ '.$data[0]->name);
-        }else{
+        $check_data = project_user::where($table, $data[0]->id)->first();
+        if (isset($check_data)) {
+            back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณาตรวจสอบ ' . $data[0]->name);
+        } else {
             project_user::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0], [$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0]);
         }
-
     }
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
@@ -719,7 +718,12 @@ class projectControllers extends Controller
             'status_CompleteForm' => 'Waiting',
             'file_CompleteForm' => $name_file
         ]);
-
+        $fileModel = Project_File::where('Project_id_File', $id)->delete();
+        $fileModel = new Project_File;
+        $fileModel->name_file = time() . '_' .   $name_file . '.pdf';;
+        $fileModel->status_file_path = $request->Status_File;
+        $fileModel->Project_id_File = $id;
+        $fileModel->save();
         Storage::disk('local')->putFileAs(
             'CompleteForm',
             $request->File,
@@ -1606,11 +1610,10 @@ class projectControllers extends Controller
                 // $data_subject = null;
                 $data_project_public = null;
                 $datas = null;
-
             }
             // return response()->json($data_subject);
 
-            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public','data_subject'));
+            return view('projects.ProjectAdvisor.director_show', compact('term', 'datas', 'data_project_public', 'data_subject'));
         } else {
             abort(404);
         }

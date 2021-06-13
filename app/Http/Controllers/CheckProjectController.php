@@ -261,7 +261,7 @@ class CheckProjectController extends Controller
     {
         if ($request->ajax()) {
             $data = reg_std::where('std_code', 'LIKE', $request->reg_std . '%')->get();
-            $check_data=project_user::where('id_reg_Std',$data[0]->id . '%')->first();
+            $check_data=project_user::where('id_reg_Std',$data[0]->id )->first();
 
             $output = '';
             if (count($data) > 0) {
