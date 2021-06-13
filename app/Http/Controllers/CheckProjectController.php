@@ -261,10 +261,16 @@ class CheckProjectController extends Controller
     {
         if ($request->ajax()) {
             $data = reg_std::where('std_code', 'LIKE', $request->reg_std . '%')->get();
+            $check_data=project_user::where('id_reg_Std',$data[0]->id . '%')->first();
+
             $output = '';
             if (count($data) > 0) {
                 foreach ($data as $row) {
-                    $output = '<p>' . 'ชื่อ ' . $row->name . '</p>';
+                    if (isset($check_data)){
+                        $output = '<p style="color:red;">' . $row->name .' มีโครงงานแล้ว'. '</p>';
+                    }elseif(!isset($check_data)){
+                        $output = '<p>' . 'ชื่อ ' . $row->name . '</p>';
+                    }
                 }
             } else {
                 $output .= '<p>' . 'No results' . '</p>';

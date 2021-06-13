@@ -234,6 +234,7 @@ class projectControllers extends Controller
             if (!empty($request->get('reg_std2'))) {
                 $Search2 = $request->get('reg_std2');
                 $data2 = reg_std::query()->where('std_code', 'LIKE', "{$Search2}")->get();
+                
                 if ($Search2 === "-") {
                 } else {
                     $this->DataBase($id, 'id_reg_Std', $data2);
@@ -328,7 +329,7 @@ class projectControllers extends Controller
             }
             $this->notifications_fun(1, 13, $id, 'ได้เสนอหัวข้อเข้ามา กรุณาตรวจสอบ');
             // DB::table('projects')->where('id', $id)->update(['id_regStd1' => $data[0]->id, 'id_regStd2' => $data2[0]->id]);
-
+            // return redirect("/projects/list_name");
             return redirect("/project");
         } else {
             abort(404);
@@ -347,7 +348,13 @@ class projectControllers extends Controller
     }
     public function DataBase($id, $table, $data)
     {
-        project_user::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0], [$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0]);
+        $check_data=project_user::where($table,$data[0]->id)->first();
+        if(isset($check_data)){
+            back()->withErrors('ชื่อผู้ใช้ซ้ำ กรุณาตรวจสอบ '.$data[0]->name);
+        }else{
+            project_user::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0], [$table => $data[0]->id, "Project_id" => $id, 'isHead' => 0]);
+        }
+
     }
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
@@ -1581,7 +1588,7 @@ class projectControllers extends Controller
             // $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
 
-            if (!isset($data_subject)) {
+            if ($data_subject->count() > 0) {
                 $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
                 $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
                 if (!isset($datas)) {
@@ -1591,6 +1598,7 @@ class projectControllers extends Controller
                     $data_project_public = null;
                 }
             } else {
+                // $data_subject = null;
                 $data_project_public = null;
                 $datas = null;
 

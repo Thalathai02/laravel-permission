@@ -9,7 +9,7 @@
         <div class="container">
             <h3 align="center">เพิ่มรายชื่อในโปรเจค</h3>
             <br />
-        
+
             <form action="{{ route('project.update', $data_nameProject->id) }}" method="POST">
                 @csrf @method('PUT')
                 @if (Auth::user()->hasRole('Admin'))
@@ -27,7 +27,7 @@
 
 
                     <div class="my-4">
-                        {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
+                        {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2 (หากไม่มีให้ใส่ - )') !!}
                         <div class="row">
                             {!! Form::text('reg_std2', null, ['class' => 'form-control col-3']) !!}
                             <div id="name_reg2" class="col-3"></div>
@@ -35,16 +35,16 @@
                     </div>
 
                     <div class="my-4">
-                        {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3') !!}
+                        {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3 (หากไม่มีให้ใส่ - )') !!}
                         <div class="row">
                             {!! Form::text('reg_std3', null, ['class' => 'form-control col-3']) !!}
                             <div id="name_reg3" class="col-3"></div>
                         </div>
                     </div>
 
-                    
+
                     <div class="my-4">
-                        {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
+                        {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ (หากไม่มีให้ใส่ - )') !!}
                         {!! Form::text('name_mentor', null, ['class' => 'form-control col-5']) !!}
                     </div>
 
@@ -54,15 +54,17 @@
                 @if (Auth::user()->hasRole('Std'))
                     <P>ชื่อโปรเจค(ภาษาไทย) : {{ $data_nameProject->name_th }}</P>
                     <p>ชื่อโปรเจค(ภาษาอังกฤษ) :{{ $data_nameProject->name_en }} </p>
-                    <div class="my-2">
+                    <div class="my-4">
                         {!! Form::label('reg_std1', 'รหัสนักศึกษาคนที่ 1') !!}
-                        {!! Form::text('reg_std1', $term[0]->std_code, ['readonly', 'class' => 'form-control col-3']) !!}
+                        <div class="row">
+                            {!! Form::text('reg_std1', $term[0]->std_code, ['readonly', 'class' => 'form-control col-3']) !!}
+                        </div>
                     </div>
 
 
 
                     <div class="my-4">
-                        {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2') !!}
+                        {!! Form::label('reg_std2', 'รหัสนักศึกษาคนที่ 2 (หากไม่มีให้ใส่ - )') !!}
                         <div class="row">
                             {!! Form::text('reg_std2', null, ['class' => 'form-control col-3']) !!}
                             <div id="name_reg2" class="col-3"></div>
@@ -70,14 +72,14 @@
                     </div>
 
                     <div class="my-4">
-                        {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3') !!}
+                        {!! Form::label('reg_std3', 'รหัสนักศึกษาคนที่ 3 (หากไม่มีให้ใส่ - )') !!}
                         <div class="row">
                             {!! Form::text('reg_std3', null, ['class' => 'form-control col-3']) !!}
                             <div id="name_reg3" class="col-3"></div>
                         </div>
                     </div>
                     <div class="my-4">
-                        {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ') !!}
+                        {!! Form::label('name_mentor', 'ชื่อที่ปรึกษาพิเศษ (หากไม่มีให้ใส่ - )') !!}
                         {!! Form::text('name_mentor', null, ['class' => 'form-control col-5']) !!}
                     </div>
 
