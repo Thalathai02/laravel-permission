@@ -29,8 +29,9 @@
                                             <td>{{ $rows[0]->name_en }}</td>
                                             <td scope="col">
                                                 @foreach ($rows as $key2 => $row)
-                                                    {{ $row->name }}
+                                                    <span>{{ $row->name }} <hr></span>
                                                 @endforeach
+                                                
                                             </td>
                                             <td><a href="{{ route('projectControllers.collectPointsForm', $rows[0]->id) }}"
                                                     class="btn btn-info">เลือก</a>
