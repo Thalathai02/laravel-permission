@@ -20,6 +20,12 @@ class CreateSubjectsTable extends Migration
             $table->string('term');
             $table->string('year_term');
 
+            $table->integer('test50');
+            $table->integer('test100');
+            $table->integer('presentations');
+            $table->integer('Test_in_time');
+            $table->integer('Internship_score');
+
             // $table->text('DatePropose');
             // $table->text('OutPropose');
             // $table->text('Datedecide');

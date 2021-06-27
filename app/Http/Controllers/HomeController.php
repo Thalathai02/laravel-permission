@@ -343,30 +343,34 @@ class HomeController extends Controller
 
         $ProgressReport_test50_Success = null;
 
+
         if ($test100_raw == '[]') {
             foreach ($ProgressReport_test50_RawDatas as $key => $data) {
-                if ($data['status_progress_report_test50'] !== 'Waiting') {
+                if ($data['status_progress_report_test50'] !== 'Waiting' ) {
                     $ProgressReport_test50_Success[] = $data;
                 }
             }
-        } elseif (isset($test100_raw)) {
+        }
+        
+         elseif (isset($test100_raw)) {
             foreach ($test100_raw as $key2 => $data_test100) {
                 $data_array[] = $data_test100->Project_id_test100;
                 $ProgressReport_test50_Success = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
                     ->where('subject_id', $request->subject)
-                    ->whereNotIn('Project_id_report_test50', $request->subject)
+                    ->where('status_progress_report_test50','!=','Successfully')
                     ->select('progress_report_test50s.*', 'projects.*')
                     ->get();
             }
         }
+        // return response()->json($ProgressReport_test50_Success);
 
         $ProgressReport_test100_RawDatas = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
-            ->where('projects.subject_id', $term_last[0]->id)->select('progress_report_test100s.*', 'projects.*')->get();
+            ->where('projects.subject_id', $request->subject)->select('progress_report_test100s.*', 'projects.*')->get();
         $ProgressReport_test100_Success = null;
 
 
         $CompleteForm_raw = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
-            ->where('projects.subject_id', $term_last[0]->id)->select('complete_forms.*', 'projects.*')->get();
+            ->where('projects.subject_id', $request->subject)->select('complete_forms.*', 'projects.*')->get();
 
         if ($CompleteForm_raw == '[]') {
             foreach ($ProgressReport_test100_RawDatas as $key => $data) {
@@ -378,8 +382,8 @@ class HomeController extends Controller
             foreach ($CompleteForm_raw as $key2 => $data_CompleteForm) {
                 $data_array_CompleteForm[] = $data_CompleteForm->Project_id_CompleteForm;
                 $ProgressReport_test100_Success = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
-                    ->where('subject_id', $term_last[0]->id)
-                    ->whereNotIn('Project_id_report_test100', $data_array_CompleteForm)
+                    ->where('subject_id', $request->subject)
+                    ->where('status_progress_report_test100', '!=' ,'Successfully')
                     ->select('progress_report_test100s.*', 'projects.*')
                     ->get();
 
@@ -390,6 +394,8 @@ class HomeController extends Controller
         }
 
         // return response()->json($test50);
+        // return redirect('home');
+
         return view('home', compact('term', 'project', 'test50', 'test100', 'CompleteForm', 'Successfully_project', 'term_last','ProgressReport_test100_Success','ProgressReport_test50_Success'));
     }
 }

@@ -8,22 +8,11 @@ class subject extends Model
 {
     use SoftDeletes;
     protected $fillable = [
-        'DatePropose',
-        'OutPropose',
-        'Datedecide',
-        'Outdecide',
-        'Datedecide',
-        'Outdecide',
-        'Datesend',
-        'Outdecide',
-        'DateComment',
-        'OutComment',
-        'DateSubmitProject',
-        'OutSubmitProject',
-        'DateDue50',
-        'OutDue50',
-        'DateDue100',
-        'OutDue100'
+        'test50',
+        'test100',
+        'presentations',
+        'Test_in_time',
+        'Internship_score',
         
 ];
 }

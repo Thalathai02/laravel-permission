@@ -2069,6 +2069,7 @@ class projectControllers extends Controller
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
             $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
             $id_instructor = project_instructor::where('Project_id', $id)->get();
+            $data_subject = subject::find($datas[0]->subject_id);
             foreach ($datas_std as $key => $row_data) {
                 foreach ($row_data as $key => $row) {
                     $arrays[] = $row;
@@ -2090,8 +2091,8 @@ class projectControllers extends Controller
             }
             // $have_CollectPoints= $have_Collect->groupBy('id');
             // $have_CollectPoints = collect($have_Collect)->groupBy('id');
-            // return response()->json($have_CollectPoints);
-            return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas', 'have_CollectPoints'));
+            // return response()->json($data_subject);
+            return view('word-template.CollectPoints', compact('datas_std', 'datas_instructor', 'datas', 'have_CollectPoints','data_subject'));
 
 
             // return response()->json($have_CollectPoints);

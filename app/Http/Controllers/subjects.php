@@ -47,39 +47,57 @@ class subjects extends Controller
      */
     public function store(Request $request)
     {
-      
-        $student = new reg_std();
-        $reg = new subject();
-        $subject = new subject_student();
-        $system = new system ;
 
-        $reg->name_subjects   = 'CS498';
-        $reg->year  = $request['year'];
-        $reg->term  = $request['term'];
-        $reg->year_term  = $request['year'].'/'.$request['term'];
-     
-
-
-        // $reg->DatePropose =  \Carbon\Carbon::now()->format('d-m-Y');
-        // $reg->OutPropose =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->Datedecide =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->Outdecide =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateComment =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutComment =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateSubmitProject =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutSubmitProject =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateDue50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutDue50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateDue100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutDue100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateComment50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutComment50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-        // $reg->DateComment100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
-        // $reg->OutComment100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
-
-       
-        $reg->save();
-        return redirect('/STD');
+        $check_data = subject::where('year_term',$request['year'].'/'.$request['term'])->first();
+        if(isset($check_data)){
+            return  back()->withErrors('ปีการศึกษาซ้ำ กรุณาตรวจสอบ');
+        }else{
+            $request->validate([
+                'test50' => ['required'],
+                'test100' => ['required'],
+                'presentations'=> 'required',
+                'Test_in_time' => 'required',
+                'Internship_score'=> 'required',
+               
+            ]);
+            $student = new reg_std();
+            $reg = new subject();
+            $subject = new subject_student();
+            $system = new system ;
+    
+            $reg->name_subjects   = 'CS498';
+            $reg->year  = $request['year'];
+            $reg->term  = $request['term'];
+            $reg->year_term  = $request['year'].'/'.$request['term'];
+         
+            $reg->test50 = $request['test50'];
+            $reg->test100 = $request['test100'];
+            $reg->presentations = $request['presentations'];
+            $reg->Test_in_time = $request['Test_in_time'];
+            $reg->Internship_score = $request['Internship_score'];
+    
+            // $reg->DatePropose =  \Carbon\Carbon::now()->format('d-m-Y');
+            // $reg->OutPropose =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->Datedecide =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->Outdecide =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateComment =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutComment =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateSubmitProject =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutSubmitProject =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateDue50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutDue50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateDue100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutDue100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateComment50 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutComment50 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+            // $reg->DateComment100 =  \Carbon\Carbon::now()->format('d-m-Y') ;
+            // $reg->OutComment100 =  \Carbon\Carbon::tomorrow()->format('d-m-Y') ;
+    
+           
+            $reg->save();
+            return redirect('/STD');
+        }
+        
     }
 
     /**

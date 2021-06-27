@@ -36,22 +36,22 @@
                                             <th scope="col">#1</th>
                                             <th scope="col">#2</th>
                                             <th scope="col">#3</th>
-                                            <th scope="col">(30)</th>
-                                            <th scope="col">(10)</th>
-                                            <th scope="col">(5)</th>
+                                            <th scope="col">({{$data_subject->test50}})</th>
+                                            <th scope="col">({{$data_subject->Internship_score}})</th>
+                                            <th scope="col">({{$data_subject->Test_in_time}})</th>
                                             <th scope="col">#1</th>
                                             <th scope="col">#2</th>
                                             <th scope="col">#3</th>
-                                            <th scope="col">(40)</th>
-                                            <th scope="col">(15)</th>
-                                            <th scope="col">(100)</th>
+                                            <th scope="col">({{$data_subject->test100}})</th>
+                                            <th scope="col">({{$data_subject->presentations}})</th>
+                                            <th scope="col">({{$data_subject->test50 + $data_subject->Internship_score +$data_subject->Test_in_time +$data_subject->test100 +$data_subject->presentations}})</th>
                                             <th scope="col"></th>
                                             <th scope="col"></th>
                                         </tr>
                                     </tbody>
 
                                     <tbody class="searchTable">
-                                        {{-- {{$datas_std["6004101301"]}} --}}
+                                        {{$data_subject}}
 
                                         @if ($have_CollectPoints != '[]')
                                             @if (!empty($datas_std) && $datas_std->count())

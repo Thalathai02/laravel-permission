@@ -16,7 +16,9 @@
                     <h5>โครงงานที่ยังไม่เสร็จ</h5>
                     <div class="mb-4">
                         @foreach ($datas as $row)
-                            @if ($row->status == 'Check')
+                        @if($row == null)
+                
+                        @elseif ($row->status == 'Check')
 
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
@@ -53,7 +55,9 @@
                     <h5>โครงงานฉบับสมบูรณ์</h5>
                     <div class="mb-4">
                         @foreach ($data_project_public as $row)
-                            @if ($row->status !== 'Check')
+                        @if($row == null)
+                
+                        @elseif ($row->status !== 'Check')
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">{{ $row->name_th }}</h6>
