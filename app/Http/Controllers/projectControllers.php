@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\project_instructor;
+use App\Project_Instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -175,8 +175,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
 
         if ($user->hasRole('Admin')) {
-            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            $datas_instructor = project::join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
 
             $datas = project::select('projects.*')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
@@ -194,8 +194,8 @@ class projectControllers extends Controller
                 $id_reg_Std = project_user::where('id_reg_Std', $id_reg[0]->id)->get();
                 //  return response()->json($id_reg_Std[0]->id);
                 $datas_instructor = DB::table('projects')
-                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $id_reg_Std[0]->id)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id_reg_Std[0]->id]])->get();
@@ -357,7 +357,7 @@ class projectControllers extends Controller
     }
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
-        project_instructor::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, $action => $is_action], [$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
+        Project_Instructor::updateOrCreate([$table => $data[0]->id, "Project_id" => $id, $action => $is_action], [$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
     }
     public function destroy_edit_name_project($id)
     {
@@ -457,8 +457,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
@@ -472,8 +472,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -491,8 +491,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
@@ -506,8 +506,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -525,8 +525,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
@@ -540,8 +540,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -569,7 +569,7 @@ class projectControllers extends Controller
             'status_changetopics' => 'Waiting'
         ]);
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -643,8 +643,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
@@ -658,8 +658,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -677,8 +677,8 @@ class projectControllers extends Controller
         $name_Instructor = Teacher::pluck('name_Instructor', 'id');
         if ($user->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
@@ -692,8 +692,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -734,7 +734,7 @@ class projectControllers extends Controller
             $request->File,
             $name_file
         );
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -815,7 +815,7 @@ class projectControllers extends Controller
             $request->File,
             $name_file
         );
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -895,7 +895,7 @@ class projectControllers extends Controller
             'status_ChangeBoard' => 'Waiting'
         ]);
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -1032,7 +1032,7 @@ class projectControllers extends Controller
             $name_file
         );
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -1113,8 +1113,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -1137,7 +1137,7 @@ class projectControllers extends Controller
             ]
         );
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -1184,17 +1184,17 @@ class projectControllers extends Controller
             $templateProcessor->setValue('phone_n3', "");
             $templateProcessor->setValue('and_name3', "");
         }
-        $data_comment = comment_test50::join('project_instructors', 'comment_test50s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+        $data_comment = comment_test50::join('Project_Instructors', 'comment_test50s.id_instructor_comemt_test50', 'Project_Instructors.id_instructor')
             ->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-            ->where([['comment_test50s.project_id_comemt_test50', $id], ['project_instructors.Project_id', $id]])
+            ->where([['comment_test50s.project_id_comemt_test50', $id], ['Project_Instructors.Project_id', $id]])
             ->select(
                 'teachers.id',
                 'teachers.Title_name_Instructor',
                 'teachers.name_Instructor',
-                'project_instructors.Is_director',
+                'Project_Instructors.Is_director',
                 'comment_test50s.text_comemt_test50',
                 'comment_test50s.project_id_comemt_test50',
-                'project_instructors.is_director'
+                'Project_Instructors.is_director'
             )
             ->get();
 
@@ -1234,8 +1234,8 @@ class projectControllers extends Controller
             $data_std = DB::table('project_users')->where('id_reg_Std', $data_std_reg[0]->id)->select('project_users.*')->get();
 
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $data_std[0]->Project_id)->get();
 
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $data_std[0]->Project_id]])->get();
@@ -1255,7 +1255,7 @@ class projectControllers extends Controller
             'status_progress_report_test100' => 'Waiting'
         ]);
 
-        $Project_id = DB::table('project_instructors')->where('Project_id', $id)->get();
+        $Project_id = DB::table('Project_Instructors')->where('Project_id', $id)->get();
         $user_noti1 = User::where('reg_tea_id', $Project_id[0]->id_instructor)->get();
         $user_noti2 = User::where('reg_tea_id', $Project_id[1]->id_instructor)->get();
         $user_noti3 = User::where('reg_tea_id', $Project_id[2]->id_instructor)->get();
@@ -1374,7 +1374,7 @@ class projectControllers extends Controller
             // $id_stu_project[1]->save();
             // $id_stu_project[2]->save();
 
-            $name_president = project_instructor::where('Project_id', $id)->get();
+            $name_president = Project_Instructor::where('Project_id', $id)->get();
 
             if ($request->name_president != 0) {
                 $name_president[0]->id_instructor = $request->name_president;
@@ -1447,7 +1447,7 @@ class projectControllers extends Controller
                 );
             }
 
-            $name_president = project_instructor::where('Project_id', $id)->get();
+            $name_president = Project_Instructor::where('Project_id', $id)->get();
 
             if ($request->name_president != 0) {
                 $name_president[0]->id_instructor = $request->name_president;
@@ -1492,7 +1492,7 @@ class projectControllers extends Controller
         $mydata = User::find($id);
         $data_reg1 = reg_std::where('user_id', $mydata->id)->get();
         $id_stu_project = project_user::query()->where('id_reg_Std', $data_reg1[0]->id)->get();
-        //     $name_president = project_instructor::where('Project_id',$id_stu_project[0]->Project_id)->get();
+        //     $name_president = Project_Instructor::where('Project_id',$id_stu_project[0]->Project_id)->get();
 
         //     $id_stu = project_user::query()->where('Project_id',$id_stu_project[0]->Project_id)->get();
         //     $data_reg2  = reg_std::where('id',$id_stu[1]->id_reg_Std)->get();
@@ -1513,8 +1513,8 @@ class projectControllers extends Controller
 
 
         $datas_instructor = DB::table('projects')
-            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+            ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id_stu_project[0]->Project_id)->get();
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id_stu_project[0]->Project_id]])->get();
         $user = Auth::user();
@@ -1549,7 +1549,7 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject_RAW = project_instructor::where([['id_instructor', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->get();
+            $data_subject_RAW = Project_Instructor::where([['id_instructor', $user->reg_tea_id], ['Is_president', 'LIKE', 1]])->get();
             // return response()->json( $data_subject_RAW);
             // if (isset($data_subject_RAW)) {
             foreach ($data_subject_RAW as $key => $data) {
@@ -1592,7 +1592,7 @@ class projectControllers extends Controller
                 'subject'
             );
             $term = subject::pluck('year_term', 'id');
-            $data_subject = project_instructor::where('id_instructor', $user->reg_tea_id)->whereNotIn('Is_director', [0])->get();
+            $data_subject = Project_Instructor::where('id_instructor', $user->reg_tea_id)->whereNotIn('Is_director', [0])->get();
 
             // $datas = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
             // $data_project_public = project::where([['id', 'LIKE', $data_subject[0]->Project_id], ['subject_id', $request->subject]])->paginate(10);
@@ -1622,8 +1622,8 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
-            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            $datas_instructor = project::join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
             $datas = project::select('projects.*')->where([['projects.id', '=', $id]])->get();
             $tableTest50_id = test50::where('Project_id_test50', '=', $id)->first();
@@ -1646,7 +1646,7 @@ class projectControllers extends Controller
         if ($user->hasRole('Tea')) {
             $data_user = user::find($user->id);
             $data_test50 = null;
-            $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
+            $data_project_instructors = Project_Instructor::where('id_instructor', $data_user->reg_tea_id)->get();
             // comment_test50::all();
             foreach ($data_project_instructors as $key => $data_test50s) {
                 $check_test50 = test50::where('Project_id_test50', $data_test50s->Project_id)->first();
@@ -1662,7 +1662,7 @@ class projectControllers extends Controller
             // $notification_check  = $this->DataTableController->noti_data_allow_Pretest50s($test50->Project_id_test50, $datas_instructor[0]->id_instructor, $datas_instructor[1]->id_instructor, $datas_instructor[2]->id_instructor,1);
             if (!empty($data_project)) {
                 foreach ($data_project as $key => $data_project_instructor) {
-                    $data_test[] = project_instructor::select('project_instructors.id_instructor', 'project_instructors.Project_id')
+                    $data_test[] = Project_Instructor::select('Project_Instructors.id_instructor', 'Project_Instructors.Project_id')
                         ->where('Project_id', $data_project_instructor->Project_id_test50)->get();
                 }
                 foreach ($data_test as $key => $data_check) {
@@ -1780,20 +1780,20 @@ class projectControllers extends Controller
             $data = null;
             return view('info_word_template.AllResultsTest50', compact('data'));
         } else {
-            $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+            $data_project_instructors = Project_Instructor::where('Project_id', $data_user_project->Project_id)->get();
             $data_comment_test50 = comment_test50::where('project_id_comemt_test50', $data_user_project->Project_id)->get();
 
-            // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
-            // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
+            // $data = Project_Instructor::join('comment_test50s', 'Project_Instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+            // ->join('teachers', 'Project_Instructors.id_instructor', 'teachers.id')
             // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
 
             // $data = Teacher::join('comment_test50s', 'teachers.id', 'comment_test50s.id_instructor_comemt_test50')
-            // ->join('project_instructors','teachers.id','project_instructors.id_instructor')
-            // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','project_instructors.Is_president')
+            // ->join('Project_Instructors','teachers.id','Project_Instructors.id_instructor')
+            // ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor','Project_Instructors.Is_president')
             // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
             $data = comment_test50::withTrashed()->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-                ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
-                ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                ->join('Project_Instructors', 'teachers.id', 'Project_Instructors.id_instructor')
+                ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'Project_Instructors.Is_president')
                 ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
             if ($data != null) {
                 return view('info_word_template.AllResultsTest50', compact('data'));
@@ -1835,8 +1835,8 @@ class projectControllers extends Controller
     {
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
-            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            $datas_instructor = project::join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
             $datas = project::select('projects.*')->where([['projects.id', '=', $id]])->get();
             $tableTest100_id = test100::where('Project_id_test100', '=', $id)->first();
@@ -1857,7 +1857,7 @@ class projectControllers extends Controller
         $user = Auth::user();
         if ($user->hasRole('Tea')) {
             $data_user = user::find($user->id);
-            $data_project_instructors = project_instructor::where('id_instructor', $data_user->reg_tea_id)->get();
+            $data_project_instructors = Project_Instructor::where('id_instructor', $data_user->reg_tea_id)->get();
             // comment_test50::all();
             $data_test100 = null;
             foreach ($data_project_instructors as $key => $data_test100s) {
@@ -1872,7 +1872,7 @@ class projectControllers extends Controller
             }
             if (!empty($data_project)) {
                 foreach ($data_project as $key => $data_project_instructor) {
-                    $data_test[] = project_instructor::select('project_instructors.id_instructor', 'project_instructors.Project_id')
+                    $data_test[] = Project_Instructor::select('Project_Instructors.id_instructor', 'Project_Instructors.Project_id')
                         ->where('Project_id', $data_project_instructor->Project_id_test100)->get();
                 }
                 foreach ($data_test as $key => $data_check) {
@@ -1981,7 +1981,7 @@ class projectControllers extends Controller
             $data = null;
             return view('info_word_template.AllResultsTest100', compact('data'));
         } else {
-            $data_project_instructors = project_instructor::where('Project_id', $data_user_project->Project_id)->get();
+            $data_project_instructors = Project_Instructor::where('Project_id', $data_user_project->Project_id)->get();
             $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $data_user_project->Project_id)->get();
             // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
             // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
@@ -1993,8 +1993,8 @@ class projectControllers extends Controller
             // ->where([['project_id_comemt_test50', $data_user_project->Project_id],['Project_id',$data_user_project->Project_id]])->get();
 
             $data = comment_test100::withTrashed()->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-                ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
-                ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
+                ->join('Project_Instructors', 'teachers.id', 'Project_Instructors.id_instructor')
+                ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'Project_Instructors.Is_president')
                 ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
             if ($data != null) {
                 return view('info_word_template.AllResultsTest100', compact('data'));
@@ -2063,12 +2063,12 @@ class projectControllers extends Controller
 
         if (Auth::user()->hasRole('Admin')) {
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
-                ->select('teachers.*', 'project_instructors.Is_director')->where('projects.id', '=', $id)->get();
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                ->select('teachers.*', 'Project_Instructors.Is_director')->where('projects.id', '=', $id)->get();
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
             $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
-            $id_instructor = project_instructor::where('Project_id', $id)->get();
+            $id_instructor = Project_Instructor::where('Project_id', $id)->get();
             $data_subject = subject::find($datas[0]->subject_id);
             foreach ($datas_std as $key => $row_data) {
                 foreach ($row_data as $key => $row) {
@@ -2106,7 +2106,7 @@ class projectControllers extends Controller
 
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project_collectPointsForm($id);
-        $id_instructor = project_instructor::join('teachers', 'project_instructors.id_instructor', 'teachers.id')->select('teachers.*')->where('Project_id', $id)->get();
+        $id_instructor = Project_Instructor::join('teachers', 'Project_Instructors.id_instructor', 'teachers.id')->select('teachers.*')->where('Project_id', $id)->get();
 
         $datas_project = project::join('test50s', 'projects.id', '=', 'test50s.Project_id_test50')
             ->join('test100s', 'projects.id', '=', 'test100s.Project_id_test100')
@@ -2508,17 +2508,17 @@ class projectControllers extends Controller
         if ($test_form == 50) {
             //wordExport
 
-            $data_comment = comment_test50::join('project_instructors', 'comment_test50s.id_instructor_comemt_test50', 'project_instructors.id_instructor')
+            $data_comment = comment_test50::join('Project_Instructors', 'comment_test50s.id_instructor_comemt_test50', 'Project_Instructors.id_instructor')
                 ->join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-                ->where([['comment_test50s.project_id_comemt_test50', $id], ['project_instructors.Project_id', $id]])
+                ->where([['comment_test50s.project_id_comemt_test50', $id], ['Project_Instructors.Project_id', $id]])
                 ->select(
                     'teachers.id',
                     'teachers.Title_name_Instructor',
                     'teachers.name_Instructor',
-                    'project_instructors.Is_director',
+                    'Project_Instructors.Is_director',
                     'comment_test50s.text_comemt_test50',
                     'comment_test50s.project_id_comemt_test50',
-                    'project_instructors.is_director'
+                    'Project_Instructors.is_director'
                 )
                 ->get();
 
@@ -2552,17 +2552,17 @@ class projectControllers extends Controller
         if ($test_form == 100) {
             //wordExport
 
-            $data_comment = comment_test100::join('project_instructors', 'comment_test100s.id_instructor_comemt_test100', 'project_instructors.id_instructor')
+            $data_comment = comment_test100::join('Project_Instructors', 'comment_test100s.id_instructor_comemt_test100', 'Project_Instructors.id_instructor')
                 ->join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-                ->where([['comment_test100s.project_id_comemt_test100', $id], ['project_instructors.Project_id', $id]])
+                ->where([['comment_test100s.project_id_comemt_test100', $id], ['Project_Instructors.Project_id', $id]])
                 ->select(
                     'teachers.id',
                     'teachers.Title_name_Instructor',
                     'teachers.name_Instructor',
-                    'project_instructors.Is_director',
+                    'Project_Instructors.Is_director',
                     'comment_test100s.text_comemt_test100',
                     'comment_test100s.project_id_comemt_test100',
-                    'project_instructors.is_director'
+                    'Project_Instructors.is_director'
                 )
                 ->get();
 

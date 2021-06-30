@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\project_instructor;
+use App\Project_Instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -152,7 +152,7 @@ class DataTableController extends Controller
         $datas_std_test50 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test50s', 'project_users.id_reg_Std', 'point_test50s.reg_id_point_test50')
-            ->join('project_instructors', 'point_test50s.id_instructor_point_test50', 'project_instructors.id_instructor')
+            ->join('Project_Instructors', 'point_test50s.id_instructor_point_test50', 'Project_Instructors.id_instructor')
             ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
             ->join('subjects', 'subject_students.subject_id', 'subjects.id')
             // ->join('collect_points','reg_stds.id','collect_points.reg_id_collect_points')
@@ -167,13 +167,13 @@ class DataTableController extends Controller
                 'point_test50s.project_id_point_test50',
                 'point_test50s.id_instructor_point_test50',
                 'point_test50s.point_test50',
-                'project_instructors.Is_president',
-                'project_instructors.Is_director'
+                'Project_Instructors.Is_president',
+                'Project_Instructors.Is_director'
             )->where([
                 ['projects.id', $Project_id],
                 ['point_test50s.deleted_at', NULL],
                 ['point_test50s.project_id_point_test50', $Project_id],
-                ['project_instructors.Project_id', $Project_id],
+                ['Project_Instructors.Project_id', $Project_id],
                 ['project_users.deleted_at', null],
                 // ['collect_points.reg_id_collect_points',null]
             ])->get();
@@ -181,7 +181,7 @@ class DataTableController extends Controller
         $datas_std_test100 = project::join('project_users', 'projects.id', '=', 'project_users.Project_id')
             ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
             ->join('point_test100s', 'project_users.id_reg_Std', 'point_test100s.reg_id_point_test100')
-            ->join('project_instructors', 'point_test100s.id_instructor_point_test100', 'project_instructors.id_instructor')
+            ->join('Project_Instructors', 'point_test100s.id_instructor_point_test100', 'Project_Instructors.id_instructor')
             ->join('subject_students', 'reg_stds.id', 'subject_students.student_id')
             ->join('subjects', 'subject_students.subject_id', 'subjects.id')
             // ->join('collect_points','reg_stds.id','collect_points.reg_id_collect_points')
@@ -195,19 +195,19 @@ class DataTableController extends Controller
                 'point_test100s.project_id_point_test100',
                 'point_test100s.id_instructor_point_test100',
                 'point_test100s.point_test100',
-                'project_instructors.Is_president',
-                'project_instructors.Is_director'
+                'Project_Instructors.Is_president',
+                'Project_Instructors.Is_director'
             )->where([
                 ['projects.id', $Project_id],
                 ['point_test100s.project_id_point_test100', $Project_id],
                 ['point_test100s.deleted_at', NULL],
-                ['project_instructors.Project_id', $Project_id],
+                ['Project_Instructors.Project_id', $Project_id],
                 ['project_users.deleted_at', null],
                 // ['collect_points.reg_id_collect_points',null]
 
             ])->get();
 
-        $id_instructor = project_instructor::where('Project_id', $Project_id)->get();
+        $id_instructor = Project_Instructor::where('Project_id', $Project_id)->get();
         foreach ($datas_std_test50 as $key => $box_50) {
             $datas_std[] = $box_50;
         }
@@ -846,7 +846,7 @@ class DataTableController extends Controller
             }
         }
 
-        $project =  project_instructor::where('Project_id', $Project_id)->get();
+        $project =  Project_Instructor::where('Project_id', $Project_id)->get();
 
         $id_4 = User::where('reg_tea_id', $project[0]->id_instructor)->first();
         foreach ($id_4->unreadNotifications   as $key => $notificationes) {
@@ -946,7 +946,7 @@ class DataTableController extends Controller
             }
         }
 
-        $project =  project_instructor::where('Project_id', $Project_id)->get();
+        $project =  Project_Instructor::where('Project_id', $Project_id)->get();
 
         $id_4 = User::where('reg_tea_id', $project[0]->id_instructor)->first();
         foreach ($id_4->unreadNotifications   as $key => $notificationes) {

@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\project_instructor;
+use App\Project_Instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -78,8 +78,8 @@ class HomeController extends Controller
             }
             $test_50 = test50::where('Project_id_test50', $id_stu_project[0]->Project_id)->get();
             $datas_instructor = DB::table('projects')
-                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
-                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id_stu_project[0]->Project_id)->get();
             $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id_stu_project[0]->Project_id]])->get();
             $user = Auth::user();
@@ -229,33 +229,33 @@ class HomeController extends Controller
         }
         if (Auth::user()->hasRole('Tea')) {
             $user = Auth::user();
-            $data_subject = project_instructor::where('id_instructor', 'LIKE', $user->reg_tea_id)->get();
-            $datas = project::join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')->where([['project_instructors.id_instructor', $user->reg_tea_id], ['projects.status', 'Check']])->paginate(5);
+            $data_subject = Project_Instructor::where('id_instructor', 'LIKE', $user->reg_tea_id)->get();
+            $datas = project::join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')->select('projects.*')->where([['Project_Instructors.id_instructor', $user->reg_tea_id], ['projects.status', 'Check']])->paginate(5);
             $data_test50 = test50::join('projects', 'test50s.Project_id_test50', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')
-                ->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test50s.status_test50', 'Waiting']])
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')->select('projects.*')
+                ->where([['Project_Instructors.id_instructor', $user->reg_tea_id], ['test50s.status_test50', 'Waiting']])
                 ->paginate(5);
             $data_test100 = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')->select('projects.*')
-                ->where([['project_instructors.id_instructor', $user->reg_tea_id], ['test100s.status_test100', 'Waiting']])
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')->select('projects.*')
+                ->where([['Project_Instructors.id_instructor', $user->reg_tea_id], ['test100s.status_test100', 'Waiting']])
                 ->paginate(5);
 
             $test100_raw = test100::join('projects', 'test100s.Project_id_test100', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
-                ->where('project_instructors.id_instructor', $user->reg_tea_id)->select('test100s.*', 'projects.*')->get();
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
+                ->where('Project_Instructors.id_instructor', $user->reg_tea_id)->select('test100s.*', 'projects.*')->get();
             // return response()->json($data_test50);
             //Waiting
             //Successfully
             $data_CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
                 ->select('projects.*')->where([
-                    ['project_instructors.id_instructor', $user->reg_tea_id],
+                    ['Project_Instructors.id_instructor', $user->reg_tea_id],
                     ['complete_forms.status_CompleteForm', 'Waiting']
                 ])->paginate(5);
             $ProgressReport_test50_Success = null;
             $ProgressReport_test50_RawDatas = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
-                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
+                ->where('Project_Instructors.id_instructor', $user->reg_tea_id)
                 ->get();
 
             if ($test100_raw == '[]') {
@@ -268,9 +268,9 @@ class HomeController extends Controller
                 foreach ($test100_raw as $key2 => $data_test100s) {
                     $data_array_test100s[] = $data_test100s->Project_id_test100;
                     $ProgressReport_test50_Success = ProgressReport_test50::join('projects', 'progress_report_test50s.Project_id_report_test50', 'projects.id')
-                        ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                        ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
                         ->whereNotIn('Project_id_report_test50', $data_array_test100s)
-                        ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                        ->where('Project_Instructors.id_instructor', $user->reg_tea_id)
                         ->get();
                 }
             }
@@ -278,12 +278,12 @@ class HomeController extends Controller
 
 
             $CompleteForm = CompleteForm::join('projects', 'complete_forms.Project_id_CompleteForm', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
-                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
+                ->where('Project_Instructors.id_instructor', $user->reg_tea_id)
                 ->get();
             $ProgressReport_test100_RawDatas = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
-                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
-                ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
+                ->where('Project_Instructors.id_instructor', $user->reg_tea_id)
                 ->get();
             $ProgressReport_test100_Success = null;
             if ($CompleteForm == '[]') {
@@ -296,18 +296,18 @@ class HomeController extends Controller
                 foreach ($CompleteForm as $key2 => $data_CompleteForms) {
                     $data_array_CompleteForms[] = $data_CompleteForms->Project_id_CompleteForm;
                     $ProgressReport_test100_Success = ProgressReport_test100::join('projects', 'progress_report_test100s.Project_id_report_test100', 'projects.id')
-                        ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                        ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
                         ->whereNotIn('Project_id_report_test100', $data_array_CompleteForms)
-                        ->where('project_instructors.id_instructor', $user->reg_tea_id)
+                        ->where('Project_Instructors.id_instructor', $user->reg_tea_id)
                         ->get();
                 }
             }
 
 
-            $Successfully_project = project::join('project_instructors', 'projects.id', 'project_instructors.Project_id')
-                ->where([['projects.status', 'Private'], ['project_instructors.id_instructor', $user->reg_tea_id]])->orwhere([
+            $Successfully_project = project::join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
+                ->where([['projects.status', 'Private'], ['Project_Instructors.id_instructor', $user->reg_tea_id]])->orwhere([
                     ['projects.status', 'Public'],
-                    ['project_instructors.id_instructor', $user->reg_tea_id]
+                    ['Project_Instructors.id_instructor', $user->reg_tea_id]
                 ])
                 ->select('projects.*')
                 ->get();
