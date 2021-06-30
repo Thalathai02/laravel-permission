@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Project_Instructor;
+use App\project_instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -97,8 +97,8 @@ class CheckProjectController extends Controller
     {
 
         $datas_instructor = DB::table('projects')
-            ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-            ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $id]])->get();
         $user = $request->user();
@@ -124,8 +124,8 @@ class CheckProjectController extends Controller
 
         if ($user->hasRole('Admin')) {
             $datas1 = DB::table('projects')
-                ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where('projects.id', '=', $id)->get();
             // return response()->json([
             //     'id' => $datas1
@@ -136,12 +136,12 @@ class CheckProjectController extends Controller
 
                 $datas = DB::table('projects')
                     ->join('project_users', 'projects.id', '=', 'project_users.Project_id')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
                     ->join('project__files', 'projects.id', '=', 'project__files.Project_id_File')
 
 
                     ->join('reg_stds', 'project_users.id_reg_Std', '=', 'reg_stds.id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('projects.*', 'project_users.*', 'reg_stds.*', 'teachers.*', 'project__files.*')->where([
                         ['projects.id', '=', $id], ['projects.deleted_at', null],
                         ['project_users.deleted_at', null],
@@ -222,7 +222,7 @@ class CheckProjectController extends Controller
     }
     public function Database_Project_instructor($id, $table, $data, $action, $is_action)
     {
-        DB::table('Project_Instructors')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
+        DB::table('project_instructors')->updateOrInsert([$table => $data[0]->id, "Project_id" => $id, $action => $is_action]);
     }
     /**
      * Remove the specified resource from storage.
@@ -281,8 +281,8 @@ class CheckProjectController extends Controller
     public function info_project($id)
     {
         $datas_instructor = DB::table('projects')
-            ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-            ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+            ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
             ->select('teachers.*')->where('projects.id', '=', $id)->get();
         $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $id]])->get();
         $datas_std = $this->DataTableController->data_project($id);
@@ -411,8 +411,8 @@ class CheckProjectController extends Controller
                 ->where('subject_students.student_id', $Datas_reg->id)->first();
 
             $about_project = project_user::join('projects', 'project_users.Project_id', 'projects.id')
-                ->join('Project_Instructors', 'projects.id', 'Project_Instructors.Project_id')
-                ->join('teachers', 'Project_Instructors.id_instructor', 'teachers.id')
+                ->join('project_instructors', 'projects.id', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
                 ->select('teachers.*')->where([['id_reg_Std', $Datas_reg->id], ['Is_director', 0], ['Is_president', 1]])->first();
 
             $templateProcessor->setValue('note',  $request->note);

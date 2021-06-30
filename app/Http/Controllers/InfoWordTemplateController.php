@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Project_Instructor;
+use App\project_instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -133,8 +133,8 @@ class InfoWordTemplateController extends Controller
             $name_Instructor = Teacher::pluck('name_Instructor', 'id');
             if (Auth::user()->hasRole('Admin')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_test50)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
@@ -157,8 +157,8 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_test50)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_test50]])->get();
@@ -178,8 +178,8 @@ class InfoWordTemplateController extends Controller
             if (Auth::user()->hasRole('Admin')) {
 
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_report_test50)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_report_test50]])->get();
@@ -193,8 +193,8 @@ class InfoWordTemplateController extends Controller
             }
             if (Auth::user()->hasRole('Tea')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest50_id->Project_id_report_test50)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest50_id->Project_id_report_test50]])->get();
@@ -217,8 +217,8 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
@@ -235,8 +235,8 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_test100)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_test100]])->get();
@@ -255,8 +255,8 @@ class InfoWordTemplateController extends Controller
 
             if (Auth::user()->hasRole('Admin')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_report_test100)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_report_test100]])->get();
@@ -269,8 +269,8 @@ class InfoWordTemplateController extends Controller
             }
             if (Auth::user()->hasRole('Tea')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableTest100_id->Project_id_report_test100)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableTest100_id->Project_id_report_test100]])->get();
@@ -294,8 +294,8 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
@@ -313,8 +313,8 @@ class InfoWordTemplateController extends Controller
                     abort(404);
                 }
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableCompleteForm_id->Project_id_CompleteForm]])->get();
@@ -335,8 +335,8 @@ class InfoWordTemplateController extends Controller
 
             if (Auth::user()->hasRole('Admin')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
@@ -351,8 +351,8 @@ class InfoWordTemplateController extends Controller
             }
             if (Auth::user()->hasRole('Tea')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tableChangeBoard_id->Project_id_ChangeBoard]])->get();
@@ -374,8 +374,8 @@ class InfoWordTemplateController extends Controller
 
             if (Auth::user()->hasRole('Admin')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tablechangetopic_id->Project_id_changetopics)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
@@ -388,8 +388,8 @@ class InfoWordTemplateController extends Controller
             }
             if (Auth::user()->hasRole('Tea')) {
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=', $tablechangetopic_id->Project_id_changetopics)->get();
 
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=', $tablechangetopic_id->Project_id_changetopics]])->get();
@@ -410,18 +410,18 @@ class InfoWordTemplateController extends Controller
                 $id = Auth::user()->id;
                 $data_user = reg_std::where('user_id', $id)->first();
                 $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
-                $data_project_instructors = Project_Instructor::where('Project_id', $formId)->get();
+                $data_project_instructors = project_instructor::where('Project_id', $formId)->get();
                 $data_comment_test50 = comment_test50::where('project_id_comemt_test50', $formId)->get();
 
-                // $data = Project_Instructor::join('comment_test50s', 'Project_Instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
-                // ->join('teachers', 'Project_Instructors.id_instructor', 'teachers.id')
+                // $data = project_instructor::join('comment_test50s', 'project_instructors.Project_id', 'comment_test50s.project_id_comemt_test50')
+                // ->join('teachers', 'project_instructors.id_instructor', 'teachers.id')
                 // ->select('comment_test50s.*','teachers.*')->where('Project_id', $data_user_project->Project_id)->get();
 
 
 
                 $data = comment_test50::join('teachers', 'comment_test50s.id_instructor_comemt_test50', 'teachers.id')
-                    ->join('Project_Instructors', 'teachers.id', 'Project_Instructors.id_instructor')
-                    ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'Project_Instructors.Is_president')
+                    ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                    ->select('comment_test50s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
                     ->where([['project_id_comemt_test50', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
 
 
@@ -453,13 +453,13 @@ class InfoWordTemplateController extends Controller
                 $id = Auth::user()->id;
                 $data_user = reg_std::where('user_id', $id)->first();
                 $data_user_project = project_user::where('id_reg_Std', $data_user->id)->first();
-                $data_project_instructors = Project_Instructor::where('Project_id', $formId)->get();
+                $data_project_instructors = project_instructor::where('Project_id', $formId)->get();
                 $data_comment_test100 = comment_test100::where('project_id_comemt_test100', $formId)->get();
 
 
                 $data = comment_test100::join('teachers', 'comment_test100s.id_instructor_comemt_test100', 'teachers.id')
-                    ->join('Project_Instructors', 'teachers.id', 'Project_Instructors.id_instructor')
-                    ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'Project_Instructors.Is_president')
+                    ->join('project_instructors', 'teachers.id', 'project_instructors.id_instructor')
+                    ->select('comment_test100s.*', 'teachers.name_Instructor', 'teachers.Title_name_Instructor', 'project_instructors.Is_president')
                     ->where([['project_id_comemt_test100', $data_user_project->Project_id], ['Project_id', $data_user_project->Project_id]])->get();
 
 
@@ -495,8 +495,8 @@ class InfoWordTemplateController extends Controller
                     $id_reg_Std = project_user::where('id_reg_Std',  $formId)->get();
                     //  return response()->json($id_reg_Std[0]->id);
                     $datas_instructor = DB::table('projects')
-                        ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                        ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                        ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                        ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                         ->select('teachers.*')->where('projects.id', '=',  $formId)->get();
 
                     $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $formId]])->get();
@@ -527,8 +527,8 @@ class InfoWordTemplateController extends Controller
                 $data_reg1 = reg_std::where('user_id', $mydata->id)->get();
                 $id_stu_project = project_user::query()->where('id_reg_Std', $data_reg1[0]->id)->get();       
                 $datas_instructor = DB::table('projects')
-                    ->join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                    ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+                    ->join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                    ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                     ->select('teachers.*')->where('projects.id', '=',$formId)->get();
                 $datas = DB::table('projects')->select('projects.*')->where([['projects.id', '=',  $formId]])->get();
                 $user = Auth::user();
@@ -562,7 +562,7 @@ class InfoWordTemplateController extends Controller
                 ->select('reject_tests.*','users.name')
                 ->where([['reject_tests.project_id_reject_tests',$formId],['reject_tests.deleted_at',null]])
                 ->get();
-                $datas_instructor = Project_Instructor::where('Project_id',$formId)->get();
+                $datas_instructor = project_instructor::where('Project_id',$formId)->get();
                     // return response()->json($data_project);
 
                 if($data_project == "[]"){

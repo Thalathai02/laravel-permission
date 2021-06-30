@@ -11,7 +11,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Project_Instructor;
+use App\project_instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;

@@ -12,7 +12,7 @@ use App\subject;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
-use App\Project_Instructor;
+use App\project_instructor;
 use App\project_user;
 use App\subject_student;
 use Illuminate\Support\Facades\Storage;
@@ -88,9 +88,9 @@ class PublicProjectController extends Controller
                 ['complete_forms.deleted_at', null],
                 ['complete_forms.status_CompleteForm', '=', 'Successfully']
             ])->get();
-        $datas_instructor = project::join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-            ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
-            ->select('teachers.*', 'Project_Instructors.Is_president')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
+        $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+            ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
+            ->select('teachers.*', 'project_instructors.Is_president')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
 
         $data_project = project::find($id);
 
@@ -113,8 +113,8 @@ class PublicProjectController extends Controller
                     ['complete_forms.deleted_at', null],
                     ['complete_forms.status_CompleteForm', '=', 'Successfully']
                 ])->get();
-            $datas_instructor = project::join('Project_Instructors', 'projects.id', '=', 'Project_Instructors.Project_id')
-                ->join('teachers', 'Project_Instructors.ID_Instructor', '=', 'teachers.id')
+            $datas_instructor = project::join('project_instructors', 'projects.id', '=', 'project_instructors.Project_id')
+                ->join('teachers', 'project_instructors.ID_Instructor', '=', 'teachers.id')
                 ->select('teachers.*')->where([['projects.id', '=', $id], ['projects.deleted_at', null]])->get();
 
             $data_project = project::find($id);
