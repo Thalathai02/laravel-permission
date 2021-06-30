@@ -53,7 +53,7 @@
                                     </tbody>
 
                                     <tbody class="searchTable">
-                                        {{-- {{$data_subject}} --}}
+                                        {{$data_subject}}
 
                                         @if ($have_CollectPoints != '[]')
                                             @if (!empty($datas_std) && $datas_std->count())
